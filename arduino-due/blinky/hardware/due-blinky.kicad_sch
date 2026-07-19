@@ -1,0 +1,1484 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d")
+	(paper "A3")
+	(title_block
+		(title "Arduino Due blinky - SWD wiring and on-board LED")
+		(date "2026-07-19")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "Target: Atmel SAM3X8E (Cortex-M3), 3.3 V logic")
+		(comment 2 "Pinout source: Arduino Due datasheet A000062, sections 6.2.6 and 6.5.1")
+		(comment 3 "Flashed with probe-rs via the z5labs/devex flash Dagger module, chip ATSAM3X8E")
+	)
+	(lib_symbols
+		(symbol "due-blinky:DUE_JTAG"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 9.525 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "DUE_JTAG"
+				(at 0 -9.525 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DUE_JTAG_0_1"
+				(rectangle
+					(start -15.24 -7.62)
+					(end 15.24 7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "DUE_JTAG_1_1"
+				(pin passive line
+					(at -17.78 5.08 0)
+					(length 2.54)
+					(name "nRESET"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 2.54 0)
+					(length 2.54)
+					(name "TDI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 0 0)
+					(length 2.54)
+					(name "TDO / SWO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 -2.54 0)
+					(length 2.54)
+					(name "TCK / SWCLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 -5.08 0)
+					(length 2.54)
+					(name "TMS / SWDIO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 5.08 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 2.54 180)
+					(length 2.54)
+					(name "N/C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 0 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 -2.54 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 -5.08 180)
+					(length 2.54)
+					(name "+3V3 / VTref"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "due-blinky:CORTEX_DEBUG_10"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 9.525 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "CORTEX_DEBUG_10"
+				(at 0 -9.525 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "CORTEX_DEBUG_10_0_1"
+				(rectangle
+					(start -15.24 -7.62)
+					(end 15.24 7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "CORTEX_DEBUG_10_1_1"
+				(pin passive line
+					(at -17.78 5.08 0)
+					(length 2.54)
+					(name "VTref"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 2.54 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 0 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 -2.54 0)
+					(length 2.54)
+					(name "KEY"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -17.78 -5.08 0)
+					(length 2.54)
+					(name "GNDDetect"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 5.08 180)
+					(length 2.54)
+					(name "SWDIO / TMS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 2.54 180)
+					(length 2.54)
+					(name "SWCLK / TCK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 0 180)
+					(length 2.54)
+					(name "SWO / TDO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 -2.54 180)
+					(length 2.54)
+					(name "TDI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 17.78 -5.08 180)
+					(length 2.54)
+					(name "nRESET"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "due-blinky:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "due-blinky:LED"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "LED"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LED_0_1"
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy 1.27 1.27) (xy 0 -1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.905 -1.27) (xy 1.905 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.905 1.016) (xy 3.175 2.286)
+					)
+					(stroke
+						(width 0.152)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.905 -0.254) (xy 3.175 1.016)
+					)
+					(stroke
+						(width 0.152)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LED_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(text_box "WARNING - 3.3 V LOGIC. DO NOT CONNECT A 5 V DEBUG PROBE.\n\nThe Arduino Due (Atmel SAM3X8E) runs at 3.3 V, unlike most other Arduino boards.\nFrom the Arduino Due datasheet (A000062):\n\n    'Unlike most traditional Arduino boards, the Arduino Due board runs at 3.3 V.\n     Keep in mind the maximum voltage that the I/O pins can tolerate is 3.3 V.\n     Applying voltages higher than 3.3 V to any I/O pin could damage the board.'\n\nUse a 3.3 V probe, or one that sets its levels from VTref. Header pin 10 (+3V3) is the\nboard's 3.3 V rail and is what feeds the probe's VTref level reference."
+		(exclude_from_sim no)
+		(at 25.4 20.32 0)
+		(size 165.1 33.02)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000001")
+	)
+	(text_box "JTAG / SWD HEADER PIN NUMBERING - READ BEFORE WIRING\n\nThe Due's on-board 10-pin header carries the standard ARM Cortex Debug signal set,\nbut Arduino numbers the connector from the OPPOSITE END to the ARM standard:\n\n            Arduino pin N  ==  ARM Cortex Debug pin (11 - N)\n\n     Arduino | Signal | ARM Cortex Debug pin\n     --------+--------+----------------------\n        1    | RESET  |  10   nRESET\n        2    | GND    |   9   GNDDetect\n        3    | TDI    |   8   TDI\n        4    | N/C    |   7   KEY\n        5    | TDO    |   6   SWO / TDO\n        6    | GND    |   5   GND\n        7    | TCK    |   4   SWCLK / TCK\n        8    | GND    |   3   GND\n        9    | TMS    |   2   SWDIO / TMS\n       10    | +3V3   |   1   VTref\n\nSource: Arduino Due datasheet A000062, sections 6.2.6 and 6.5.1."
+		(exclude_from_sim no)
+		(at 203.2 20.32 0)
+		(size 190.5 48.26)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000002")
+	)
+	(text_box "Required for\nprobe-rs SWD:\n\n  SWDIO\n  SWCLK\n  GND\n  VTref\n\nRecommended:\n\n  nRESET\n\nNot needed for\nSWD (JTAG only):\n\n  TDI\n  SWO / TDO"
+		(exclude_from_sim no)
+		(at 132.08 88.9 0)
+		(size 40.64 45.72)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000003")
+	)
+	(text_box "On-board 'L' LED - already populated on the Due.\nThere is nothing to wire here; this is drawn so the\nfirmware's target is unambiguous.\n\nPB27 = digital pin 13. Active high: driving PB27\nhigh illuminates the LED.\n\nThe blinky firmware toggles PB27 at 1 Hz\n(500 ms high / 500 ms low)."
+		(exclude_from_sim no)
+		(at 119.38 149.86 0)
+		(size 88.9 33.02)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000004")
+	)
+	(text_box "BEFORE YOU WIRE ANYTHING - CONFIRM PIN 1\n\nA keyed 2x5 1.27 mm ribbon cable between a standard ARM Cortex Debug probe and this header mates correctly. The connectors are physically compatible, and the reversed\nnumbering documented above is a labelling convention, not a wiring difference - SEGGER lists the Arduino Due as a standard Cortex-M 10-pin target.\n\nIf you instead hand-wire flying leads, the two numbering conventions are exact opposites, and following the wrong one connects +3V3 to nRESET and vice versa. Identify pin 1 on\nthe physical board (silkscreen dot / square pad) and confirm it with a continuity check against a known GND pin before applying power.\n\nFlashing over SWD ERASES THE ARDUINO BOOTLOADER. This is expected and reversible: recover with the ERASE button followed by a SAM-BA bootloader reflash."
+		(exclude_from_sim no)
+		(at 25.4 200.66 0)
+		(size 368.3 40.64)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000005")
+	)
+	(wire
+		(pts
+			(xy 71.12 96.52) (xy 60.96 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000001")
+	)
+	(wire
+		(pts
+			(xy 71.12 99.06) (xy 60.96 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000002")
+	)
+	(wire
+		(pts
+			(xy 71.12 101.6) (xy 60.96 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000003")
+	)
+	(wire
+		(pts
+			(xy 71.12 104.14) (xy 60.96 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000004")
+	)
+	(wire
+		(pts
+			(xy 71.12 106.68) (xy 60.96 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000005")
+	)
+	(wire
+		(pts
+			(xy 106.68 96.52) (xy 116.84 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000006")
+	)
+	(wire
+		(pts
+			(xy 106.68 101.6) (xy 116.84 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000007")
+	)
+	(wire
+		(pts
+			(xy 106.68 104.14) (xy 116.84 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000008")
+	)
+	(wire
+		(pts
+			(xy 106.68 106.68) (xy 116.84 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000009")
+	)
+	(wire
+		(pts
+			(xy 198.12 96.52) (xy 187.96 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000a")
+	)
+	(wire
+		(pts
+			(xy 198.12 99.06) (xy 187.96 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000b")
+	)
+	(wire
+		(pts
+			(xy 198.12 101.6) (xy 187.96 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000c")
+	)
+	(wire
+		(pts
+			(xy 198.12 106.68) (xy 187.96 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 233.68 96.52) (xy 243.84 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000e")
+	)
+	(wire
+		(pts
+			(xy 233.68 99.06) (xy 243.84 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000000f")
+	)
+	(wire
+		(pts
+			(xy 233.68 101.6) (xy 243.84 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000010")
+	)
+	(wire
+		(pts
+			(xy 233.68 104.14) (xy 243.84 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000011")
+	)
+	(wire
+		(pts
+			(xy 233.68 106.68) (xy 243.84 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000012")
+	)
+	(wire
+		(pts
+			(xy 76.2 152.4) (xy 88.9 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000013")
+	)
+	(wire
+		(pts
+			(xy 88.9 152.4) (xy 88.9 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000014")
+	)
+	(wire
+		(pts
+			(xy 88.9 163.83) (xy 88.9 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000015")
+	)
+	(wire
+		(pts
+			(xy 88.9 173.99) (xy 88.9 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000016")
+	)
+	(wire
+		(pts
+			(xy 88.9 177.8) (xy 99.06 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000017")
+	)
+	(no_connect
+		(at 106.68 99.06)
+		(uuid "30000000-0000-4000-8000-000000000001")
+	)
+	(no_connect
+		(at 198.12 104.14)
+		(uuid "30000000-0000-4000-8000-000000000002")
+	)
+	(label "nRESET"
+		(at 60.96 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000001")
+	)
+	(label "TDI"
+		(at 60.96 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000002")
+	)
+	(label "SWO_TDO"
+		(at 60.96 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000003")
+	)
+	(label "SWCLK"
+		(at 60.96 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000004")
+	)
+	(label "SWDIO"
+		(at 60.96 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000005")
+	)
+	(label "GND"
+		(at 116.84 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000006")
+	)
+	(label "GND"
+		(at 116.84 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000007")
+	)
+	(label "GND"
+		(at 116.84 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000008")
+	)
+	(label "VTref_3V3"
+		(at 116.84 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000009")
+	)
+	(label "VTref_3V3"
+		(at 187.96 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000a")
+	)
+	(label "GND"
+		(at 187.96 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000b")
+	)
+	(label "GND"
+		(at 187.96 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000c")
+	)
+	(label "GND"
+		(at 187.96 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000d")
+	)
+	(label "SWDIO"
+		(at 243.84 96.52 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000e")
+	)
+	(label "SWCLK"
+		(at 243.84 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-00000000000f")
+	)
+	(label "SWO_TDO"
+		(at 243.84 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000010")
+	)
+	(label "TDI"
+		(at 243.84 104.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000011")
+	)
+	(label "nRESET"
+		(at 243.84 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000012")
+	)
+	(label "PB27_D13"
+		(at 76.2 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000013")
+	)
+	(label "GND"
+		(at 99.06 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000014")
+	)
+	(text "Arduino Due - on-board JTAG / SWD header"
+		(exclude_from_sim no)
+		(at 88.9 86.36 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(bold yes)
+			)
+		)
+		(uuid "50000000-0000-4000-8000-000000000001")
+	)
+	(text "Debug probe - ARM Cortex Debug 10-pin"
+		(exclude_from_sim no)
+		(at 215.9 86.36 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(bold yes)
+			)
+		)
+		(uuid "50000000-0000-4000-8000-000000000002")
+	)
+	(text "On-board LED net (already fitted on the Due)"
+		(exclude_from_sim no)
+		(at 88.9 144.78 0)
+		(effects
+			(font
+				(size 1.778 1.778)
+				(bold yes)
+			)
+		)
+		(uuid "50000000-0000-4000-8000-000000000003")
+	)
+	(symbol
+		(lib_id "due-blinky:DUE_JTAG")
+		(at 88.9 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000001")
+		(property "Reference" "J1"
+			(at 88.9 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2x5 1.27 mm, on board"
+			(at 88.9 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:CORTEX_DEBUG_10")
+		(at 215.9 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000002")
+		(property "Reference" "J2"
+			(at 215.9 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2x5 1.27 mm, 3.3 V capable"
+			(at 215.9 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "J2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:R")
+		(at 88.9 160.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000003")
+		(property "Reference" "R1"
+			(at 92.71 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "series resistor (on board)"
+			(at 92.71 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:LED")
+		(at 88.9 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000004")
+		(property "Reference" "D1"
+			(at 93.98 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "'L' LED (on board)"
+			(at 93.98 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

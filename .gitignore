@@ -1,3 +1,9 @@
 .zig-cache/
 zig-out/
 *.o
+
+# KiCad per-user local state and backups (project + schematic are tracked)
+*.kicad_prl
+*-backups/
+*.kicad_sch-bak
+fp-info-cache
