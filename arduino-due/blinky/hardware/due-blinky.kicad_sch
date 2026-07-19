@@ -781,6 +781,27 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000001")
 	)
+	(text_box "TWO WAYS TO GET FIRMWARE ONTO THIS BOARD - THIS SHEET DRAWS ONLY THE SECOND\n\n1. Programming USB port + bossac. No probe, no wiring, just the USB cable. SAM-BA lives in\n   the SAM3X ROM, and a 1200-baud touch on that port makes the ATmega16U2 assert ERASE +\n   RESET to drop the chip into it. This is what the repo's bossac Dagger module does today.\n\n2. SWD debug probe on the header below - what this drawing is about. Required for probe-rs\n   flashing, and the only route to breakpoints, memory inspection and GDB. A USB-to-serial\n   port cannot halt a core.\n\nBoth write the application to flash at 0x00080000, and neither locks you out of the other."
+		(exclude_from_sim no)
+		(at 25.4 57.15 0)
+		(size 165.1 24.13)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000008")
+	)
 	(text_box "JTAG / SWD HEADER PIN NUMBERING - READ BEFORE WIRING\n\nThe Due's on-board 10-pin header carries the standard ARM Cortex Debug signal set,\nbut Arduino numbers the connector from the OPPOSITE END to the ARM standard:\n\n            Arduino pin N  ==  ARM Cortex Debug pin (11 - N)\n\n     Arduino | Signal | ARM Cortex Debug pin\n     --------+--------+----------------------\n        1    | RESET  |  10   nRESET\n        2    | GND    |   9   GNDDetect\n        3    | TDI    |   8   TDI\n        4    | N/C    |   7   KEY\n        5    | TDO    |   6   SWO / TDO\n        6    | GND    |   5   GND\n        7    | TCK    |   4   SWCLK / TCK\n        8    | GND    |   3   GND\n        9    | TMS    |   2   SWDIO / TMS\n       10    | +3V3   |   1   VTref\n\nSource: Arduino Due datasheet A000062, sections 6.2.6 and 6.5.1."
 		(exclude_from_sim no)
 		(at 203.2 20.32 0)
