@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# z5labs/devex publishes no git tags, so module references pin a commit SHA.
+# Bump this deliberately; floating on main would let an upstream change break
+# the build with no commit here to point at.
+env:
+  DEVEX: github.com/z5labs/devex/daggerverse
+  DEVEX_SHA: bc5cee36080549722c6d3bf02152aa7d46d2dcf3
+  PROJECT: ./arduino-due/blinky
+
+jobs:
+  blinky:
+    name: arduino-due/blinky
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dagger CLI
+        run: |
+          curl -fsSL https://dl.dagger.io/dagger/install.sh | BIN_DIR=/usr/local/bin sudo -E sh
+          dagger version
+
+      # Satisfies the story's "formatting is checked in the pipeline via the
+      # zig module's fmt function". It is check-only and never rewrites.
+      - name: zig fmt --check
+        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call fmt --source="$PROJECT"
+
+      # Deliberately a plain `build` rather than the module's `ci ... check`.
+      # `check` runs fmt and test only -- it does not compile, and this project
+      # has no test step, so it reports success on a build that does not even
+      # type-check. Verified by breaking main() on purpose: `check` exited 0
+      # while `build` exited 1.
+      - name: Build firmware
+        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call build --source="$PROJECT"
+
+      - name: Export ELF and raw image
+        run: |
+          dagger -m "$DEVEX/zig@$DEVEX_SHA" call build --source="$PROJECT" \
+            file --path=bin/blinky.elf export --path=./blinky.elf
+          dagger -m "$DEVEX/zig@$DEVEX_SHA" call obj-copy \
+            --input=./blinky.elf --format=binary export --path=./blinky.bin
+
+      # The strongest check available without a board attached. A Cortex-M3
+      # reads two words from address 0 on reset; if either is wrong the board
+      # hard-faults instantly, and nothing earlier in this job would notice.
+      - name: Assert the reset vectors are sane
+        run: |
+          python3 - <<'PY'
+          import struct, sys
+          img = open("blinky.bin", "rb").read()
+          sp, reset = struct.unpack_from("<II", img, 0)
+          ok = True
+          if sp != 0x20010000:
+              print(f"FAIL initial SP 0x{sp:08x}, expected 0x20010000 (top of SRAM0)"); ok = False
+          if not (0x00080000 <= reset < 0x000C0000):
+              print(f"FAIL reset vector 0x{reset:08x} outside flash bank 0"); ok = False
+          if not reset & 1:
+              print(f"FAIL reset vector 0x{reset:08x} has no Thumb bit"); ok = False
+          print(f"SP=0x{sp:08x} reset=0x{reset:08x} size={len(img)}B")
+          sys.exit(0 if ok else 1)
+          PY
+
+      # Exercises the flash path as far as is possible with no hardware: this
+      # renders the exact commands and never contacts a board.
+      - name: Render the flash command
+        run: |
+          dagger -m ./daggerverse/bossac call sam-ba \
+            --firmware=./blinky.bin \
+            --usbip=ci.invalid:3240 --busid=0-0 \
+            plan
