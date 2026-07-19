@@ -13,6 +13,23 @@ this module does.
 It is the no-probe path, not a replacement for one. SAM-BA is a flash programmer, not a debug
 interface: no breakpoints, no halting, no memory inspection, no GDB. Those need a probe.
 
+## bossac does not require USB/IP — this module does
+
+Run bossac on a host and it simply opens `/dev/ttyACM0`. No usbip, no kernel modules, nothing.
+
+USB/IP appears here purely because the tool runs **inside a container**. Dagger has no device
+passthrough — `WithUnixSocket` is the only host-device mechanism it offers, and a serial port is not
+a socket — so there is no lighter way to hand a board to a containerized process.
+
+If that trade is not worth it for your use case, running bossac directly on the host is a perfectly
+good answer, and this module has nothing to offer you. It exists for pipelines that need the
+flashing tool to stay out of the host environment.
+
+Note the asymmetry with `daggerverse/flash`: probe-rs speaks **raw USB**, so USB/IP is genuinely its
+only in-container option. SAM-BA is a **byte stream**, so bossac is not stuck in the same way — what
+rules out a lighter unix-socket bridge is that bossac's 1200-baud touch does not survive one,
+leaving the operator to press ERASE and RESET by hand before every flash.
+
 ## Functions
 
 | Function | Hardware needed | Purpose |

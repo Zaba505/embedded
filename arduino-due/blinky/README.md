@@ -110,10 +110,21 @@ uses no flash space, so it can never be erased.
 Uses this repo's [`daggerverse/bossac`](../../daggerverse/bossac) module. bossac runs in a
 container, never on your machine.
 
-The container reaches the board over USB/IP, because Dagger has no device passthrough and a serial
-port is not a unix socket. That means **host-side setup is still required** — `usbip-utils`, the
-`usbip-host` and `vhci-hcd` kernel modules, and a privileged Dagger engine. This is the same
-plumbing the probe path needs later, so it is not throwaway work.
+> **bossac does not require USB/IP.** If you have used bossac before, you ran it against
+> `/dev/ttyACM0` directly and needed none of this. USB/IP is the cost of running it *in a
+> container*: Dagger has no device passthrough, and a serial port is not a unix socket, so there is
+> no lighter way to hand the board to a containerized process. If that trade is not worth it to you,
+> `bossac --port=ttyACM0 --usb-port=0 --arduino-erase --erase --write --verify --boot=1 --reset
+> blinky.bin` on the host does the same job — the build above stays hermetic either way.
+
+So **host-side setup is required**: `usbip-utils`, the `usbip-host` and `vhci-hcd` kernel modules,
+and a privileged Dagger engine. It is a one-time cost, and it is the same plumbing the probe path
+needs later, so it is not throwaway work.
+
+(Worth noting the asymmetry with probe-rs: that tool speaks *raw USB*, so USB/IP is genuinely its
+only in-container option. SAM-BA is a byte stream, so bossac is not fundamentally stuck the same
+way — what rules out a lighter socket bridge is that the 1200-baud touch does not survive one,
+leaving you pressing ERASE and RESET by hand before every flash.)
 
 ```sh
 # 1. On the machine holding the board, as root:
