@@ -885,10 +885,10 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000007")
 	)
-	(text_box "BEFORE YOU WIRE ANYTHING - CONFIRM PIN 1\n\nA keyed 2x5 1.27 mm ribbon cable between a standard ARM Cortex Debug probe and this header mates correctly. The connectors are physically compatible, and the reversed\nnumbering documented above is a labelling convention, not a wiring difference - SEGGER lists the Arduino Due as a standard Cortex-M 10-pin target.\n\nIf you instead hand-wire flying leads, the two numbering conventions are exact opposites, and following the wrong one connects +3V3 to nRESET and vice versa. Identify pin 1 on\nthe physical board (silkscreen dot / square pad) and confirm it with a continuity check against a known GND pin before applying power.\n\nFlashing over SWD ERASES THE ARDUINO BOOTLOADER. This is expected and reversible: recover with the ERASE button followed by a SAM-BA bootloader reflash."
+	(text_box "BEFORE YOU WIRE ANYTHING - CONFIRM PIN 1\n\nA keyed 2x5 1.27 mm ribbon cable between a standard ARM Cortex Debug probe and this header mates correctly. The connectors are physically compatible, and the reversed\nnumbering documented above is a labelling convention, not a wiring difference - SEGGER lists the Arduino Due as a standard Cortex-M 10-pin target.\n\nIf you instead hand-wire flying leads, the two numbering conventions are exact opposites, and following the wrong one connects +3V3 to nRESET and vice versa. Identify pin 1 on\nthe physical board (silkscreen dot / square pad) and confirm it with a continuity check against a known GND pin before applying power.\n\nFlashing over SWD overwrites flash, but there is NO bootloader to lose - SAM-BA is burned into the SAM3X ROM at the factory and uses no flash space, so it cannot be erased. To go back to\nbossac, open the programming port at 1200 baud (the ATmega16U2 then asserts ERASE + RESET, dropping the chip into ROM SAM-BA) or press ERASE. probe-rs and bossac coexist; neither locks you out of the other."
 		(exclude_from_sim no)
-		(at 25.4 218.44 0)
-		(size 368.3 25.4)
+		(at 25.4 215.9 0)
+		(size 368.3 30.48)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
