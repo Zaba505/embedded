@@ -5,7 +5,7 @@
 	(uuid "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d")
 	(paper "A3")
 	(title_block
-		(title "Arduino Due blinky - SWD wiring and on-board LED")
+		(title "Arduino Due blinky - SWD wiring and external LED")
 		(date "2026-07-19")
 		(rev "1")
 		(company "Zaba505/embedded")
@@ -823,10 +823,10 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000003")
 	)
-	(text_box "On-board 'L' LED - already populated on the Due.\nThere is nothing to wire here; this is drawn so the\nfirmware's target is unambiguous.\n\nPB27 = digital pin 13. Active high: driving PB27\nhigh illuminates the LED.\n\nThe blinky firmware toggles PB27 at 1 Hz\n(500 ms high / 500 ms low)."
+	(text_box "WHY AN EXTERNAL LED, AND NOT THE ON-BOARD ONE\n\nThis LED is wired by you. The on-board D13 'L' LED is deliberately\nNOT used and is not driven by this firmware.\n\nAn on-board LED blinking is weak evidence: bootloader activity, or a\nwatchdog reset loop, can make the board blink on its own. Issue #3\ncalls out that exact failure mode - if the watchdog is not disabled,\nthe board resets every few seconds and 'the blink looks like a boot\nloop'. Those two cases are indistinguishable by eye on D13.\n\nPB26 / D22 has no on-board LED, no boot-time role, and no peripheral\nalternate function in the Arduino variant table. If it blinks at a\nsteady 1 Hz, the firmware is running and toggling a pin.\n\nActive high: driving PB26 high lights the LED.\n1 Hz = 500 ms high / 500 ms low."
 		(exclude_from_sim no)
-		(at 119.38 149.86 0)
-		(size 88.9 33.02)
+		(at 119.38 146.05 0)
+		(size 106.68 40.64)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -843,10 +843,52 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000004")
 	)
+	(text_box "WHERE TO WIRE IT - MIND THE +5V PIN NEXT DOOR\n\nUse the D22-D53 header, even-numbered (LHS) row. Counting along that row:\n\n     position  1  =  +5V     <-- DANGER: directly beside D22\n     position  2  =  D22     <-- LED anode side, through R1\n     position  3  =  D24\n        ...\n     position 18  =  GND     <-- LED cathode side\n\nD22 is the SECOND pin in that row, and the pin immediately next to it is\n+5V. Miscounting by one position feeds 5 V into a board whose I/O pins\ntolerate 3.3 V. Count twice, and confirm GND with a continuity check,\nbefore applying power.\n\nSource: Arduino Due datasheet A000062, section 6.2.4."
+		(exclude_from_sim no)
+		(at 232.41 146.05 0)
+		(size 161.29 44.45)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000006")
+	)
+	(text_box "R1 = 1 k, giving roughly 1 mA through a red LED - dim but plainly visible\nindoors, and far inside spec.\n\nDo NOT reach for the reflexive 220 ohm. PB26 falls in the SAM3X datasheet's\nGroup 2 (PB[25-31]), whose source limit is IOH = -3 mA at VOH = VDDIO - 0.4 V,\nnot the -15 mA that Group 1 pins allow. At 220 ohm the LED would draw roughly\n4 mA, outside that spec. 470 ohm (about 2 mA) is the practical floor if you\nwant it brighter.\n\nSource: SAM3X / SAM3A datasheet, table 45-2 with notes 2 and 3."
+		(exclude_from_sim no)
+		(at 119.38 189.23 0)
+		(size 106.68 25.4)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-000000000007")
+	)
 	(text_box "BEFORE YOU WIRE ANYTHING - CONFIRM PIN 1\n\nA keyed 2x5 1.27 mm ribbon cable between a standard ARM Cortex Debug probe and this header mates correctly. The connectors are physically compatible, and the reversed\nnumbering documented above is a labelling convention, not a wiring difference - SEGGER lists the Arduino Due as a standard Cortex-M 10-pin target.\n\nIf you instead hand-wire flying leads, the two numbering conventions are exact opposites, and following the wrong one connects +3V3 to nRESET and vice versa. Identify pin 1 on\nthe physical board (silkscreen dot / square pad) and confirm it with a continuity check against a known GND pin before applying power.\n\nFlashing over SWD ERASES THE ARDUINO BOOTLOADER. This is expected and reversible: recover with the ERASE button followed by a SAM-BA bootloader reflash."
 		(exclude_from_sim no)
-		(at 25.4 200.66 0)
-		(size 368.3 40.64)
+		(at 25.4 218.44 0)
+		(size 368.3 25.4)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -1282,7 +1324,7 @@
 		)
 		(uuid "40000000-0000-4000-8000-000000000012")
 	)
-	(label "PB27_D13"
+	(label "PB26_D22"
 		(at 76.2 152.4 0)
 		(effects
 			(font
@@ -1324,7 +1366,7 @@
 		)
 		(uuid "50000000-0000-4000-8000-000000000002")
 	)
-	(text "On-board LED net (already fitted on the Due)"
+	(text "External LED on PB26 / D22 - the blink indicator"
 		(exclude_from_sim no)
 		(at 88.9 144.78 0)
 		(effects
@@ -1421,7 +1463,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "series resistor (on board)"
+		(property "Value" "1k"
 			(at 92.71 161.29 0)
 			(effects
 				(font
@@ -1457,7 +1499,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "'L' LED (on board)"
+		(property "Value" "LED (red)"
 			(at 93.98 171.45 0)
 			(effects
 				(font
