@@ -105,7 +105,54 @@ The image is ~244 bytes with empty `.data` and `.bss`.
 Two routes. Neither locks out the other: SAM-BA is burned into the SAM3X's ROM at the factory and
 uses no flash space, so it can never be erased.
 
-### Without a probe — bossac over the Programming port
+### ⚠ The bossac version decides whether the board boots
+
+**Do not use Debian's `bossa-cli` (1.9.1).**
+[BOSSA issue #125](https://github.com/shumatech/BOSSA/issues/125), still open, reports that versions
+after 1.7 flash the Due and verify successfully while leaving it unable to run any code — *"LEDs etc
+in default state"*.
+
+This was hit here, on this board. bossac 1.9.1 reported a clean write, a clean verify, and
+`Boot Flash: true`, and the firmware never executed. Every one of those signals was true and none
+meant the board worked.
+
+| Version | Verdict |
+|---|---|
+| 1.9.1 (Debian `bossa-cli`) | Flashes and verifies cleanly, board never boots |
+| 1.6.1-arduino (Arduino's SAM core pin) | SIGFPE enumerating lock regions under `--info` |
+| **1.7.0** | **Works — confirmed on hardware** |
+
+Get 1.7.0 from Arduino's tool distribution:
+
+```sh
+curl -sSLO https://downloads.arduino.cc/tools/bossac-1.7.0-x86_64-linux-gnu.tar.gz
+# sha256: 9475c0c8596c1ba12dcbce60e48fef7559087fa8eccbea7bab732113f3c181ee
+tar xzf bossac-1.7.0-x86_64-linux-gnu.tar.gz
+```
+
+1.7.0 predates `--arduino-erase`, so the 1200-baud touch is issued by hand, and it spells the USB
+flag `--force_usb_port=true/false` with a required argument rather than 1.9.x's optional-argument
+`--usb-port[=BOOL]`.
+
+### Flashing it, in practice
+
+Dagger cannot pass a USB device into a container (see
+[`daggerverse/bossac`](../../daggerverse/bossac) for the details), but **podman can**, and bossac
+still never touches the host:
+
+```sh
+sudo podman run --rm --device /dev/ttyACM0 \
+  -v "$PWD/bossac:/usr/local/bin/bossac:ro,Z" \
+  -v "$PWD/blinky.bin:/fw/firmware.bin:ro,Z" \
+  debian:bookworm-slim sh -c '
+    stty -F /dev/ttyACM0 raw ispeed 1200 ospeed 1200 cs8 -cstopb ignpar eol 255 eof 255
+    sleep 2
+    bossac --port=ttyACM0 --force_usb_port=false --erase --write --verify --boot=1 --reset /fw/firmware.bin'
+```
+
+`dagger -m ./daggerverse/bossac call sam-ba … plan` renders exactly this command.
+
+### Without a probe — bossac over the Programming port (Dagger path, currently blocked)
 
 Uses this repo's [`daggerverse/bossac`](../../daggerverse/bossac) module. bossac runs in a
 container, never on your machine.

@@ -13,6 +13,68 @@ this module does.
 It is the no-probe path, not a replacement for one. SAM-BA is a flash programmer, not a debug
 interface: no breakpoints, no halting, no memory inspection, no GDB. Those need a probe.
 
+## Status: the flashing path does not work from Dagger yet
+
+`plan`, `tool-version` and `bridge-command` work. **`run` and `info` do not**, and the reason is
+structural rather than a bug here: `usbip attach` cannot succeed inside a Dagger exec container.
+Verified directly —
+
+| `usbip attach` needs | Reality in a Dagger exec container |
+|---|---|
+| to write to sysfs | `/sys` is **read-only** |
+| `vhci_hcd` visible | `/sys/devices/platform/vhci_hcd.0` **absent** |
+| udev | no `/run/udev` — the exact `udev_device_new_from_subsystem_sysname failed` error seen |
+
+And even if all three were solved, `vhci_hcd` instantiates the device in the **host kernel**, so the
+node appears in the host's devtmpfs, never in the container's isolated `/dev`. Dagger offers no
+device passthrough at all — `WithUnixSocket` is its only host-device mechanism, and a serial port is
+not a socket.
+
+**What actually works today** is the same container image driven by podman, which *does* support
+device passthrough. bossac still never touches the host:
+
+```sh
+sudo podman run --rm --device /dev/ttyACM0 \
+  -v ./bossac:/usr/local/bin/bossac:ro,Z \
+  -v ./firmware.bin:/fw/firmware.bin:ro,Z \
+  debian:bookworm-slim sh -c '
+    stty -F /dev/ttyACM0 raw ispeed 1200 ospeed 1200 cs8 -cstopb ignpar eol 255 eof 255
+    sleep 2
+    bossac --port=ttyACM0 --force_usb_port=false --erase --write --verify --boot=1 --reset /fw/firmware.bin'
+```
+
+`plan` renders precisely that command, so the module is still useful as the source of truth for it.
+
+## The bossac version is not an incidental detail
+
+**Do not `apt-get install bossa-cli`.** Debian ships **1.9.1**, and
+[BOSSA issue #125](https://github.com/shumatech/BOSSA/issues/125) — still open — reports that
+versions after 1.7 flash the Arduino Due and verify the write successfully while leaving the board
+unable to run any code, *"LEDs etc in default state"*.
+
+This was confirmed the hard way on real hardware. With 1.9.1 the tool reported a clean write, a
+clean verify, and `Boot Flash: true`, and the chip never executed a single instruction. Every
+success signal was accurate and none of them meant the board worked. Hours went into bisecting
+firmware that had never once run.
+
+This module therefore downloads a **pinned, checksummed bossac 1.7.0** from Arduino's tool
+distribution instead of using the distro package.
+
+| Version | Verdict |
+|---|---|
+| 1.9.1 (Debian `bossa-cli`) | Flashes and verifies cleanly, board never boots |
+| 1.6.1-arduino (Arduino's SAM core pin) | SIGFPE enumerating lock regions under `--info` |
+| **1.7.0** | **Works — confirmed blinking on hardware** |
+
+If you bump the pin, prove it on a board. A green verify proves nothing here.
+
+Flag spellings track 1.7.0, and they differ from 1.9.x in a way worth knowing: 1.7.0 has
+`-U, --force_usb_port=true/false` with a **required** argument, while 1.9.x renamed it to
+`--usb-port[=BOOL]` with an **optional** one. That rename is why Arduino's `platform.txt` `-U false`
+is correct for the version it targets but ambiguous under 1.9.x, where getopt will not bind a
+space-separated value and leaves `false` as a positional — which bossac then takes for the input
+FILE. 1.7.0 also predates `--arduino-erase`, so the 1200-baud touch is issued explicitly.
+
 ## bossac does not require USB/IP — this module does
 
 Run bossac on a host and it simply opens `/dev/ttyACM0`. No usbip, no kernel modules, nothing.

@@ -28,6 +28,25 @@ import (
 const (
 	defaultDebianTag = "bookworm-slim"
 
+	// The bossac version is not an incidental detail -- it decides whether the
+	// board boots afterwards.
+	//
+	// BOSSA issue #125, still open, reports that versions after 1.7 flash the
+	// Arduino Due and verify the write successfully, yet leave the board unable
+	// to run any code, with "LEDs etc in default state". Debian's bossa-cli is
+	// 1.9.1 and does exactly this: it reports a clean write, a clean verify, and
+	// sets the boot-from-flash bit, and the chip still never executes. Every one
+	// of those success signals is true and none of them means the board works.
+	//
+	// Arduino's own SAM core pins 1.6.1-arduino for this board, but that build
+	// dies with SIGFPE enumerating lock regions under --info. 1.7.0 is the
+	// newest version confirmed working on real hardware here.
+	//
+	// If you bump this, prove it on a board before trusting a green verify.
+	bossacVersion = "1.7.0"
+	bossacURL     = "https://downloads.arduino.cc/tools/bossac-1.7.0-x86_64-linux-gnu.tar.gz"
+	bossacSHA256  = "9475c0c8596c1ba12dcbce60e48fef7559087fa8eccbea7bab732113f3c181ee"
+
 	// IANA-assigned USB/IP port, and the default usbipd listens on.
 	defaultUsbipPort = "3240"
 
@@ -54,6 +73,8 @@ type Flasher struct {
 	Argv []string
 	// +private
 	SerialPort string
+	// +private
+	Touch bool
 }
 
 // FlashResult is the outcome of a bossac invocation.
@@ -95,11 +116,13 @@ func (b *Bossac) SamBa(
 	// which is what the Due's Programming port is. Maps to bossac --usb-port.
 	// +default=false
 	nativeUsb bool,
-	// Perform bossac's 1200-baud touch (--arduino-erase) to drop the board into
-	// SAM-BA before programming. Required for Arduino boards, whose USB-serial
-	// chip watches for 1200 baud and pulses ERASE and RESET in response.
+	// Open the port at 1200 baud and close it before programming, to drop the
+	// board into SAM-BA. Required for Arduino boards, whose USB-serial chip
+	// watches for 1200 baud and pulses ERASE and RESET in response. Turn it off
+	// only if the board is already in its SAM-BA monitor, e.g. after pressing
+	// ERASE and RESET by hand.
 	// +default=true
-	arduinoErase bool,
+	touch bool,
 	// Erase flash before writing.
 	// +default=true
 	erase bool,
@@ -143,8 +166,9 @@ func (b *Bossac) SamBa(
 	return &Flasher{
 		Ctr:        b.container(registry).WithMountedFile(firmwarePath, firmware),
 		Attach:     attach,
-		Argv:       bossacArgv(port, nativeUsb, arduinoErase, erase, verify, bootFromFlash, reset, offset),
+		Argv:       bossacArgv(port, nativeUsb, erase, verify, bootFromFlash, reset, offset),
 		SerialPort: port,
+		Touch:      touch,
 	}, nil
 }
 
@@ -212,13 +236,16 @@ func (fl *Flasher) Info(ctx context.Context,
 	return fl.exec(ctx, strings.Join(steps, " && "), timeoutSeconds)
 }
 
-// script is the full attach-wait-program sequence, one step per element.
+// script is the full attach-wait-touch-program sequence, one step per element.
 func (fl *Flasher) script() []string {
-	return []string{
+	steps := []string{
 		shJoin(fl.Attach),
 		waitForDevice(fl.SerialPort),
-		shJoin(fl.Argv),
 	}
+	if fl.Touch {
+		steps = append(steps, touchCommand(fl.SerialPort))
+	}
+	return append(steps, shJoin(fl.Argv))
 }
 
 func (fl *Flasher) exec(ctx context.Context, script string, timeoutSeconds int) (*FlashResult, error) {
@@ -258,36 +285,49 @@ func (b *Bossac) container(registry string) *dagger.Container {
 	if strings.TrimSpace(registry) == "" {
 		registry = "docker.io"
 	}
-	// Debian rather than Alpine: bossa-cli is packaged here, and both it and
-	// the usbip tools are glibc-linked.
+	// Debian rather than Alpine: the pinned bossac build and the usbip tools are
+	// both glibc-linked.
 	ref := fmt.Sprintf("%s/library/debian:%s", registry, defaultDebianTag)
+
+	// Deliberately NOT `apt-get install bossa-cli`. Debian ships 1.9.1, which
+	// silently produces unbootable boards -- see the bossacVersion comment.
+	install := fmt.Sprintf(
+		"echo '%s  /tmp/bossac.tar.gz' | sha256sum -c - && "+
+			"tar xzf /tmp/bossac.tar.gz -C /usr/local/bin --strip-components=1 && "+
+			"chmod +x /usr/local/bin/bossac && rm -f /tmp/bossac.tar.gz",
+		bossacSHA256,
+	)
 
 	return dag.Container().
 		From(ref).
 		WithExec([]string{"sh", "-c",
 			"apt-get update -qq && " +
-				"apt-get install -y -qq --no-install-recommends bossa-cli usbip && " +
-				"rm -rf /var/lib/apt/lists/*"})
+				"apt-get install -y -qq --no-install-recommends ca-certificates usbip && " +
+				"rm -rf /var/lib/apt/lists/*"}).
+		WithFile("/tmp/bossac.tar.gz", dag.HTTP(bossacURL)).
+		WithExec([]string{"sh", "-c", install})
 }
 
-// bossacArgv assembles the bossac command line.
+// bossacArgv assembles the bossac 1.7.0 command line.
 //
-// Every optional-argument flag is written in long --flag=value form on purpose.
-// bossac's --boot and --usb-port take an OPTIONAL argument, so a space-separated
-// "--usb-port 0" does not bind: getopt leaves "0" as a positional, where bossac
-// treats it as the input FILE. Arduino's own platform.txt passes "-U false" and
-// gets away with it only because a real filename follows. Attaching the value
-// removes the ambiguity entirely.
-func bossacArgv(port string, nativeUsb, arduinoErase, erase, verify, bootFromFlash, reset bool, offset string) []string {
+// The flag spellings here are 1.7.0's, and they differ from 1.9.x in a way that
+// matters. 1.7.0 has `-U, --force_usb_port=true/false` with a REQUIRED argument;
+// 1.9.x renamed it to `--usb-port[=BOOL]` with an OPTIONAL one. That rename is
+// why Arduino's platform.txt "-U false" is correct for the version it targets
+// but ambiguous under 1.9.x, where getopt refuses to bind a space-separated
+// value and leaves "false" as a positional -- which bossac then takes for the
+// input FILE. Values are attached with = throughout so the point is moot.
+//
+// 1.7.0 also has no --arduino-erase, so the 1200-baud touch is done separately;
+// see touchCommand.
+func bossacArgv(port string, nativeUsb, erase, verify, bootFromFlash, reset bool, offset string) []string {
 	argv := []string{"bossac", "--port=" + port}
 
-	// --usb-port=1 means SAM-BA is spoken to the chip's own USB controller;
-	// =0 means it arrives on the chip's UART via an external USB-serial bridge.
-	argv = append(argv, "--usb-port="+boolArg(nativeUsb))
+	// true means SAM-BA is spoken to the chip's own USB controller (an Arduino
+	// Due's Native port); false means it arrives on the chip's UART through an
+	// external USB-serial bridge, which is the Due's Programming port.
+	argv = append(argv, "--force_usb_port="+boolWord(nativeUsb))
 
-	if arduinoErase {
-		argv = append(argv, "--arduino-erase")
-	}
 	if strings.TrimSpace(offset) != "" {
 		argv = append(argv, "--offset="+offset)
 	}
@@ -310,6 +350,21 @@ func bossacArgv(port string, nativeUsb, arduinoErase, erase, verify, bootFromFla
 	return append(argv, firmwarePath)
 }
 
+// touchCommand opens the port at 1200 baud and closes it, which is what makes
+// an Arduino board's USB-serial chip pulse ERASE and RESET and drop the MCU
+// into its SAM-BA monitor.
+//
+// bossac gained a built-in --arduino-erase for this after 1.7.0, but the
+// versions that have it are the ones that leave the Due unbootable, so the
+// touch is done by hand here.
+func touchCommand(port string) string {
+	dev := "/dev/" + port
+	return fmt.Sprintf(
+		"stty -F %s raw ispeed 1200 ospeed 1200 cs8 -cstopb ignpar eol 255 eof 255 || true; sleep 2",
+		shQuote(dev),
+	)
+}
+
 // waitForDevice polls for the device node, which appears asynchronously after
 // usbip attach returns -- the kernel still has to enumerate it and bind a tty.
 func waitForDevice(port string) string {
@@ -320,11 +375,13 @@ func waitForDevice(port string) string {
 	)
 }
 
-func boolArg(b bool) string {
+// boolWord renders a bool the way bossac 1.7.0's --force_usb_port expects it:
+// the literal words true/false, not 1/0.
+func boolWord(b bool) string {
 	if b {
-		return "1"
+		return "true"
 	}
-	return "0"
+	return "false"
 }
 
 // splitHostPort accepts "host" or "host:port", defaulting the port. It does not
