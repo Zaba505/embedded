@@ -75,25 +75,19 @@ jobs:
           dagger call zig obj-copy \
             --input=./blinky.elf --format=binary export --path=./blinky.bin
 
-      # The strongest check available without a board attached. A Cortex-M3
-      # reads two words from address 0 on reset; if either is wrong the board
-      # hard-faults instantly, and nothing earlier in this job would notice.
-      - name: Assert the reset vectors are sane
+      # The strongest check available without a board attached, and the same
+      # `dagger call` a developer runs locally. The ci module's image checker
+      # asserts the image is well-formed for its target: the boot vectors are
+      # sane (a Cortex-M reads two words from the image on reset and hard-faults
+      # instantly if either is wrong), the image fits the code region, and every
+      # section lands in the expected region. Every invariant comes from the
+      # project's target.json, not this workflow, so onboarding a new board is a
+      # new target file rather than an edit to the checker.
+      - name: Assert the image is well-formed
         run: |
-          python3 - <<'PY'
-          import struct, sys
-          img = open("blinky.bin", "rb").read()
-          sp, reset = struct.unpack_from("<II", img, 0)
-          ok = True
-          if sp != 0x20010000:
-              print(f"FAIL initial SP 0x{sp:08x}, expected 0x20010000 (top of SRAM0)"); ok = False
-          if not (0x00080000 <= reset < 0x000C0000):
-              print(f"FAIL reset vector 0x{reset:08x} outside flash bank 0"); ok = False
-          if not reset & 1:
-              print(f"FAIL reset vector 0x{reset:08x} has no Thumb bit"); ok = False
-          print(f"SP=0x{sp:08x} reset=0x{reset:08x} size={len(img)}B")
-          sys.exit(0 if ok else 1)
-          PY
+          dagger call image-check \
+            --image=./blinky.elf \
+            --target="$PROJECT/target.json"
 
       # Exercises the flash path as far as is possible with no hardware: this
       # renders the exact commands and never contacts a board.
