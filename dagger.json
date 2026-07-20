@@ -1,0 +1,19 @@
+{
+  "name": "ci",
+  "engineVersion": "v0.21.7",
+  "sdk": {
+    "source": "go"
+  },
+  "toolchains": [
+    {
+      "name": "bossac",
+      "source": "daggerverse/bossac"
+    },
+    {
+      "name": "zig",
+      "source": "github.com/z5labs/devex/daggerverse/zig@bc5cee36080549722c6d3bf02152aa7d46d2dcf3",
+      "pin": "bc5cee36080549722c6d3bf02152aa7d46d2dcf3"
+    }
+  ],
+  "source": "ci"
+}

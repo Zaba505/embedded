@@ -5,15 +5,36 @@ on:
     branches: [main]
   pull_request:
 
-# z5labs/devex publishes no git tags, so module references pin a commit SHA.
-# Bump this deliberately; floating on main would let an upstream change break
-# the build with no commit here to point at.
+# Module pins live in dagger.json now: the top-level `ci` Dagger module installs
+# the `zig` and `bossac` toolchains, pinning zig by commit SHA (z5labs/devex
+# publishes no tags -- bump it deliberately). So the steps below call
+# `dagger call <fn>` against that module directly, no `-m <ref>@SHA` per step.
+# DAGGER_VERSION pins the CLI to the engine the module targets; the toolchain
+# feature is experimental in this version, so the CLI is pinned with it.
 env:
-  DEVEX: github.com/z5labs/devex/daggerverse
-  DEVEX_SHA: bc5cee36080549722c6d3bf02152aa7d46d2dcf3
+  DAGGER_VERSION: "0.21.7"
   PROJECT: ./arduino-due/blinky
 
 jobs:
+  # A repo-wide gate, deliberately not per-board: the ci module's line-length
+  # function scans every tracked Zig source and Markdown prose file in a single
+  # pass, so the 100-column limit (zig-style-guide.md §2.2) applies to every
+  # project uniformly. The same function a developer runs with `dagger call`.
+  line-length:
+    name: line length
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dagger CLI
+        run: |
+          curl -fsSL https://dl.dagger.io/dagger/install.sh \
+            | DAGGER_VERSION="$DAGGER_VERSION" BIN_DIR=/usr/local/bin sudo -E sh
+          dagger version
+
+      - name: 100-column limit
+        run: dagger call line-length --source=.
+
   blinky:
     name: arduino-due/blinky
     runs-on: ubuntu-latest
@@ -22,27 +43,36 @@ jobs:
 
       - name: Install Dagger CLI
         run: |
-          curl -fsSL https://dl.dagger.io/dagger/install.sh | BIN_DIR=/usr/local/bin sudo -E sh
+          curl -fsSL https://dl.dagger.io/dagger/install.sh \
+            | DAGGER_VERSION="$DAGGER_VERSION" BIN_DIR=/usr/local/bin sudo -E sh
           dagger version
 
       # Satisfies the story's "formatting is checked in the pipeline via the
       # zig module's fmt function". It is check-only and never rewrites.
       - name: zig fmt --check
-        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call fmt --source="$PROJECT"
+        run: dagger call zig fmt --source="$PROJECT"
 
+      # This step is the strictest-diagnostics gate (§2.4) for the firmware.
+      # Zig has no separate warning level: unused variables and parameters,
+      # unreachable code and ignored errors are hard compile errors, so a clean
+      # `build` at Zig's only setting already fails on everything another
+      # compiler would merely warn about -- there is no -Werror to add. The gate
+      # is therefore "every project actually compiles," which is why the check
+      # below matters:
+      #
       # Deliberately a plain `build` rather than the module's `ci ... check`.
       # `check` runs fmt and test only -- it does not compile, and this project
       # has no test step, so it reports success on a build that does not even
       # type-check. Verified by breaking main() on purpose: `check` exited 0
       # while `build` exited 1.
       - name: Build firmware
-        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call build --source="$PROJECT"
+        run: dagger call zig build --source="$PROJECT"
 
       - name: Export ELF and raw image
         run: |
-          dagger -m "$DEVEX/zig@$DEVEX_SHA" call build --source="$PROJECT" \
+          dagger call zig build --source="$PROJECT" \
             file --path=bin/blinky.elf export --path=./blinky.elf
-          dagger -m "$DEVEX/zig@$DEVEX_SHA" call obj-copy \
+          dagger call zig obj-copy \
             --input=./blinky.elf --format=binary export --path=./blinky.bin
 
       # The strongest check available without a board attached. A Cortex-M3
@@ -69,7 +99,7 @@ jobs:
       # renders the exact commands and never contacts a board.
       - name: Render the flash command
         run: |
-          dagger -m ./daggerverse/bossac call sam-ba \
+          dagger call bossac sam-ba \
             --firmware=./blinky.bin \
             --usbip=ci.invalid:3240 --busid=0-0 \
             plan
@@ -84,18 +114,25 @@ jobs:
 
       - name: Install Dagger CLI
         run: |
-          curl -fsSL https://dl.dagger.io/dagger/install.sh | BIN_DIR=/usr/local/bin sudo -E sh
+          curl -fsSL https://dl.dagger.io/dagger/install.sh \
+            | DAGGER_VERSION="$DAGGER_VERSION" BIN_DIR=/usr/local/bin sudo -E sh
           dagger version
 
       # Same check-only fmt gate as the firmware; never rewrites.
       - name: zig fmt --check
-        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call fmt --source="$LIB"
+        run: dagger call zig fmt --source="$LIB"
 
       # Host unit tests of the primitive's logic (the on/off knob, the
       # pass-through path). Unlike the blinky, this package is host-compilable
       # and so has a real test step.
+      #
+      # This is also the library's strictest-diagnostics gate (§2.4): compiling
+      # the tests type-checks the code, and the `refAllDeclsRecursive` test
+      # forces every public declaration through the compiler, so a decl no test
+      # calls cannot ship un-checked. As with the firmware, Zig's would-be
+      # warnings are hard errors, so a clean compile is the strictest setting.
       - name: Unit tests
-        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call test --source="$LIB"
+        run: dagger call zig test --source="$LIB"
 
       # The negative-space check for this package, in the spirit of the
       # firmware's "Assert the reset vectors are sane": build the size-delta

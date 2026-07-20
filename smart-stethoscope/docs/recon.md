@@ -314,8 +314,8 @@ BlueCreation **BC127** named in the spec is exactly such a part, and it has its 
 This **independently corroborates the radio** (2.4 GHz BR/EDR + BLE) and is **consistent with there
 being no device-specific filing**. Caveat: public FCC records do not themselves tie the BC127 to this
 device — that link comes only from the owner-held spec. The module's photos
-([fccid.io/SSSBC127-X](https://fccid.io/SSSBC127-X)) are the only FCC imagery available for anything in
-this device.
+([fccid.io/SSSBC127-X](https://fccid.io/SSSBC127-X)) are the only FCC imagery available for anything
+in this device.
 
 ---
 
@@ -416,9 +416,9 @@ Replace the **"Inputs supplied at implementation"** section with these now-known
 3. **Debug-port hypothesis (confirm):** **SWD/JTAG** on the MCU board; factory-programmed via **PEmicro
    Cyclone** and recoverable via **Segger J-Link `Unlock Kinetis`**. Prove pads by continuity to the
    MK26 SWD balls. **Digital core is 1.8 V — use a `VTref` probe.**
-4. **Readout-protection gate (the #7 hand-off):** check Kinetis **`FSEC`/MDM-AP security**. If secured,
-   unlock = mass-erase = firmware lost — so **read the external S25FS NOR first** (holds FPGA images +
-   data), and treat the MCU image as recoverable primarily via the **app/OTA** route.
+4. **Readout-protection gate (the #7 hand-off):** check Kinetis **`FSEC`/MDM-AP security**. If
+   secured, unlock = mass-erase = firmware lost — so **read the external S25FS NOR first** (holds
+   FPGA images + data), and treat the MCU image as recoverable primarily via the **app/OTA** route.
 5. **Power tree to expect:** Li-Po → PMIC (2 buck + 3 LDO) → **1.8 V and 3.3 V/3.3 Va** rails
    (seq 1.8 → 3.3 → 3.3 Va → 2.5); charge via **BQ51050 (Qi, Premium)** or **5 V through the mic jack
    (Economy)**; fuel gauge **LC709203F** on I²C0 0x16 (init before other I²C0 traffic).
@@ -447,8 +447,8 @@ The reversed schematic is still the source of truth, but these facts reshape the
 4. **UI/power blocks have concrete originals to equal or simplify:** touch (IQS333) or buttons+GPIO
    (PCA9535); indicator LEDs and/or a small E-Ink panel; Li-Po + Qi (BQ51050) and/or wired charging;
    fuel gauge (LC709203F); a 1.8 V + 3.3 V PMIC.
-5. **Enclosure constraints** are the sealed-puck chestpiece with a 6-mic array and top-face controls —
-   capture the exact outline/mount/mic-port geometry from #5 before layout.
+5. **Enclosure constraints** are the sealed-puck chestpiece with a 6-mic array and top-face controls
+   — capture the exact outline/mount/mic-port geometry from #5 before layout.
 
 ### → Issue #7 (`steth-firmware`)
 
