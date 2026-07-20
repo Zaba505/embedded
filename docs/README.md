@@ -10,6 +10,12 @@ projects or informs how they are built.
 |---|---|
 | [`fault-response-policy.md`](fault-response-policy.md) | An architecture-neutral template each project fills in to state its **safe state** and what a detected fault does — **halt / safe-state / reset** — with rationale. Firmware's safe failure state is per-device (halting is safe for an idle output, dangerous for an energized one), so this cannot be a repo-wide default; the template is the single source of truth for a project's assertion primitive and fault/exception handlers. `arduino-due/blinky` is the [worked instance](../arduino-due/blinky/fault-response-policy.md). |
 
+## Design
+
+| Document | What it is |
+|---|---|
+| [`resource-budget.md`](resource-budget.md) | An architecture-neutral template each project fills in to bound its binding resources **at design time** — **code footprint, working memory, timing, and electrical / I/O limits**, plus project-specific ones — re-deriving [Tiger Style](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md)'s back-of-the-envelope sketch for the resources that actually constrain firmware. Each resource gets a *ceiling / budget / headroom*, and the doc shows how each row is enforced (a linker region, the `size` verb, a `comptime` assertion). `arduino-due/blinky` is the [worked instance](../arduino-due/blinky/resource-budget.md). |
+
 ## Guides
 
 | Document | What it is |

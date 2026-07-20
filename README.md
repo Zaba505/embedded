@@ -31,6 +31,10 @@ Cross-project documentation lives in [`docs/`](docs). Notably:
 - [`docs/fault-response-policy.md`](docs/fault-response-policy.md) — an architecture-neutral
   template each project completes to declare its safe state and what a fault does (halt / safe-state
   / reset) with rationale, since firmware's safe failure state is per-device.
+- [`docs/resource-budget.md`](docs/resource-budget.md) — an architecture-neutral template each
+  project completes to bound its resources at design time (code footprint, working memory, timing,
+  electrical / I/O limits, plus project-specific ones), re-deriving Tiger Style's back-of-the-envelope
+  sketch for the resources that actually constrain firmware.
 - [`docs/zig-style-guide.md`](docs/zig-style-guide.md) — the repo-wide Zig style guide every project
   inherits, derived from Tiger Style with bare-metal carve-outs. Architecture-neutral, and it marks
   which rules a tool enforces versus which are judgment.
