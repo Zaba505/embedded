@@ -9,7 +9,7 @@ Projects are scoped by vendor, so boards from different families sit alongside e
 | Project | Board | Description |
 |---|---|---|
 | [`arduino-due/blinky`](arduino-due/blinky) | Arduino Due (Atmel SAM3X8E) | Bare-metal Zig blinky, built and flashed entirely through Dagger |
-| [`smart-stethoscope`](smart-stethoscope) | Discontinued "smart" stethoscope (NXP Kinetis MK26) | Reverse-engineering a discontinued digital stethoscope for repair — starting with a non-destructive [device recon & component inventory](smart-stethoscope/docs/recon.md) |
+| [`smart-stethoscope`](smart-stethoscope) | Discontinued "smart" stethoscope (NXP Kinetis MK26) | Reverse-engineering a discontinued digital stethoscope for repair — a non-destructive [device recon](smart-stethoscope/docs/recon.md), then a [teardown & reconstructed KiCad schematic](smart-stethoscope/docs/teardown.md) with a datasheet-cited [debug-port map](smart-stethoscope/docs/debug-port.md) |
 
 ## Libraries
 
