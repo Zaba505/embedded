@@ -31,6 +31,9 @@ Cross-project documentation lives in [`docs/`](docs). Notably:
 - [`docs/fault-response-policy.md`](docs/fault-response-policy.md) — an architecture-neutral
   template each project completes to declare its safe state and what a fault does (halt / safe-state
   / reset) with rationale, since firmware's safe failure state is per-device.
+- [`docs/zig-style-guide.md`](docs/zig-style-guide.md) — the repo-wide Zig style guide every project
+  inherits, derived from Tiger Style with bare-metal carve-outs. Architecture-neutral, and it marks
+  which rules a tool enforces versus which are judgment.
 - [`docs/research/tigerbeetle-for-embedded.md`](docs/research/tigerbeetle-for-embedded.md) — a study
   of what Tiger Style and TigerBeetle's deterministic simulation testing (the VOPR) transfer to this
   repo's bare-metal work, and the follow-up stories that research recommends.
