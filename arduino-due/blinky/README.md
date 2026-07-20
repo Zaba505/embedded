@@ -254,4 +254,8 @@ The power-cycle case is the one that matters: it proves the image is persistent 
 genuinely disabled, rather than the board resetting in a loop.
 
 If it does not blink at all, that is also informative — both the fault handler and the panic handler
-halt rather than reset, so a fault stops the LED dead instead of producing a blink-like pattern.
+halt rather than reset, so a fault stops the LED dead instead of producing a blink-like pattern. Why
+*halt* and not *reset* or *drive-to-safe-state* — the choice every project must make deliberately,
+because a device's safe failure state depends on what it controls — is written up in this project's
+[fault response policy](fault-response-policy.md), completed from the repo-wide
+[template](../../docs/fault-response-policy.md).
