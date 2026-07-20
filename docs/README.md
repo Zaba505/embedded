@@ -10,6 +10,12 @@ projects or informs how they are built.
 |---|---|
 | [`fault-response-policy.md`](fault-response-policy.md) | An architecture-neutral template each project fills in to state its **safe state** and what a detected fault does — **halt / safe-state / reset** — with rationale. Firmware's safe failure state is per-device (halting is safe for an idle output, dangerous for an energized one), so this cannot be a repo-wide default; the template is the single source of truth for a project's assertion primitive and fault/exception handlers. `arduino-due/blinky` is the [worked instance](../arduino-due/blinky/fault-response-policy.md). |
 
+## Guides
+
+| Document | What it is |
+|---|---|
+| [`zig-style-guide.md`](zig-style-guide.md) | The repo-wide Zig style guide every project inherits — naming, control flow, and assertion rules derived from [Tiger Style](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md), with the bare-metal carve-outs from the research below. Architecture-neutral, and it marks which rules a tool enforces versus which are judgment. |
+
 ## Research
 
 | Document | What it is |
