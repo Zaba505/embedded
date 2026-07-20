@@ -3,10 +3,13 @@
 **Story:** [#9 `story(steth-research)`](https://github.com/Zaba505/embedded/issues/9) — identify the
 device and inventory its components from public and owner-held sources **before** the teardown.
 
-**Status of this document:** paper recon. Everything below is a **hypothesis to be confirmed against
-the physical hardware in [#5](https://github.com/Zaba505/embedded/issues/5)**. No screw has been
-turned, nothing has been desoldered, no rail has been probed, and no debugger has been attached to
-produce this. Where a claim is strong it says so; where it is a guess it says that too.
+**Status of this document:** paper recon, now **partly confirmed on the bench unit.** It was assembled
+entirely from paper (public + owner-held docs) with no teardown. Since then, **six major parts have
+been visually confirmed by reading top-side package markings off the actual PCB** (non-destructive) —
+folded into §4 and flagged **P**. Everything else remains a **hypothesis to be confirmed against the
+physical hardware in [#5](https://github.com/Zaba505/embedded/issues/5)**: nothing has been desoldered,
+no rail has been probed, and no debugger has been attached. Where a claim is strong it says so; where
+it is a guess it says that too.
 
 > **This is reverse-engineering of a device the author owns, for repair and interoperability. It is
 > not a certified medical device and nothing here is cleared for clinical use.** The original product
@@ -62,6 +65,8 @@ it does **not** remove the need for #5: the bench unit's hardware revision may d
 
 **Confidence column values used in the inventory:**
 
+- **P — physically confirmed:** the part's package marking has been read directly off the bench unit's
+  PCB (non-destructive visual) and decoded against its datasheet. The strongest tier — no longer paper.
 - **A — vendor spec:** named outright in the manufacturer's own design documentation. Highest design
   intent, but still pending physical confirmation.
 - **B — datasheet-corroborated:** named in the spec *and* backed by a matching manufacturer datasheet
@@ -69,9 +74,9 @@ it does **not** remove the need for #5: the bench unit's hardware revision may d
 - **C — public source:** independently visible in a public source (FCC / app / marketing / patent).
 - **D — inferred:** not named anywhere; deduced from a bus, an I²C address, or the device's function.
 
-> **Global caveat — applies to every row:** all of it is *paper*. Per #9, **every identification here
-> requires physical confirmation in #5.** A datasheet in the archive proves the engineers *referenced*
-> a part; it does not prove that exact part is on the bench unit's board.
+> **Global caveat:** rows flagged **P** have been physically confirmed on the bench unit; **everything
+> else is still *paper*** and, per #9, requires physical confirmation in #5. A datasheet in the archive
+> proves the engineers *referenced* a part; it does not prove that exact part is on the board.
 
 ---
 
@@ -84,17 +89,17 @@ addresses are as the spec labels them.
 ```mermaid
 flowchart LR
     MICS["6x PDM MEMS mic<br/>ST MP34DT02<br/>(5 body + 1 ambient)"]
-    FPGA["FPGA<br/>Intel/Altera MAX 10 (10M16)<br/>PDM->PCM DSP:<br/>CIC / IIR / denoise / FFT"]
+    FPGA["FPGA (confirmed)<br/>Intel/Altera MAX 10 10M16SCU169C8G<br/>PDM->PCM DSP:<br/>CIC / IIR / denoise / FFT"]
     CODEC["Audio codec<br/>NXP SGTL5000"]
     HP["Headphone jack (3.5 mm)"]
 
-    CPU["MCU<br/>NXP Kinetis MK26 (Rev B)<br/>Cortex-M4F, up to 180 MHz<br/>16 MHz xtal + 32.768 kHz RTC"]
+    CPU["MCU (confirmed)<br/>NXP MK26FN2M0VMI18 (169-MAPBGA)<br/>Cortex-M4F, 180 MHz, 2 MB flash + 256 KB SRAM<br/>16 MHz xtal + 32.768 kHz RTC"]
 
     BT["Bluetooth module<br/>BlueCreation BC127<br/>Classic A2DP/HFP + BLE/SPP"]
     IMU["Motion sensor<br/>NXP FXOS8700CQ<br/>3-axis accel + 3-axis mag"]
 
-    SDRAM["SDRAM 128 Mbit"]
-    FLASH["SPI NOR 128 Mbit<br/>Cypress S25FS128S<br/>audio / cues / config / FPGA images"]
+    SDRAM["SDRAM (confirmed)<br/>ISSI IS42VM16800H<br/>128 Mbit x16, 1.8 V"]
+    FLASH["SPI NOR (confirmed)<br/>Cypress S25FS128S (FS128SAIF00)<br/>128 Mbit — audio / cues / config / FPGA images"]
 
     TOUCH["Touch buttons + slider<br/>Azoteq IQS333 (Premium)"]
     BTN["Buttons + LEDs GPIO<br/>ON Semi/TI PCA9535 (Economy)"]
@@ -102,9 +107,9 @@ flowchart LR
     DISP["E-Ink display<br/>ET011TT2U1 (Premium)"]
 
     COIL["Rx coil"]
-    QI["Qi wireless charger<br/>TI BQ51050 (Premium)"]
+    QI["Qi wireless charger (confirmed)<br/>TI BQ51050B (Premium)"]
     DC["5 V DC via mic jack<br/>(wired charger, Economy)"]
-    PMIC["PMIC<br/>2x buck + 3x LDO"]
+    PMIC["PMIC (confirmed)<br/>TI TPS65053<br/>2x buck + 3x LDO"]
     GAUGE["Fuel gauge<br/>ON Semi LC709203F"]
     BATT["Li-Po 500 mAh"]
 
@@ -139,17 +144,23 @@ anticipates — see [§10 proposed edits](#10-proposed-edits-to-5-6-and-7).
 ## 4. Component inventory
 
 Columns: **Part** · **What it is** · **Function in the device** · **Board / bus (where the source
-shows it)** · **Source** · **Confidence** (A/B/C/D per [§2](#2-sources-and-how-confidence-is-rated)).
-Every row is **pending physical confirmation in #5.**
+shows it)** · **Source** · **Confidence** (P/A/B/C/D per [§2](#2-sources-and-how-confidence-is-rated)).
+
+> **Bench-unit update (physical, non-destructive).** Six top-side package markings have since been read
+> off the actual PCB and decoded against datasheets — the **MCU, FPGA, SDRAM, PMIC, wireless charger,
+> and SPI-NOR flash** — moving those rows from paper hypothesis to **confirmed (P)**. The inspected unit
+> carries the **BQ51050B wireless charger *and* the E-Ink panel, so it is a "Premium" build.** This is
+> visual confirmation of *part identity* only; the debug port, rails, nets, and firmware-dump questions
+> (§6) still await the full #5 teardown. Rows not flagged **P** remain paper.
 
 ### 4.1 Compute & digital core
 
 | Part | What it is | Function | Bus / address | Source | Conf. |
 |---|---|---|---|---|---|
-| **NXP Kinetis MK26 (Rev B)** — marking family `K26P169M180SF5` (e.g. `MK26FN2M0VMD18`, 169-MAPBGA) | ARM **Cortex-M4F** MCU, ≤180 MHz, on-chip flash + SRAM, SDRAM/FlexBus controller | **The main processor.** Runs FreeRTOS (the device's ARM firmware), orchestrates audio, BT, storage, UI, power | 16 MHz xtal + 32.768 kHz RTC osc | Spec (block dia., CPU §, clock §); RM in archive (`K26P169M180SF5RM`) | **A/B** |
-| **Intel/Altera MAX 10 FPGA** ("Altera Max10 – 16 M device", i.e. **10M16**) | Low-cost flash-based FPGA w/ internal config flash | **All mic DSP:** 6-ch PDM→PCM, CIC (48:1) + IIR biquad bandpass + denoise + FFT/ARMA filter bank; drives display SPI; PLL → 64 MHz sysclk | SPI1 (CS0 display, CS2 FPGA regs), I²S, 60 MHz from CPU | Spec (block dia., register map, filter §) | **A** |
-| **SDRAM, 128 Mbit** (Rev B) | Discrete SDRAM (part number not named) | Working RAM for the CPU/DSP pipeline | CPU SDRAM/FlexBus | Spec (block dia., power table) | **A** (part number **D/unidentified**) |
-| **Cypress/Spansion S25FS128S** — SPI NOR, **128 Mbit** (expandable to 2 Gbit) | External serial NOR flash | **Bulk non-volatile storage:** audio recordings (~128 kbit/s, 8 kHz/16-bit mono), audio cues, **FPGA logic images** (backup + pending-burn), config (serial #, auth/**crypto keys**) | SPI1 (CS1) | Spec (flash §, bus table); S25FS128S datasheet in archive | **B** (exact PN B; density confirmed) |
+| **NXP Kinetis `MK26FN2M0VMI18`** (169-MAPBGA, 9×9 mm) | ARM **Cortex-M4F** MCU, **180 MHz**, **2 MB flash + 256 KB SRAM**, FS+HS USB, SDRAM/FlexBus controller | **The main processor.** Runs FreeRTOS (the device's ARM firmware), orchestrates audio, BT, storage, UI, power | 16 MHz xtal + 32.768 kHz RTC osc | **Bench-unit marking ✓**; spec + RM (`K26P169M180SF5`) | **P** |
+| **Intel/Altera MAX 10 `10M16SCU169C8G`** (16 K LE, single-supply, 169-UBGA) | Low-cost flash-based FPGA w/ internal config flash | **All mic DSP:** 6-ch PDM→PCM, CIC (48:1) + IIR biquad bandpass + denoise + FFT/ARMA filter bank; drives display SPI; PLL → 64 MHz sysclk | SPI1 (CS0 display, CS2 FPGA regs), I²S, 60 MHz from CPU | **Bench-unit marking ✓**; spec (register map, filter §) | **P** |
+| **ISSI `IS42VM16800H-75BLI`** | **128 Mbit** (8M×16) **1.8 V mobile LPSDR SDRAM**, 133 MHz, 54-TFBGA, industrial | Working RAM for the CPU/DSP pipeline | CPU SDRAM/FlexBus | **Bench-unit marking ✓** (was unidentified on paper) | **P** |
+| **Cypress/Spansion `S25FS128S`** (marking `FS128SAIF00`, WSON-8) — SPI/QSPI NOR, **128 Mbit (16 MB)**, 1.8 V, 133 MHz SDR | External serial NOR flash | **Bulk non-volatile storage:** audio recordings (~128 kbit/s, 8 kHz/16-bit mono), audio cues, **FPGA logic images** (backup + pending-burn), config (serial #, auth/**crypto keys**) | SPI1 (CS1) | **Bench-unit marking ✓**; spec + datasheet in archive | **P** |
 
 ### 4.2 Radio / connectivity
 
@@ -179,22 +190,24 @@ Every row is **pending physical confirmation in #5.**
 | Part | What it is | Function | Source | Conf. |
 |---|---|---|---|---|
 | **Li-Po cell, 500 mAh, ~4.2 V** | Battery | Sole power source | Spec (power §) | **A** (cell PN **D**) |
-| **TI BQ51050** | **Qi / inductive wireless power** Li-Ion charger-receiver | Premium-only wireless charging via Rx coil | Spec (block dia., power §) | **A** |
+| **TI `BQ51050B`** | **Qi v1.2 wireless-power receiver + integrated Li-Ion charger** (synchronous rectifier + CC/CV charger, ≤1.5 A) | Premium wireless charging via Rx coil | **Bench-unit marking ✓**; spec | **P** |
 | **Wired charger** (5 V DC in via the **mic/audio jack**) | Li-Po charger for Economy | Economy charging; jack doubles as audio + power in | Spec (overview, power §) | **A** (PN **D/unidentified**) |
-| **PMIC — "2 buck + 3 LDO in a single device"** | Multi-rail power-management IC | Generates the 1.8 V and 3.3 V/3.3 Va rails (seq: 1.8 V → 3.3 V → 3.3 Va → 2.5 V) | Spec (power §) | **A** (PN **D/unidentified**) |
+| **TI `TPS65053`** — 5-ch PMIC: **2 buck** (DCDC1 1 A, DCDC2 0.6 A) **+ 3 LDO** (400/200/200 mA), 24-VQFN | Multi-rail power-management IC | Generates the 1.8 V and 3.3 V/3.3 Va rails (seq 1.8 → 3.3 → 3.3 Va → 2.5). **Matches the spec's "2 buck + 3 LDO in a single device" exactly.** | **Bench-unit marking ✓** (was unidentified on paper) | **P** |
 | **ON Semi LC709203F** (`LC709203FQH-01TWG`) | I²C **battery fuel gauge** | State-of-charge; **must be initialized before other I²C0 traffic** (and only when not charging) | **I²C0 0x16** | Spec (battery-level §) | **A** |
 
 ### 4.6 Explicitly unidentified from paper sources
 
 Listed rather than omitted — each is a known gap for #5:
 
-- **SDRAM** — density known (128 Mbit), manufacturer/part number not named.
-- **PMIC** — described functionally (2 buck + 3 LDO) but not named; **highest-value power unknown.**
 - **Wired battery charger** (Economy 5 V path) — not named; may be integrated into the PMIC.
-- **SPI NOR exact orderable PN** — family/density strong (S25FS128S), exact suffix unconfirmed.
+  *(Not present on the bench unit — that is a Premium build, which charges via the BQ51050B.)*
 - **Li-Po cell** — capacity/chemistry known, no PN.
 - **Board count & which board each part sits on** — the spec is logical, not physical; #5 establishes
   the physical board split.
+
+*(Resolved since the paper pass by reading the bench unit — now in §4.1/§4.5, flagged **P**: the
+**SDRAM** (ISSI IS42VM16800H), the **PMIC** (TI TPS65053), and the **SPI-NOR exact part** (S25FS128S,
+marking FS128SAIF00).)*
 
 ---
 
@@ -344,7 +357,9 @@ microphone + onboard adaptive noise suppression + Bluetooth. Two things worth ca
 > **What public sources could NOT corroborate at part level:** none of the specific part numbers —
 > MK26, SGTL5000, MP34DT02, MAX 10, S25FS — appears in any public vendor source. They come **only**
 > from the owner-held engineering docs. Only the **BC127** is independently real (its FCC module grant,
-> §7). This is exactly why every row in §4 is marked "pending physical confirmation in #5."
+> §7). That is why the paper rows in §4 still need physical confirmation in #5 — and the six now flagged
+> **P** have since been confirmed by reading the board's package markings directly, not via any public
+> source.
 
 ---
 
@@ -352,17 +367,18 @@ microphone + onboard adaptive noise suppression + Bluetooth. Two things worth ca
 
 Recorded honestly, because each is a thing #5 must resolve against the metal:
 
-- **Hardware-revision churn.** The spec is explicitly **"Rev B using NXP MK26 CPU."** The owner's
-  datasheet archive *also* contains **Kinetis K22** material (`MK22F51212`, `K22P144M120SF5`, a
-  120 MHz Cortex-M4). The clock section even describes a **120 MHz** core (a K22 speed) while the CPU
-  section says **180 MHz** (a K26 speed). Read together this suggests **earlier revisions used an
-  MK22 and Rev B moved to the MK26.** The bench unit could be *either* — #5 must read the actual
-  package marking. (Both are Cortex-M4F, so the Zig verdict in §5 holds regardless.)
+- **Hardware-revision churn — resolved for the bench unit.** The spec is **"Rev B using NXP MK26
+  CPU,"** but the archive *also* holds **Kinetis K22** material (`MK22F51212`, `K22P144M120SF5`,
+  120 MHz), and the clock section describes a **120 MHz** core (a K22 speed) while the CPU section
+  says **180 MHz** (a K26 speed) — suggesting *earlier* revisions may have used an MK22. **The
+  inspected bench unit is confirmed `MK26FN2M0VMI18` (K26, 180 MHz, 2 MB)** — so for this board there
+  is no ambiguity; the caveat only matters if a different-revision unit turns up. (Both are Cortex-M4F,
+  so §5's Zig verdict holds regardless.)
 - **"HC-05" vs "BC127".** The power-budget table lists an **"HC-05 Bluetooth"** line, but the block
   diagram, the power narrative, *and the release notes* all say **BC127**. The HC-05 line is almost
   certainly a stale copy-paste from an early prototype. **Treat the radio as BC127.**
-- **Flash density: "1 MB internal" vs K26's 2 MB.** The spec's CPU text says "1 MB Flash internal";
-  the `K26FN2M0` part is 2 MB. Minor doc drift or a smaller variant — #5's marking settles it.
+- **Flash density — resolved.** The spec's CPU text said "1 MB Flash internal," but the bench unit's
+  `MK26FN2M0` marking confirms **2 MB** — the spec text was simply stale.
 - **"3-axis" motion sensor.** The block diagram labels the FXOS8700CQ a "3-axis motion sensor"; the
   part is actually **6-axis** (3-axis accel + 3-axis mag). Doc imprecision, not a different part.
 - **GPIO expander vendor.** Spec says **ON Semi PCA9535**; a release note says a later batch used the
