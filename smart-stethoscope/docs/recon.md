@@ -171,7 +171,7 @@ Every row is **pending physical confirmation in #5.**
 | **NXP FXOS8700CQ** (marking `FXOS8700CQR1`) | 6-axis **accelerometer + magnetometer** (spec labels it "3-axis motion sensor") | Motion/orientation; release notes: the metadata file carries ~1000 acceleration vectors @100 Hz per recording | **I²C0 0x1E** | Spec (block dia., bus table) | **A** |
 | **Azoteq IQS333** | Capacitive **touch controller** (buttons + wheel/slider, LED driver, proximity wake) | Premium UI: 3 touch buttons (TZ0–2) + right-edge slider (wheel 2); also drives the 6 UI LEDs; proximity wake via `LLWU_P8`/PTC4 | **I²C2 0x64** + INT | Spec (touch §, LED §); IQS333 datasheet in archive | **A/B** |
 | **ON Semi / TI PCA9535** (`PCA9535` / TI `TCA9535`) | 16-bit **I²C GPIO expander** | Economy UI: reads 4 push buttons (SW1–4) and drives the LEDs; a later production batch switched to the **TI** equivalent | **I²C2 0x40** + INT (`LLWU_P8`/B8) | Spec (button §, LED §); release notes ("GPIO extenders … Texas Instruments"); PCA9535 datasheets in archive | **A/B** |
-| **E-Ink `ET011TT2U1`** (~1.1″ EPD panel) | Small **E-Ink graphic display**, 25 mm | Premium-only UI: battery/storage/recording status | **SPI (via FPGA), CS0** | Spec (block dia., versions) | **A** (panel maker **D**) |
+| **E Ink `ET011TT2`** (spec marking `ET011TT2U1`) | **1.1″ round active-matrix EPD** — 240×240, 218 DPI, 4-level greyscale, E Ink Carta 1.2, Tcon+PMIC in the driver IC (34.6×31.8 mm outline, ≈28 mm round active area, SPI) | Premium-only UI: battery/storage/recording status. *(A round panel corroborates the round-puck form factor.)* | **SPI (via FPGA), CS0** | Spec (block dia., versions); [Beck Elektronik product page](https://www.beck-elektronik.de/en/products/displays/e-paper-display-epd/active-matrix-e-paper/active-matrix-epd/et011tt2) | **A** (spec) **/ C** (maker) |
 | **6–7 discrete LEDs** (D1–D7) | Indicator LEDs (R/G/B/orange/yellow/white) | Status: charging, BT, recording, classification (normal/abnormal), battery | via IQS333 (Premium) or PCA9535 (Economy); D4/D2 charge LED wired to charger | Spec (LED §) | **A** |
 
 ### 4.5 Power tree
@@ -192,7 +192,6 @@ Listed rather than omitted — each is a known gap for #5:
 - **PMIC** — described functionally (2 buck + 3 LDO) but not named; **highest-value power unknown.**
 - **Wired battery charger** (Economy 5 V path) — not named; may be integrated into the PMIC.
 - **SPI NOR exact orderable PN** — family/density strong (S25FS128S), exact suffix unconfirmed.
-- **E-Ink panel manufacturer** — part `ET011TT2U1` known, maker not pinned.
 - **Li-Po cell** — capacity/chemistry known, no PN.
 - **Board count & which board each part sits on** — the spec is logical, not physical; #5 establishes
   the physical board split.
