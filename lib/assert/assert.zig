@@ -215,3 +215,13 @@ test "a condition known-true at comptime is accepted at comptime" {
     // documents and checks that the check really is evaluated when enabled.
     comptime Assert(.{ .enabled = true, .onFailure = &trap }).assert(true);
 }
+
+test "every declaration type-checks" {
+    // Zig analyzes only the declarations a build actually references, so a
+    // `pub` decl that no test happens to call would ship un-type-checked -- the
+    // one way a diagnostic could slip past the strict-compiler gate (#14,
+    // §2.4). Referencing the whole namespace forces every decl through the
+    // compiler, so the gate covers the library's full public surface, not just
+    // the paths these tests exercise.
+    std.testing.refAllDeclsRecursive(@This());
+}

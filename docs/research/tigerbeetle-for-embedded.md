@@ -654,8 +654,8 @@ they are written:
 
 6. **[#16] — generalize the image sanity-check into a reusable artifact checker.**
    Lift CI's inline "Assert the reset vectors are sane" step into a typed, reusable checker (a Zig
-   program or a Dagger module function) **parameterized by each target's memory map**, and extend it —
-   image fits the code region, initialized-data/zero-init sections as expected, entry/stack pointers
+   program or a Dagger module function) **parameterized by each target's memory map**, and extend it
+   — image fits the code region, initialized-data/zero-init sections as expected, entry/stack pointers
    in bounds — so every project gets host-side static checks over its built image by supplying config,
    not by editing the checker. Removes the one ad-hoc tool in an otherwise standardized pipeline.
    *Grounds:* Tiger Style §Tooling; VOPR out-of-band checkers; §1.12, §2.5.

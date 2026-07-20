@@ -116,9 +116,25 @@ separate rule.
 ### 2.2 100-column hard limit
 
 **`[mechanical]`** — Hard-wrap every line — code *and* prose — at 100 columns, for a readable
-typographic measure. `zig fmt` does not enforce line length, so this is a **gate the CI story (#14)
-adds** alongside the `fmt` check. Until then it is a review rule. (Markdown table rows, which
-cannot wrap, are the one practical exception.)
+typographic measure. `zig fmt` does not enforce line length, so this is a separate gate, now
+**enforced**: the `line-length` function on the repo's top-level `ci` Dagger module
+([`ci/main.go`][check-line-length]) runs in the shared pipeline (`ci.yaml`) as a single repo-wide
+pass over every tracked Zig and Markdown file, so the limit applies to every project uniformly, not
+one board. It is the same function a developer runs locally: `dagger call line-length --source=.`.
+
+Two details, because a naïve check gets them wrong:
+
+- **Columns are characters, not bytes.** The prose here is full of em-dashes and curly quotes, each
+  one column but several UTF-8 bytes; a byte-based check (`wc -c`, bash `${#s}`) would false-positive
+  on every such line. The gate counts Unicode characters.
+- **Three exemptions, each because the line genuinely cannot be wrapped shorter:** Markdown table
+  rows (cannot wrap), fenced code blocks (a shell command may have no safe break point), and an
+  *unbreakable tail* — a line whose overflow past column 100 is a single long token such as a URL,
+  with nowhere after the limit to break. This matches `markdownlint` MD013's default lenience, so a
+  line a column or two over that ends mid-word also slips through: **still target 100** when you
+  write. The gate catches the real defect — breakable content left running past the limit — not
+  every last column. The Go modules under `daggerverse/` are out of scope (see the intro) and are
+  not scanned.
 
 ### 2.3 Braces on `if`
 
@@ -128,10 +144,21 @@ depth against `goto fail;`-class bugs. Handled by `zig fmt`.
 ### 2.4 Strictest compiler diagnostics
 
 **`[mechanical]`** — Build at the compiler's strictest setting and make warnings fail the build. A
-warning you can ship past is a warning nobody reads. It is **gated by the CI story (#14)**, applied
-in the shared `build.zig` / pipeline so every project inherits it. On a target where a mistake is a
-silent no-op on real silicon (§3.2), a compiler that won't look away is one of the few automatic
-safety nets available.
+warning you can ship past is a warning nobody reads. **Enforced now**, but the shape it takes in Zig
+is worth stating plainly: *Zig has no separate warning level.* What another compiler emits as a
+warning — an unused variable or parameter, unreachable code, an ignored error — Zig raises as a hard
+compile error. There is no `-Werror` to add because there are no warnings to promote; the strictest
+setting is the only setting. (Verified against the pinned toolchain: an unused local *and* an unused
+parameter each fail the build.)
+
+So the gate is not a flag, it is a guarantee: **every project is actually compiled in the shared
+pipeline, and a non-clean compile fails CI.** The blinky's `build` step compiles the firmware — all
+code is reachable from the reset vector, so all of it is type-checked. `lib/assert`'s `test` step
+compiles the library, and a `refAllDeclsRecursive` test forces even a `pub` decl no test calls
+through the compiler — closing the one way Zig's laziness could let a diagnostic slip past. This is
+also why the pipeline builds rather than only running the module's `check` verb, which skips
+compilation (see the `ci.yaml` comment). On a target where a mistake is a silent no-op on real
+silicon (§3.2), a compiler that won't look away is one of the few automatic safety nets available.
 
 ---
 
@@ -380,8 +407,8 @@ The distinction the guide turns on — what a tool gates versus what a human jud
 | Rule | Kind | Status |
 |---|---|---|
 | §2.1 `zig fmt` (incl. indent, braces) | mechanical | **Enforced now** (`ci.yaml`, shared pipeline) |
-| §2.2 100-column limit | mechanical | Gated by the [CI story (#14)][issue-14] |
-| §2.4 Strictest compiler diagnostics | mechanical | Gated by the [CI story (#14)][issue-14] |
+| §2.2 100-column limit | mechanical | **Enforced now** (`ci.yaml`, `ci` module's `line-length`) |
+| §2.4 Strictest compiler diagnostics | mechanical | **Enforced now** (`ci.yaml`; Zig warnings are errors) |
 | §5.6 Artifact / negative-space checks | mechanical | Partial today (reset-vector check); generalized by [#16][issue-16] |
 | §1.1 snake_case names | judgment | Mechanizable via a future linter; review rule today |
 | §4.3 ~70-line function cap | judgment | Mechanizable via a line counter; review rule today |
@@ -407,6 +434,7 @@ open stories: readback helpers ([#15][issue-15]), artifact checker ([#16][issue-
 
 [tiger-style]: https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md
 [research]: research/tigerbeetle-for-embedded.md
+[check-line-length]: ../ci/main.go
 [lib-assert]: ../lib/assert
 [fault-policy]: fault-response-policy.md
 [fault-policy-blinky]: ../arduino-due/blinky/fault-response-policy.md

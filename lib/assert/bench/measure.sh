@@ -25,8 +25,9 @@
 
 set -euo pipefail
 
-# The toolchain pin. CI exports DEVEX/DEVEX_SHA from ci.yaml so the pin lives
-# in one place; the defaults here let the script run standalone.
+# The Zig toolchain pin. Keep it in sync with the `zig` toolchain pinned in the
+# repo's dagger.json (the ci module); these defaults let this script also run
+# standalone, without going through that module. Override with DEVEX_SHA.
 DEVEX="${DEVEX:-github.com/z5labs/devex/daggerverse}"
 DEVEX_SHA="${DEVEX_SHA:-bc5cee36080549722c6d3bf02152aa7d46d2dcf3}"
 MOD="${DEVEX}/zig@${DEVEX_SHA}"
