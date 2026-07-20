@@ -601,77 +601,108 @@ seed plus the commit hash reproduces any bug exactly, just as vopr.md describes.
 
 # Follow-up stories
 
-The payoff. Each is scoped tightly enough to file as its own `story(...)` issue. None are implemented
-here; that is deliberately out of scope. They are ordered roughly by the staircase in §2.7 — cheap,
-broadly-useful rungs first; the full simulator last and gated.
+The payoff. These have now been **filed** (issues [#11]–[#20]) and are the actionable output of this
+research; none are implemented here, which is deliberately out of scope. Two things to note about how
+they are written:
 
-1. **`story: adopt a flash-cheap `assert` for bare-metal Zig with a defined failure state.**
-   Provide an assertion primitive that lowers to a bare trap — no formatting, no stack walk, no
-   panic machinery — reusing the blinky's existing halt-on-fault body, so Tiger Style's density
-   guidance becomes affordable inside a 256 KB flash budget. Must define behavior in `ReleaseSmall`
-   (on vs. off), behavior inside an ISR, and the per-project *safe state* it fails into (halt for the
-   blinky; drive-outputs-safe-then-halt for anything driving a load). *Grounds:* Tiger Style
-   §Safety assertions; blinky `panic`/`defaultHandler`; §1.5.1–2 above.
+- **Architecture-neutral by design.** This repo will hold projects spanning many different targets
+  (ARM Cortex-M, RISC-V, AVR, and whatever comes next), so each story states its convention
+  *generally* and treats today's `arduino-due/blinky` only as the *current reference instance* — an
+  example of the shape, never the definition. Where a story references shared infrastructure (the
+  Dagger build/flash flow, the `zig` module, CI), that is repo-wide and applies to every project.
+- **Ordered by the staircase in §2.7** — cheap, broadly-useful rungs first; the full simulator last
+  and gated on a project crossing the complexity threshold.
 
-2. **`story: define the repo's assertion & fault policy — halt vs. safe-state vs. reset.**
-   A short written policy answering, per project, what "crash on corrupt state" *does* on that
-   device, since the safe failure state is per-device and not universal. The blinky's "halt, never
-   reset" is the reference instance and the rationale is already written; generalize it into a
-   decision the next project makes on purpose. *Grounds:* Tiger Style "the only correct way to handle
-   corrupt code is to crash"; §1.5.1.
+1. **[#11] — flash-cheap `assert` with a defined failure state.**
+   An assertion primitive that lowers to a bare trap — no formatting, no stack walk, no panic
+   machinery — so the density guidance becomes affordable inside any tight code budget, on any
+   architecture. Must define behavior in optimized/size-optimized builds (on vs. off), behavior
+   inside an interrupt/exception context, and the per-project *safe state* it fails into (delegated to
+   the policy in #12, not hardcoded to "halt"). The blinky's halt-on-fault handler is the current
+   example of the shape. *Grounds:* Tiger Style §Safety assertions; blinky `panic`/`defaultHandler`;
+   §1.5.1–2 above.
 
-3. **`story: codify a TigerStyle-derived Zig style guide for the repo, with embedded carve-outs.**
-   Capture the directly-transferable rules (snake_case, no abbreviations, units-last, no recursion,
-   explicitly-sized types, 70-line functions, split assertions, "always say why") plus the
-   bare-metal riders documented in Part 1 (what "crash" means, ISR assertion behavior, poll-vs-
-   interrupt). *Grounds:* Tiger Style §Developer-Experience and §Safety; §1.8–1.10.
+2. **[#12] — per-project assertion & fault policy: halt vs. safe-state vs. reset.**
+   A short written policy answering, per project, what "crash on corrupt state" *does* on that device,
+   since the safe failure state is device-dependent and not universal — halting is safe where the
+   worst outcome is an idle output and dangerous where an output is left energized. The blinky's
+   "halt, never reset" is one filled-in instance of the template, not the rule. *Grounds:* Tiger Style
+   "the only correct way to handle corrupt code is to crash"; §1.5.1.
 
-4. **`story: enforce strictest compiler warnings and the 100-column limit in build.zig and CI.**
-   Turn on Zig's strictest diagnostics and add a line-length gate alongside the existing
-   `zig fmt --check` step, so the mechanical half of the style guide is enforced, not aspirational.
-   *Grounds:* Tiger Style "all compiler warnings at the compiler's strictest setting" and the
-   100-column rule; existing `ci.yaml` fmt step; §1.10.
+3. **[#13] — codify a TigerStyle-derived Zig style guide, with embedded carve-outs.**
+   Capture the directly-transferable, language/architecture-general rules (snake_case, no
+   abbreviations, units-last, no recursion, explicitly-sized types over `usize`, ~70-line functions,
+   split assertions, "always say why") plus the bare-metal riders documented in Part 1 (what "crash"
+   means with no OS, interrupt-context assertion behavior, poll-vs-interrupt control flow, prefer
+   compile-time assertions). Written to apply across targets. *Grounds:* Tiger Style
+   §Developer-Experience and §Safety; §1.8–1.10.
 
-5. **`story: add readback/pair-assertion helpers for peripheral register configuration.**
-   Provide helpers that, during the config phase, write a control register and then read back the
-   corresponding status register to assert the write took — aimed squarely at the silent-no-op class
-   (PIO writes dropped while the clock is gated). Must document the exceptions (write-only and
-   read-clear registers, e.g. `SYST_CSR`). *Grounds:* Tiger Style pair-assertions; blinky's
-   documented "writes are silently dropped" trap; §1.5.4.
+4. **[#14] — enforce strictest compiler warnings and a line-length limit across projects.**
+   Turn on the compiler's strictest diagnostics (warnings fail the build) and add a line-length gate
+   alongside the existing `zig fmt --check` step, in the shared CI pipeline so the mechanical half of
+   the style guide is enforced for every project, not just one board. *Grounds:* Tiger Style "all
+   compiler warnings at the compiler's strictest setting" and the 100-column rule; existing `ci.yaml`
+   fmt step; §1.10.
 
-6. **`story: generalize the CI reset-vector checker into a reusable artifact-checker.**
-   Lift the inline Python "Assert the reset vectors are sane" step into a typed, reusable checker
-   (a Zig program or a Dagger module function) and extend it — flash-size budget vs. the ROM region,
-   `.data`/`.bss` expectations, stack-pointer bounds — so every project gets host-side static checks
-   over its built image for free. Removes the one ad-hoc tool in an otherwise standardized pipeline.
+5. **[#15] — readback/pair-assertion helpers for peripheral register configuration.**
+   Reusable write-then-verify helpers for *any* memory-mapped target: after configuring a peripheral,
+   read back the corresponding status register and assert the change took, catching the silent-no-op
+   class of failure (a write dropped because a clock is gated, a register is write-protected, or an
+   address is wrong — none of which signal an error). Must document where readback is invalid
+   (write-only and read-to-clear registers). *Grounds:* Tiger Style pair-assertions; the blinky's
+   documented "writes are silently dropped" trap as one example; §1.5.4.
+
+6. **[#16] — generalize the image sanity-check into a reusable artifact checker.**
+   Lift CI's inline "Assert the reset vectors are sane" step into a typed, reusable checker (a Zig
+   program or a Dagger module function) **parameterized by each target's memory map**, and extend it —
+   image fits the code region, initialized-data/zero-init sections as expected, entry/stack pointers
+   in bounds — so every project gets host-side static checks over its built image by supplying config,
+   not by editing the checker. Removes the one ad-hoc tool in an otherwise standardized pipeline.
    *Grounds:* Tiger Style §Tooling; VOPR out-of-band checkers; §1.12, §2.5.
 
-7. **`story: add a host test step to the Dagger/CI flow and seed it with comptime + logic tests.**
-   Wire a `zig build test` (or the `zig` module's test verb) into CI — the repo has no test step
-   today — and start it with the free wins: compile-time invariant checks and any pure-logic unit
-   tests. Establishes the place seeded simulation would later plug into. *Grounds:* VOPR requirement
-   5/6; the `ci.yaml` "no test step" note; §2.5, staircase rungs 1 & 5.
+7. **[#17] — add a host test step to the shared build/CI flow.**
+   Wire a host test step (`zig build test` / the `zig` module's test verb) into CI — the repo has no
+   test step today — and seed it with the free wins: compile-time invariant checks and pure-logic unit
+   tests. Target-agnostic: projects for any architecture can contribute host tests. Establishes the
+   place seeded simulation later plugs into. *Grounds:* VOPR requirements 5/6; the `ci.yaml` "no test
+   step" note; §2.5, staircase rungs 1 & 5.
 
-8. **`story: introduce a hardware-abstraction seam so firmware logic is host-compilable.**
-   Define the peripheral operations a project needs as an injectable interface with a real backend
-   (`@ptrFromInt` writes) and a host backend (a struct the test drives), using `comptime` to keep it
-   runtime-free. This is the pivot investment that makes any deterministic simulation possible; scope
-   it to the first project whose logic is worth testing off-hardware, not to the blinky. *Grounds:*
-   VOPR "all non-deterministic parts … are stubbed out"; §2.3, staircase rung 4.
+8. **[#18] — hardware-abstraction seam so firmware logic is host-compilable.**
+   Express the peripheral operations a project needs as an injectable interface with a real backend
+   (`@ptrFromInt` writes) and a host backend (a stand-in the tests drive), using `comptime` to keep it
+   runtime-free. The interface is defined by what a project needs to *do*, not by one board's register
+   map, so it serves many architectures. This is the pivot investment that makes any deterministic
+   simulation possible; scope it to the first project whose logic is worth testing off-hardware, not
+   to trivial firmware. *Grounds:* VOPR "all non-deterministic parts … are stubbed out"; §2.3,
+   staircase rung 4.
 
-9. **`story: build a seeded host simulator with fault injection for the first stateful project.**
-   Once a project crosses the §2.7 threshold (likely a `steth-*` device), build the VOPR analog on
-   top of the seam: a simulated world driven by a seeded PRNG that injects firmware-shaped faults
-   (I²C NACK, sensor garbage, brown-out mid-write, flash bit-flip), running on the host through
-   Dagger, with any failure reproducible from seed + commit. Explicitly gated: file it *for* that
-   project, not before. *Grounds:* VOPR requirements 1–4; §2.4, §2.7, staircase rung 6.
+9. **[#19] — seeded host simulator with fault injection for the first stateful project.**
+   Once a project crosses the §2.7 threshold (the `steth-*` work is the current candidate), build the
+   VOPR analog on top of the seam (#18): a simulated world driven by a seeded PRNG that injects
+   firmware-shaped faults (bus errors/NACKs, garbage inputs, power loss mid-write, storage bit-flips,
+   noisy readings), running on the host through the shared flow, with any failure reproducible from
+   seed + commit. The fault model is expressed generally and instantiated for the project's actual
+   peripherals. Explicitly gated: file it *for* that project, not before. *Grounds:* VOPR requirements
+   1–4; §2.4, §2.7, staircase rung 6.
 
-10. **`story: write a per-project resource budget (flash / SRAM / cycles / pin-current).**
-    Re-derive Tiger Style's back-of-the-envelope resource sketch for the actual target resources and
-    record the budget the blinky README currently computes ad hoc (244-byte image, 35 KB Debug
-    overflow, 24-bit SysTick reload, Group-2 `IOH = −3 mA` pin current). Makes "bound every resource
-    at design time" a checklist, not folklore. *Grounds:* Tiger Style §Performance back-of-envelope
-    sketches; blinky README; §1.2, §1.4.
+10. **[#20] — per-project resource budget (code, RAM, timing, electrical).**
+    Re-derive Tiger Style's back-of-the-envelope resource sketch for the resources that actually bind
+    firmware, as general categories each project fills in for its own silicon — code footprint,
+    working memory, timing/cycles, and electrical/I/O limits. The blinky README's ad hoc figures
+    (image size, Debug overflow, timer-reload width, per-pin current) are one worked example. Makes
+    "bound every resource at design time" a checklist, not folklore. *Grounds:* Tiger Style
+    §Performance back-of-envelope sketches; blinky README; §1.2, §1.4.
+
+[#11]: https://github.com/Zaba505/embedded/issues/11
+[#12]: https://github.com/Zaba505/embedded/issues/12
+[#13]: https://github.com/Zaba505/embedded/issues/13
+[#14]: https://github.com/Zaba505/embedded/issues/14
+[#15]: https://github.com/Zaba505/embedded/issues/15
+[#16]: https://github.com/Zaba505/embedded/issues/16
+[#17]: https://github.com/Zaba505/embedded/issues/17
+[#18]: https://github.com/Zaba505/embedded/issues/18
+[#19]: https://github.com/Zaba505/embedded/issues/19
+[#20]: https://github.com/Zaba505/embedded/issues/20
 
 ---
 
