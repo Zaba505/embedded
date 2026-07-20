@@ -10,6 +10,14 @@ Projects are scoped by vendor, so boards from different families sit alongside e
 |---|---|---|
 | [`arduino-due/blinky`](arduino-due/blinky) | Arduino Due (Atmel SAM3X8E) | Bare-metal Zig blinky, built and flashed entirely through Dagger |
 
+## Libraries
+
+Cross-project, architecture-agnostic building blocks live in [`lib/`](lib):
+
+| Library | Description |
+|---|---|
+| [`lib/assert`](lib/assert) | A flash-cheap assertion primitive: a failed assertion lowers to a bare trap, configurable on/off per project, with the safe failure state delegated to the project |
+
 ## Dagger modules
 
 | Module | Description |

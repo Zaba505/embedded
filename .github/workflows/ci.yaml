@@ -73,3 +73,35 @@ jobs:
             --firmware=./blinky.bin \
             --usbip=ci.invalid:3240 --busid=0-0 \
             plan
+
+  assert:
+    name: lib/assert
+    runs-on: ubuntu-latest
+    env:
+      LIB: ./lib/assert
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dagger CLI
+        run: |
+          curl -fsSL https://dl.dagger.io/dagger/install.sh | BIN_DIR=/usr/local/bin sudo -E sh
+          dagger version
+
+      # Same check-only fmt gate as the firmware; never rewrites.
+      - name: zig fmt --check
+        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call fmt --source="$LIB"
+
+      # Host unit tests of the primitive's logic (the on/off knob, the
+      # pass-through path). Unlike the blinky, this package is host-compilable
+      # and so has a real test step.
+      - name: Unit tests
+        run: dagger -m "$DEVEX/zig@$DEVEX_SHA" call test --source="$LIB"
+
+      # The negative-space check for this package, in the spirit of the
+      # firmware's "Assert the reset vectors are sane": build the size-delta
+      # benchmark for a real MCU target and fail if a failed assertion costs
+      # more than a bare trap -- i.e. if formatting/unwind/panic machinery ever
+      # sneaks back into the failure path. The script is the same one a
+      # developer runs locally, so CI and the README measure identically.
+      - name: Assert an assertion compiles to a bare trap
+        run: ./lib/assert/bench/measure.sh
