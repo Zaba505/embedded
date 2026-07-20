@@ -16,5 +16,7 @@ full-repo build flow exists.
 | Library | What it is |
 |---|---|
 | [`assert`](assert) | A flash-cheap assertion primitive: a failed assertion lowers to a bare trap (no formatting/unwind/panic machinery), configurable on/off per project, with the safe failure state delegated to the project. Follow-up [#11] from the [TigerBeetle-for-embedded study](../docs/research/tigerbeetle-for-embedded.md). |
+| [`readback`](readback) | Write-then-verify (pair-assertion) helpers for peripheral register configuration: after a config write, read the status back and assert the change took, catching a silently-dropped write (gated clock, write-protected or wrong-address register). Architecture-neutral, delegates the failure state to an asserter (`lib/assert`), and is for the config phase, not hot paths. Follow-up [#15]. |
 
 [#11]: https://github.com/Zaba505/embedded/issues/11
+[#15]: https://github.com/Zaba505/embedded/issues/15

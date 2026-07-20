@@ -309,7 +309,10 @@ write-protected or wrong-address register) signals no error at all. After config
 read the status register back and assert the change took. *Caveat, honestly:* readback is not
 universally valid — some registers are write-only or read-to-clear (the blinky *relies* on reading
 `SYST_CSR` to clear `COUNTFLAG`), so this is a targeted tool for the config phase, not a blanket
-rule. Reusable helpers are the **[readback-helpers story (#15)][issue-15]**.
+rule. Reusable helpers have landed as **[`lib/readback`][lib-readback]** ([#15][issue-15]): a
+`write_status_verify`/`set_bits`/`verify` family that pairs each config write with a readback
+assertion, routes a caught dropped-write through the project's asserter (§5.1), and documents the
+register kinds where readback is invalid so the pattern is not misapplied.
 
 ### 5.6 Positive and negative space
 
@@ -414,11 +417,12 @@ The distinction the guide turns on — what a tool gates versus what a human jud
 | §4.3 ~70-line function cap | judgment | Mechanizable via a line counter; review rule today |
 | §1.2–1.7, §3.x, §4.1–4.2, §4.4–4.5, §5.1–5.5, §5.7–5.8, §6.1, §7.1, §8.1 | judgment | Code review and author discipline |
 
-Rules that lean on shared infrastructure name it. Two pieces have landed: the flash-cheap assert
-([`lib/assert`][lib-assert], [#11][issue-11]) and the fault-response policy
-([`docs/fault-response-policy.md`][fault-policy], [#12][issue-12]) — use them. The rest are still
-open stories: readback helpers ([#15][issue-15]), artifact checker ([#16][issue-16]), host test step
-([#17][issue-17]); those rules are stated here so projects code *toward* them.
+Rules that lean on shared infrastructure name it. Three pieces have landed: the flash-cheap assert
+([`lib/assert`][lib-assert], [#11][issue-11]), the fault-response policy
+([`docs/fault-response-policy.md`][fault-policy], [#12][issue-12]), and the readback / pair-assertion
+helpers ([`lib/readback`][lib-readback], [#15][issue-15]) — use them. The rest are still open
+stories: artifact checker ([#16][issue-16]) and host test step ([#17][issue-17]); those rules are
+stated here so projects code *toward* them.
 
 ---
 
@@ -436,6 +440,7 @@ open stories: readback helpers ([#15][issue-15]), artifact checker ([#16][issue-
 [research]: research/tigerbeetle-for-embedded.md
 [check-line-length]: ../ci/main.go
 [lib-assert]: ../lib/assert
+[lib-readback]: ../lib/readback
 [fault-policy]: fault-response-policy.md
 [fault-policy-blinky]: ../arduino-due/blinky/fault-response-policy.md
 [issue-3]: https://github.com/Zaba505/embedded/issues/3
