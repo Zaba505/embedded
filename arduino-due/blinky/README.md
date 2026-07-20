@@ -92,7 +92,11 @@ dagger -m $DEVEX/zig@$SHA call obj-copy \
 dagger -m $DEVEX/zig@$SHA call size --input=./blinky.elf flash
 ```
 
-The image is ~244 bytes with empty `.data` and `.bss`.
+The image is ~244 bytes with empty `.data` and `.bss`. That figure, the 256 KB flash and 64 KB SRAM0
+ceilings, the 24-bit SysTick reload, and the per-pin current limit below are all collected in this
+project's [resource budget](resource-budget.md), completed from the repo-wide
+[template](../../docs/resource-budget.md) — flash is the scarcest of them, since a `Debug` build
+overflows it while everything else sits orders of magnitude under its ceiling.
 
 > **Never pass `--target`.** The target is fixed hardware and is hardcoded in `build.zig`, which
 > therefore does not call `standardTargetOptions`. The module would turn `--target` into
