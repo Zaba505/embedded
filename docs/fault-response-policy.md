@@ -53,7 +53,9 @@ safe state.*
 ## The template
 
 Copy this into `<project>/fault-response-policy.md` and fill every field. Delete none: "not
-applicable, because …" is an answer; a blank is not.
+applicable, because …" is an answer; a blank is not. The template's back-link assumes the project
+sits two directories below the repo root (like `arduino-due/blinky`); adjust the `../` prefix to
+match your project's depth.
 
 ```markdown
 # Fault Response Policy — <project>
