@@ -1,0 +1,9 @@
+{
+  "name": "atsam3x8e",
+  "description": "Atmel SAM3X8E (Arduino Due), Cortex-M3",
+  "vectors": "cortex-m",
+  "regions": {
+    "code": { "origin": "0x00080000", "length": "0x00040000" },
+    "ram": { "origin": "0x20000000", "length": "0x00010000" }
+  }
+}

@@ -237,6 +237,14 @@ than Arduino's linker script assumes — see `link.ld`.
 | `src/start.zig` | Vector table, reset handler, `.data`/`.bss` init, `VTOR` |
 | `src/main.zig` | Watchdog disable, PIOB setup, SysTick, blink loop |
 | `build.zig` | Hardcoded `thumb-freestanding-eabi` / `cortex_m3` |
+| `target.json` | The board's memory map and boot convention, for the CI image checker |
+
+`target.json` is the config for the reusable image checker (`dagger call image-check`
+in the `ci` module): it mirrors `link.ld`'s `MEMORY` block and names the boot-vector
+convention (`cortex-m`), so CI can assert the built image is well-formed for this
+board — boot vectors sane, image inside flash, sections in the right regions —
+without any board-specific logic in the workflow. A new board is onboarded by adding
+its own `target.json`, not by editing the checker.
 
 Order matters in `main()`:
 
