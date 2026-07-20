@@ -15,3 +15,11 @@ Projects are scoped by vendor, so boards from different families sit alongside e
 | Module | Description |
 |---|---|
 | [`daggerverse/bossac`](daggerverse/bossac) | Flash Atmel SAM MCUs over SAM-BA with bossac, no debug probe and no host-installed flashing tool |
+
+## Docs
+
+Cross-project documentation lives in [`docs/`](docs). Notably:
+
+- [`docs/research/tigerbeetle-for-embedded.md`](docs/research/tigerbeetle-for-embedded.md) — a study
+  of what Tiger Style and TigerBeetle's deterministic simulation testing (the VOPR) transfer to this
+  repo's bare-metal work, and the follow-up stories that research recommends.
