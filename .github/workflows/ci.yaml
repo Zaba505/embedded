@@ -35,6 +35,36 @@ jobs:
       - name: 100-column limit
         run: dagger call line-length --source=.
 
+  # The shared host-test gate, and like line-length a repo-wide job rather than
+  # one per board: the ci module's host-test function discovers every package
+  # that declares a Zig `test` step and runs it natively on this host, so
+  # target-independent logic -- pure-logic unit tests and `comptime` invariant
+  # checks -- is exercised for any project regardless of the silicon it ships
+  # on. A project contributes by adding a `test` step to its build.zig; there is
+  # no list to edit here. This is also where the host-side simulation story (#8)
+  # will plug in. The same function a developer runs with `dagger call`.
+  #
+  # It is likewise the strictest-diagnostics gate (§2.4) for host-compilable
+  # packages: `zig build test` compiles the code -- and Zig's would-be warnings
+  # are hard errors -- while each library's `refAllDeclsRecursive` test forces
+  # every public declaration through the compiler, so a decl no test calls
+  # cannot ship un-checked. See docs/host-testing.md for what host tests can and
+  # cannot prove.
+  host-tests:
+    name: host tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dagger CLI
+        run: |
+          curl -fsSL https://dl.dagger.io/dagger/install.sh \
+            | DAGGER_VERSION="$DAGGER_VERSION" BIN_DIR=/usr/local/bin sudo -E sh
+          dagger version
+
+      - name: Run host tests
+        run: dagger call host-test --source=.
+
   blinky:
     name: arduino-due/blinky
     runs-on: ubuntu-latest
@@ -116,18 +146,11 @@ jobs:
       - name: zig fmt --check
         run: dagger call zig fmt --source="$LIB"
 
-      # Host unit tests of the primitive's logic (the on/off knob, the
-      # pass-through path). Unlike the blinky, this package is host-compilable
-      # and so has a real test step.
+      # The primitive's pure-logic unit tests (the on/off knob, the pass-through
+      # path) run in the shared host-tests job above, which discovers this
+      # package by its build.zig `test` step. This job keeps only the checks
+      # specific to lib/assert -- fmt above and the on-target size gate below.
       #
-      # This is also the library's strictest-diagnostics gate (§2.4): compiling
-      # the tests type-checks the code, and the `refAllDeclsRecursive` test
-      # forces every public declaration through the compiler, so a decl no test
-      # calls cannot ship un-checked. As with the firmware, Zig's would-be
-      # warnings are hard errors, so a clean compile is the strictest setting.
-      - name: Unit tests
-        run: dagger call zig test --source="$LIB"
-
       # The negative-space check for this package, in the spirit of the
       # firmware's "Assert the reset vectors are sane": build the size-delta
       # benchmark for a real MCU target and fail if a failed assertion costs
@@ -155,18 +178,13 @@ jobs:
       - name: zig fmt --check
         run: dagger call zig fmt --source="$LIB"
 
-      # Host unit tests of the pure logic (the masked-compare predicate, the
-      # width extraction) and of both readback outcomes -- a matching readback
-      # passes, a dropped write / unraised status bit is caught -- via a
-      # recording test asserter. Unlike lib/assert, whose failure path is a
-      # noreturn trap it can only prove on-target, readback is generic over the
-      # asserter, so the host exercises the failure path directly and needs no
-      # separate on-target gate.
-      #
-      # This is also the library's strictest-diagnostics gate (§2.4): compiling
-      # the tests type-checks the code, and the `refAllDeclsRecursive` test
-      # forces every public declaration through the compiler, so a decl no test
-      # calls cannot ship un-checked. As with the firmware, Zig's would-be
-      # warnings are hard errors, so a clean compile is the strictest setting.
-      - name: Unit tests
-        run: dagger call zig test --source="$LIB"
+      # readback's host tests run in the shared host-tests job above (discovered
+      # by this package's build.zig `test` step): the pure logic -- the
+      # masked-compare predicate, the width extraction -- and both readback
+      # outcomes -- a matching readback passes, a dropped write / unraised status
+      # bit is caught -- via a recording test asserter. Unlike lib/assert, whose
+      # failure path is a noreturn trap provable only on-target, readback is
+      # generic over the asserter, so the host exercises the failure path
+      # directly and this package needs no separate on-target gate -- which is
+      # why, with the tests moved to the shared job, only the fmt gate remains
+      # here.
