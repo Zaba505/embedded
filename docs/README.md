@@ -22,6 +22,12 @@ projects or informs how they are built.
 |---|---|
 | [`zig-style-guide.md`](zig-style-guide.md) | The repo-wide Zig style guide every project inherits — naming, control flow, and assertion rules derived from [Tiger Style](https://github.com/tigerbeetle/tigerbeetle/blob/main/docs/TIGER_STYLE.md), with the bare-metal carve-outs from the research below. Architecture-neutral, and it marks which rules a tool enforces versus which are judgment. |
 
+## Testing
+
+| Document | What it is |
+|---|---|
+| [`host-testing.md`](host-testing.md) | What runs in the shared **host-test** CI gate and, more importantly, its limits — the architecture-neutral division between what target-independent logic the host can prove (pure-logic unit tests, `comptime` invariant checks) and what only a board reveals (register reset values, interrupts firing, timing, electrical levels). Explains how a project contributes host tests (a `test` step in its `build.zig`, no edit to the shared gate) and where the host-side simulation story plugs in. `lib/assert` and `lib/readback` are the worked instances. |
+
 ## Research
 
 | Document | What it is |
