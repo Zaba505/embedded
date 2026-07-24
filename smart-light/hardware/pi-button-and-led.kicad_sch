@@ -1,0 +1,1349 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5a17b0a0-0000-4000-8000-000000000103")
+	(paper "A2")
+	(title_block
+		(title "Smart light - Raspberry Pi button and status LED")
+		(date "2026-07-24")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "SW2 -> RC -> GPIO27 (J8 pin 13), active low")
+		(comment 2 "D1 status LED on GPIO17 (J8 pin 11), active high, and dark at power-on")
+		(comment 3 "R5 is sized to beat GPIO27's 50-65 kohm default pull-down")
+	)
+	(lib_symbols
+		(symbol "smart-light:C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.048 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 3.048 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.508) (xy 2.032 0.508)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.508) (xy 2.032 -0.508)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:LED"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "LED"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LED_0_1"
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy 1.27 1.27) (xy 0 -1.27) (xy -1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.905 -1.27) (xy 1.905 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.905 1.016) (xy 3.175 2.286)
+					)
+					(stroke
+						(width 0.152)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.905 -0.254) (xy 3.175 1.016)
+					)
+					(stroke
+						(width 0.152)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LED_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:RPI_IO"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 21.59 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Raspberry Pi J8 (40-pin)"
+				(at 0 -21.59 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "RPI_IO_0_1"
+				(rectangle
+					(start -26.67 -19.05)
+					(end 26.67 19.05)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "RPI_IO_1_1"
+				(pin passive line
+					(at 29.21 11.43 180)
+					(length 2.54)
+					(name "GPIO17(pin11)" (effects (font (size 1.27 1.27))))
+					(number "11" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 29.21 3.81 180)
+					(length 2.54)
+					(name "3V3(pin17)" (effects (font (size 1.27 1.27))))
+					(number "17" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 29.21 -3.81 180)
+					(length 2.54)
+					(name "GPIO27(pin13)" (effects (font (size 1.27 1.27))))
+					(number "13" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 29.21 -11.43 180)
+					(length 2.54)
+					(name "GND(pin14)" (effects (font (size 1.27 1.27))))
+					(number "14" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R_H"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_H_0_1"
+				(rectangle
+					(start -2.54 -1.016)
+					(end 2.54 1.016)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_H_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:SW_PUSH_H"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "SW"
+				(at 0 4.826 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SW_PUSH"
+				(at 0 -3.048 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_PUSH_H_0_1"
+				(circle
+					(center -2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 2.54) (xy 1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SW_PUSH_H_1_1"
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+	)
+	(text "PI BUTTON AND STATUS LED"
+		(exclude_from_sim no)
+		(at 160 32 0)
+		(effects
+			(font
+				(size 3.5 3.5)
+				(bold yes)
+			)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000001")
+	)
+	(symbol
+		(lib_id "smart-light:RPI_IO")
+		(at 69.85 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-000000000002")
+		(property "Reference" "J6"
+			(at 69.85 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Raspberry Pi J8"
+			(at 69.85 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 124.46 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-000000000003")
+		(property "Reference" "R7"
+			(at 124.46 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 124.46 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "R7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 99.06 107.95) (xy 120.65 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000004")
+	)
+	(symbol
+		(lib_id "smart-light:LED")
+		(at 154.94 118.11 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-000000000005")
+		(property "Reference" "D1"
+			(at 158.75 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED, red"
+			(at 158.75 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 128.27 107.95) (xy 154.94 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000006")
+	)
+	(wire
+		(pts
+			(xy 154.94 107.95) (xy 154.94 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000007")
+	)
+	(wire
+		(pts
+			(xy 154.94 121.92) (xy 154.94 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000008")
+	)
+	(wire
+		(pts
+			(xy 154.94 129.54) (xy 138.43 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000009")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 138.43 129.54 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000000a")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 138.43 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:R")
+		(at 154.94 160.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-00000000000b")
+		(property "Reference" "R5"
+			(at 157.48 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "4.7k"
+			(at 157.48 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 99.06 115.57) (xy 121.92 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000000c")
+	)
+	(wire
+		(pts
+			(xy 121.92 115.57) (xy 121.92 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 121.92 156.21) (xy 154.94 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000000e")
+	)
+	(wire
+		(pts
+			(xy 121.92 137.16) (xy 135.89 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000000f")
+	)
+	(junction
+		(at 121.92 137.16)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170005-0000-4000-8000-000000000010")
+	)
+	(global_label "+3V3_PI"
+		(shape input)
+		(at 135.89 137.16 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000011")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 135.89 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 154.94 163.83) (xy 154.94 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000012")
+	)
+	(wire
+		(pts
+			(xy 99.06 123.19) (xy 114.3 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000013")
+	)
+	(wire
+		(pts
+			(xy 114.3 123.19) (xy 114.3 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000014")
+	)
+	(wire
+		(pts
+			(xy 114.3 175.26) (xy 154.94 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000015")
+	)
+	(junction
+		(at 154.94 175.26)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170005-0000-4000-8000-000000000016")
+	)
+	(label "SW2_IN"
+		(at 165.1 175.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000017")
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 175.26 175.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-000000000018")
+		(property "Reference" "R6"
+			(at 175.26 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470"
+			(at 175.26 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "R6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 154.94 175.26) (xy 171.45 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000019")
+	)
+	(symbol
+		(lib_id "smart-light:SW_PUSH_H")
+		(at 203.2 175.26 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-00000000001a")
+		(property "Reference" "SW2"
+			(at 203.2 180.086 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "push button, momentary"
+			(at 203.2 172.212 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 179.07 175.26) (xy 198.12 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000001b")
+	)
+	(wire
+		(pts
+			(xy 208.28 175.26) (xy 220.98 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000001c")
+	)
+	(wire
+		(pts
+			(xy 220.98 175.26) (xy 220.98 191.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000001d")
+	)
+	(wire
+		(pts
+			(xy 220.98 191.77) (xy 204.47 191.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000001e")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 204.47 191.77 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000001f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 204.47 191.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:C")
+		(at 154.94 191.77 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170005-0000-4000-8000-000000000020")
+		(property "Reference" "C4"
+			(at 157.988 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 157.988 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000103"
+					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 154.94 175.26) (xy 154.94 187.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000021")
+	)
+	(wire
+		(pts
+			(xy 154.94 195.58) (xy 154.94 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000022")
+	)
+	(wire
+		(pts
+			(xy 154.94 205.74) (xy 171.45 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000023")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 171.45 205.74 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000024")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 171.45 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 99.06 130.81) (xy 105.41 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000025")
+	)
+	(wire
+		(pts
+			(xy 105.41 130.81) (xy 105.41 215.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000026")
+	)
+	(wire
+		(pts
+			(xy 105.41 215.9) (xy 121.92 215.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000027")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 121.92 215.9 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000028")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 121.92 215.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text "star-ground leg 3"
+		(exclude_from_sim no)
+		(at 124 213 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "5a170005-0000-4000-8000-000000000029")
+	)
+	(text_box "3.3 V ONLY - AND PIN 2 OF THIS HEADER IS 5 V\n\nEvery GPIO on J8 is a 3.3 V pin and none of them is 5 V tolerant. From the\nRaspberry Pi documentation: \"The remaining pins are all general-purpose 3.3 V pins,\nmeaning outputs are set to 3.3 V and inputs are 3.3V-tolerant\", and, plainly,\n\"Do not use 5V for 3.3V components.\"\n\nThere is no clamp that will save you. Over-voltage on a GPIO triggers latch-up in\nthe pad driver, which shorts the 3V3 rail to ground inside the silicon. The board\ndoes not recover.\n\nAND THE 5 V PINS ARE THE CLOSEST PINS ON THE HEADER:\n\n     pin  1   3V3            pin  2   5V     <-- directly opposite 3V3\n     pin  3   GPIO2  SDA1    pin  4   5V     <-- and again\n     pin  5   GPIO3  SCL1    pin  6   GND\n     pin  7   GPIO4          pin  8   GPIO14 / TXD0     sheet 6\n     pin  9   GND            pin 10   GPIO15 / RXD0     sheet 6\n     pin 11   GPIO17         pin 12   GPIO18            <-- D1, this sheet\n     pin 13   GPIO27         pin 14   GND               <-- SW2, this sheet\n     pin 15   GPIO22         pin 16   GPIO23\n     pin 17   3V3            pin 18   GPIO24\n\nPin 1 is the square pad, at the end of the header nearest the micro-SD card. The\nodd-numbered pins are one row and the even-numbered pins the other. Take 3V3 from\npin 1 or 17 and GND from pin 6, 9 or 14.\n\nA one-position slip on the even row - pin 2 or pin 4 instead of the ground you\nmeant - puts 5 V straight onto a 3.3 V rail. Confirm pin 1 against the silkscreen\nand ring out your ground with a meter before applying power."
+		(exclude_from_sim no)
+		(at 300 40 0)
+		(size 274 71)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000002a")
+	)
+	(text_box "THE BUTTON - AND THE INTERNAL PULL-DOWN IT HAS TO BEAT\n\nGPIO27 powers up as an input with a DEFAULT PULL-DOWN of 50-65 kohm. Both halves of\nthat come from primary sources: BCM2835 ARM Peripherals table 6-31 lists GPIO9\nthrough GPIO27 as \"Low\", and the Raspberry Pi GPIO documentation gives RPD = 50-65\nkohm. Every GPIO on this header has some default pull, and firmware has not run yet\nwhen you first apply power.\n\nR5 is therefore not a formality. It has to win a divider against a pull-down that is\nalready there, at the worst corner - RPD at its 50 kohm minimum, where it is\nstrongest:\n\n  released   node = 3.3 V x 50k / (4.7k + 50k)              = 3.02 V\n  pressed    node = 3.3 V x (470 || 50k) / (4.7k + 465)     = 0.30 V\n\nagainst the Pi's thresholds of VIH min 1.6 V and VIL max 0.9 V: 1.4 V of margin\nhigh, 0.6 V low. Active low - the same polarity as the Due's wall switch, on purpose.\n\nPICK R5 = 47 kohm INSTEAD - a value that would be entirely sensible on a part with no\ninternal pull - and the released level becomes 3.3 x 50/97 = 1.70 V, which is 0.1 V\nabove VIH min. It would work on the bench and fail at the other end of the tolerance\nband, intermittently, in a way that looks like a debounce bug.\n\nR6 and C4 are the same network, for the same reasons, as the Due's wall switch on\nsheet 4: R6 caps the capacitor discharge through the contacts at 3.3 V / 470 ohm =\n7.0 mA, and the pair filters sub-millisecond chatter into a monotonic edge. Time\nconstants 0.43 ms rising, 43 us falling. The Pi's pads have selectable Schmitt-trigger\ninput filtering, which firmware should leave enabled.\n\nSW2 IS MOMENTARY. Unlike SW1 it has a rest state it returns to, and only its closing\nedge is an event."
+		(exclude_from_sim no)
+		(at 300 117 0)
+		(size 274 73.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000002b")
+	)
+	(text_box "THE STATUS LED - AND WHY IT IS DARK BEFORE THE PI BOOTS\n\nD1 is active high: driving GPIO17 high lights it.\n\n  I = (3.3 V - 1.9 V) / 1 kohm = 1.4 mA\n\nThe Pi guarantees VOH >= 3.0 V at 2 mA on its default 8 mA drive strength, so 1.4 mA\nsits well inside that and the real current is nearer 1.1 mA. Dim, and unmistakable\nindoors. 330 ohm, about 4 mA, is the practical floor if you want it brighter - still\nhalf the default drive strength and a quarter of the 16 mA maximum. Only one pin\nsources current on this board, so the aggregate GPIO budget is not a constraint here.\nIt would be, with a bar of eight.\n\nDARK BEFORE FIRMWARE RUNS, for free. The Raspberry Pi documentation: \"All GPIO pins\nrevert to general-purpose inputs on power-on reset. The default pull states are also\napplied\". GPIO17's default pull is Low. So at power-on the pin is an input held down\nby a 50-65 kohm pull-down, the LED sees leakage, and it is off.\n\nThat is the same guarantee R2 buys for the light on sheet 3 - except here it comes\nfree with the silicon's reset state, and there it had to be built out of a resistor\nand defended against the SAM3X's reset state, which pulls the other way. Worth\nnoticing that the two boards default in opposite directions; it is the kind of thing\nthat is obvious on a diagram and invisible in code."
+		(exclude_from_sim no)
+		(at 300 196.2 0)
+		(size 274 55.6)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000002c")
+	)
+	(text_box "WHICH PI, AND WHICH GPIOs\n\nDrawn against the 40-pin J8 header, which is electrically and mechanically\nidentical across Raspberry Pi 2, 3, 4, 5 and Zero 2 W. Nothing on this sheet\nchanges with the model.\n\nThe reference build is a RASPBERRY PI 3 MODEL B+ (BCM2837B0, Cortex-A53). What\nthat pins down is firmware-side, not wiring-side - the target triple, the kernel\nimage name, the ARM load address and the peripheral base - and it belongs to the\nbare-metal boot story. This sheet does not constrain any of it.\n\nWHY GPIO17 AND GPIO27, and not simply the first two free pins:\n\n*  Neither has a boot-time role. Nothing samples them at reset, and neither is\n   used by the GPU or the firmware blobs.\n*  Neither carries an alternate function this system needs. GPIO17's alternates\n   are RTS0 and SPI1_CE1_N; GPIO27's are SD1_DAT3 and ARM_TMS. None is in play.\n*  Both default to a pull-DOWN, which is what makes the LED dark at power-on and\n   what R5 is sized against for the button.\n*  They sit next to the UART pins used on sheet 6, so one harness reaches all four.\n\nAVOID GPIO0 and GPIO1, pins 27 and 28: they are the HAT ID EEPROM lines and are\nread at boot. AVOID GPIO2 and GPIO3, pins 3 and 5: they have fixed on-board\npull-ups that cannot be turned off."
+		(exclude_from_sim no)
+		(at 20 232 0)
+		(size 270 57.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170005-0000-4000-8000-00000000002d")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
