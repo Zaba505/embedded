@@ -1,0 +1,1538 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5a17b0a0-0000-4000-8000-000000000101")
+	(paper "A2")
+	(title_block
+		(title "Smart light - Due low-side load switch")
+		(date "2026-07-24")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "D24 / PA15 -> R1 -> gate; R2 holds that gate down")
+		(comment 2 "The light runs on PS3, its own 5 V rail - no load current through any I/O pin")
+		(comment 3 "Default-OFF is built from R2, against the SAM3X's reset-enabled internal pull-up")
+	)
+	(lib_symbols
+		(symbol "smart-light:C"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.048 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 3.048 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.032 0.508) (xy 2.032 0.508)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 -0.508) (xy 2.032 -0.508)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:CP"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.048 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C"
+				(at 3.048 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "CP_0_1"
+				(rectangle
+					(start -2.286 0.508)
+					(end 2.286 1.016)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start -2.286 -1.016)
+					(end 2.286 -0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 2.286) (xy -1.016 2.286)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 2.794) (xy -1.524 1.778)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "CP_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 2.794)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:DUE_LHS_GATE"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Due D22-D53 header, LHS row"
+				(at 0 -17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DUE_LHS_GATE_0_1"
+				(rectangle
+					(start -29.21 -15.24)
+					(end 29.21 15.24)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "DUE_LHS_GATE_1_1"
+				(pin passive line
+					(at 31.75 7.62 180)
+					(length 2.54)
+					(name "+5V(pos1)-DO-NOT-USE" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 31.75 0 180)
+					(length 2.54)
+					(name "D24/PA15(pos3)" (effects (font (size 1.27 1.27))))
+					(number "3" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 31.75 -7.62 180)
+					(length 2.54)
+					(name "GND(pos18)" (effects (font (size 1.27 1.27))))
+					(number "18" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:LAMP"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "LA"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "LAMP"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LAMP_0_1"
+				(circle
+					(center 0 0)
+					(radius 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.796 -1.796) (xy 1.796 1.796)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.796 1.796) (xy 1.796 -1.796)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "LAMP_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:Q_NMOS"
+			(pin_names
+				(offset 0.508)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 6.35 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "Q_NMOS"
+				(at 6.35 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Q_NMOS_0_1"
+				(polyline
+					(pts
+						(xy -2.54 -2.54) (xy -2.54 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -2.54) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -0.635) (xy -1.27 0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.905) (xy 2.54 1.905) (xy 2.54 5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.905) (xy 2.54 -1.905) (xy 2.54 -5.08)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 0) (xy 2.54 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0.762) (xy 0.762 -0.762) (xy -0.508 0) (xy 0.762 0.762)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "Q_NMOS_1_1"
+				(pin input line
+					(at -7.62 0 0)
+					(length 5.08)
+					(name "G" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 2.54 7.62 270)
+					(length 2.54)
+					(name "D" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 2.54 -7.62 90)
+					(length 2.54)
+					(name "S" (effects (font (size 1.27 1.27))))
+					(number "3" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R_H"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_H_0_1"
+				(rectangle
+					(start -2.54 -1.016)
+					(end 2.54 1.016)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_H_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+	)
+	(text "LOW-SIDE LOAD SWITCH"
+		(exclude_from_sim no)
+		(at 150 32 0)
+		(effects
+			(font
+				(size 3.5 3.5)
+				(bold yes)
+			)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000001")
+	)
+	(symbol
+		(lib_id "smart-light:DUE_LHS_GATE")
+		(at 69.85 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-000000000002")
+		(property "Reference" "J1"
+			(at 69.85 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Due D22-D53 header, LHS row"
+			(at 69.85 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(no_connect
+		(at 101.6 111.76)
+		(uuid "5a170003-0000-4000-8000-000000000003")
+	)
+	(text "not used - see the wiring warning below"
+		(exclude_from_sim no)
+		(at 105 110 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify left)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000004")
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 124.46 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-000000000005")
+		(property "Reference" "R1"
+			(at 124.46 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1k"
+			(at 124.46 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 101.6 119.38) (xy 120.65 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000006")
+	)
+	(wire
+		(pts
+			(xy 128.27 119.38) (xy 149.86 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000007")
+	)
+	(symbol
+		(lib_id "smart-light:R")
+		(at 149.86 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-000000000008")
+		(property "Reference" "R2"
+			(at 152.4 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "12k"
+			(at 152.4 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(junction
+		(at 149.86 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170003-0000-4000-8000-000000000009")
+	)
+	(wire
+		(pts
+			(xy 149.86 119.38) (xy 149.86 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000000a")
+	)
+	(symbol
+		(lib_id "smart-light:Q_NMOS")
+		(at 180.34 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-00000000000b")
+		(property "Reference" "Q1"
+			(at 186.69 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "IRLB8721PbF"
+			(at 186.69 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 149.86 119.38) (xy 172.72 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000000c")
+	)
+	(label "GATE"
+		(at 165.1 119.38 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 182.88 127) (xy 182.88 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000000e")
+	)
+	(wire
+		(pts
+			(xy 182.88 140.97) (xy 149.86 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000000f")
+	)
+	(wire
+		(pts
+			(xy 149.86 137.16) (xy 149.86 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000010")
+	)
+	(junction
+		(at 149.86 140.97)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170003-0000-4000-8000-000000000011")
+	)
+	(wire
+		(pts
+			(xy 149.86 140.97) (xy 149.86 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000012")
+	)
+	(wire
+		(pts
+			(xy 149.86 152.4) (xy 132.08 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000013")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 132.08 152.4 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000014")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 132.08 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text "star-ground leg 1"
+		(exclude_from_sim no)
+		(at 130 149 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify right)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000015")
+	)
+	(wire
+		(pts
+			(xy 101.6 127) (xy 107.95 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000016")
+	)
+	(wire
+		(pts
+			(xy 107.95 127) (xy 107.95 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000017")
+	)
+	(wire
+		(pts
+			(xy 107.95 167.64) (xy 93.98 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000018")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 93.98 167.64 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000019")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 93.98 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text "star-ground leg 2"
+		(exclude_from_sim no)
+		(at 92 165 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+			(justify right)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000001a")
+	)
+	(wire
+		(pts
+			(xy 160.02 80.01) (xy 250.19 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000001b")
+	)
+	(global_label "+5V_LOAD"
+		(shape input)
+		(at 160.02 80.01 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000001c")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 160.02 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:LAMP")
+		(at 195.58 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-00000000001d")
+		(property "Reference" "LA1"
+			(at 199.39 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "5 V light, <= 1 A"
+			(at 199.39 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "LA1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 195.58 80.01) (xy 195.58 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000001e")
+	)
+	(junction
+		(at 195.58 80.01)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170003-0000-4000-8000-00000000001f")
+	)
+	(wire
+		(pts
+			(xy 195.58 96.52) (xy 195.58 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000020")
+	)
+	(wire
+		(pts
+			(xy 195.58 105.41) (xy 182.88 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000021")
+	)
+	(wire
+		(pts
+			(xy 182.88 105.41) (xy 182.88 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000022")
+	)
+	(symbol
+		(lib_id "smart-light:CP")
+		(at 224.79 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-000000000023")
+		(property "Reference" "C1"
+			(at 227.838 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "220u 16V"
+			(at 227.838 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 224.79 80.01) (xy 224.79 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000024")
+	)
+	(junction
+		(at 224.79 80.01)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170003-0000-4000-8000-000000000025")
+	)
+	(symbol
+		(lib_id "smart-light:C")
+		(at 250.19 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170003-0000-4000-8000-000000000026")
+		(property "Reference" "C2"
+			(at 253.238 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100n"
+			(at 253.238 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000101"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 250.19 80.01) (xy 250.19 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000027")
+	)
+	(wire
+		(pts
+			(xy 224.79 95.25) (xy 224.79 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000028")
+	)
+	(wire
+		(pts
+			(xy 224.79 111.76) (xy 250.19 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000029")
+	)
+	(wire
+		(pts
+			(xy 250.19 95.25) (xy 250.19 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000002a")
+	)
+	(junction
+		(at 224.79 111.76)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170003-0000-4000-8000-00000000002b")
+	)
+	(wire
+		(pts
+			(xy 224.79 111.76) (xy 224.79 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000002c")
+	)
+	(wire
+		(pts
+			(xy 224.79 121.92) (xy 242.57 121.92)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000002d")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 242.57 121.92 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000002e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 242.57 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text_box "DEFAULT-OFF IS A PROPERTY OF THE COPPER - AND THE SAM3X FIGHTS IT\n\nTHE REQUIREMENT. The light must be OFF while the Due is in reset, unprogrammed, held in\nreset, or halted after a fault. Firmware cannot provide that: it is not running in three\nof those four cases.\n\nThe obvious answer is \"add a gate pulldown\". That is necessary and it is not sufficient,\nbecause of this sentence in the SAM3X datasheet (section 31.5.1, PIO pull-up resistor\ncontrol):\n\n     \"After reset, all of the pull-ups are enabled, i.e. PIO_PUSR resets at the value 0x0.\"\n\nSo out of reset PA15 is not high impedance. It is an input with a 50-150 kohm pull-up to\n3.3 V (table 45-2, RPULLUP) sitting in series with R1 and pulling UP on the gate. R2 has\nto win that divider, at the worst corner of both tolerance bands.\n\nWORST CASE - internal pull-up at its 50 kohm minimum, which is the strongest it can be:\n\n     Vgate = 3.3 V x R2 / (RPULLUP + R1 + R2)\n           = 3.3 V x 12k / (50k + 1k + 12k)\n           = 0.63 V\n\nagainst the IRLB8721PbF's MINIMUM gate threshold of 1.35 V. Off, with better than 2x of\nmargin, at every corner.\n\nWHAT R2 = 100 kohm WOULD DO - the value a great many gate-drive examples use:\n\n     Vgate = 3.3 V x 100k / (50k + 1k + 100k) = 2.18 V\n\nThat is above the 1.35 V minimum threshold and above the 1.80 V typical. An unprogrammed\nboard would sit there partially enhancing Q1 - the MOSFET in its linear region, dropping most\nof the 5 V rail across itself and dissipating on the order of a watt, with the light visibly\nglowing and no code running. The design rule, not the number, is what has to survive into any\nredesign:\n\n     Vgate at reset must stay below the MOSFET's MINIMUM VGS(th), with the internal\n     pull-up at its MINIMUM resistance.\n\nFirmware should still disable the pull-up early (PIO_PUDR) and drive the pin low. That is a\nsecond line of defence, and it cannot be the first one, because it does not exist until an\nimage has been flashed and has started running."
+		(exclude_from_sim no)
+		(at 300 40 0)
+		(size 274 95.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170003-0000-4000-8000-00000000002f")
+	)
+	(text_box "SIZING THE GATE NETWORK - R1 = 1 kohm, R2 = 12 kohm\n\nR1 and R2 pull in opposite directions and all four constraints are hard:\n\n  R2 SMALL ENOUGH that the internal pull-up cannot lift the gate to threshold\n  at reset                                      ->  R2 <= about 13 kohm (left)\n\n  R2 LARGE ENOUGH that it does not eat the drive, since R1 and R2 divide it:\n        VGS(on) = 3.3 V x R2/(R1+R2) = 3.3 x 12/13 = 3.05 V\n\n  R1 LARGE ENOUGH that the instant of the edge - when the gate looks like a\n  short - stays inside the pin's current group:\n        Ipeak = 3.3 V / 1 kohm = 3.3 mA\n        PA15 is Group 1 in table 45-2 note 2: IOH -15 mA, IOL 9 mA\n        -> 22 % of the source ceiling, 34 % of the sink ceiling on turn-off\n\n  R1 SMALL ENOUGH that the edge is not absurdly slow:\n        tau = (R1 || R2) x Ciss = 923 ohm x 1077 pF = 1.0 us\n\nSteady state, light on: PA15 sources 3.3 V / 13 kohm = 254 uA. The pin does no\nwork. It holds a voltage on a capacitor.\n\nWHY NOT FASTER. A 100 ohm gate resistor would switch in 100 ns and would also\nviolate IOL - 33 mA against a 9 mA ceiling - and a 1 A edge ten times sharper is\nten times the ground bounce for no benefit. Nothing here switches at kilohertz.\nThis gate moves when a human flips a switch.\n\nWHY PA15 / D24 AND NOT JUST ANY PIN. Table 45-2 splits the SAM3X's I/O into two\ncurrent groups that differ by 5x. PA15 is Group 1. PB26 - blinky's LED pin, the\nobvious thing to copy - is Group 2, where the source ceiling is 3 mA and this\n3.3 mA edge would be out of spec."
+		(exclude_from_sim no)
+		(at 300 141.2 0)
+		(size 274 73.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000030")
+	)
+	(text_box "WHY THE IRLB8721PbF, AND WHAT \"LOGIC LEVEL\" ACTUALLY GUARANTEES\n\n  VDS        30 V                        against a 5 V rail\n  ID         62 A at VGS = 10 V          against a 1 A load\n  VGS(th)    1.35 / 1.80 / 2.35 V        min / typ / max\n  RDS(on)    8.7 mohm max at VGS = 10 V, ID = 31 A\n             16  mohm max at VGS = 4.5 V, ID = 25 A\n  Ciss       1077 pF typ\n  (International Rectifier IRLB8721PbF datasheet, 22 April 2009.)\n\nBE PRECISE ABOUT WHAT IS GUARANTEED. The datasheet's lowest RDS(on) row is at\nVGS = 4.5 V. It does not specify RDS(on) at the 3.05 V this gate network\ndelivers, and no honest reading of it claims otherwise. What it does give:\n\n*  VGS(th) max = 2.35 V, so at 3.05 V the part is above threshold by 0.7 V at\n   the worst corner. It conducts, guaranteed.\n*  Figure 3, transfer characteristics, reads roughly 10 A at VGS = 3.0 V -\n   ten times this design's load - and figure 1 includes a VGS = 3.0 V output\n   curve. At 1 A the device is well below the knee of that curve, which puts\n   it in its ohmic region rather than anywhere near its linear one.\n*  Even at a deliberately pessimistic ten times the 4.5 V figure - 160 mohm -\n   a 1 A load dissipates 0.16 W in a part rated at 65 W. There is no thermal\n   problem available here, and no heatsink.\n\nWHAT A NON-LOGIC-LEVEL PART WOULD DO. An IRF540-class MOSFET specifies RDS(on)\nat VGS = 10 V and allows VGS(th) up to 4 V. At 3.3 V it may not turn on at all,\nand if it partly does it sits in its linear region as a resistor of ohms, not\nmilliohms: 1 A through 2 ohm is 2 W in a TO-220 with no heatsink. The failure\nis thermal, and it is not subtle.\n\nALTERNATIVES specified at a lower gate voltage, if you would rather have the\nguarantee than the argument: AO3400A or IRLML6344, both SOT-23 with RDS(on)\nspecified at VGS = 2.5 V, both rated well above 1 A. Both need a breakout board\nfor breadboard work, which is the only reason they are not the first choice."
+		(exclude_from_sim no)
+		(at 300 220.4 0)
+		(size 274 79.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000031")
+	)
+	(text_box "THE LOAD, AND THE FLYBACK DIODE THAT IS DELIBERATELY ABSENT\n\nLA1 is a 5 V light drawing at most 1 A: an LED module, a short length of\nLED strip, or a filament lamp. It is resistive, or LED-plus-resistor. It\nhas no winding, and that is why there is no flyback diode across it. A\ndiode across a resistive load does nothing but sit there.\n\nIF YOU EVER SUBSTITUTE AN INDUCTIVE LOAD - a relay coil, a fan, a motor,\na solenoid - you must add one (cathode to +5V_LOAD, anode to Q1's drain)\nbefore applying power. Collapsing an inductor's field into a MOSFET that\nhas just turned off puts hundreds of volts across a 30 V part. It fails\nshorted, and a low-side MOSFET that fails shorted leaves the light\npermanently ON - the exact state the rest of this sheet exists to prevent.\n\nLOW-SIDE, ON PURPOSE. Low-side means Q1's gate is referenced to ground,\nthe same ground the Due already sits on, so a 3.3 V pin can drive it\ndirectly. A high-side N-channel switch would need its gate driven above\nthe 5 V rail, and therefore a charge pump or a gate-driver IC. The price\nof low-side is that the load's negative terminal is not at ground when the\nlight is off - fine for a 5 V lamp on its own supply, and not fine for\nanything a person can touch."
+		(exclude_from_sim no)
+		(at 20 190 0)
+		(size 270 51.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000032")
+	)
+	(text_box "WHERE TO WIRE IT - +5V IS POSITION 1 ON THIS EXACT ROW\n\nJ1 is the D22-D53 header, LHS row. Counting from the end of the header\n(Arduino Due datasheet A000062, section 6.2.4):\n\n       position  1  =  +5V      <-- DANGER\n       position  2  =  D22          blinky's LED lives here\n       position  3  =  D24      <-- gate, through R1\n       position  4  =  D26          wall switch, sheet 4\n       position  5  =  D28\n          ...\n       position 18  =  GND      <-- star-ground leg 2\n\nD24 is the THIRD pin in that row and the first pin in the row is +5V.\nCounting from the wrong end, or slipping two positions, lands 5 V on a node\ntied to a 3.3 V I/O pin through 1 kohm - which back-feeds 5 V into PA15 and\nexceeds the SAM3X's absolute maximum input rating of +4.0 V (table 45-1).\n\nCount twice. Confirm that position 18 really is ground, with a continuity\ncheck against a known GND pin, before applying power - and do it with PS3\ndisconnected.\n\nThe RHS row is numbered the same way and its position 1 is also +5V.\nNothing on this sheet belongs on the RHS row."
+		(exclude_from_sim no)
+		(at 20 247.2 0)
+		(size 270 57.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170003-0000-4000-8000-000000000033")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

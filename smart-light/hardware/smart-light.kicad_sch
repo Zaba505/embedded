@@ -1,0 +1,753 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5a17b0a0-0000-4000-8000-000000000001")
+	(paper "A2")
+	(title_block
+		(title "Smart light - system overview")
+		(date "2026-07-24")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "Arduino Due (SAM3X8E) and a bare-metal Raspberry Pi, 3.3 V logic at both ends")
+		(comment 2 "Hardware first: these diagrams are the project's first deliverable; no firmware yet")
+		(comment 3 "Sources: SAM3X 11057C, Due A000062, BCM2835 peripherals, RPi GPIO docs, IRLB8721PbF")
+	)
+	(lib_symbols
+	)
+	(text "SMART LIGHT - SYSTEM OVERVIEW"
+		(exclude_from_sim no)
+		(at 297 22 0)
+		(effects
+			(font
+				(size 4.5 4.5)
+				(bold yes)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000001")
+	)
+	(text "One light, two boards, three supplies, one ground.  Every later firmware story implements against these six sheets."
+		(exclude_from_sim no)
+		(at 297 30 0)
+		(effects
+			(font
+				(size 2.2 2.2)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000002")
+	)
+	(text_box "PS1\n5 V, >= 2.5 A"
+		(exclude_from_sim no)
+		(at 20 42 0)
+		(size 80 9)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000003")
+	)
+	(text_box "PS2\nUSB 5 V, or 7-12 V VIN"
+		(exclude_from_sim no)
+		(at 150 42 0)
+		(size 80 9)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000004")
+	)
+	(text_box "PS3\n5 V, >= 2 A - LOAD ONLY"
+		(exclude_from_sim no)
+		(at 340 42 0)
+		(size 80 9)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000005")
+	)
+	(text_box "RASPBERRY PI 3B+\nbare metal, 3.3 V\nSW2 button, D1 status LED"
+		(exclude_from_sim no)
+		(at 20 64 0)
+		(size 80 12)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000006")
+	)
+	(text_box "ARDUINO DUE\nSAM3X8E, 3.3 V\nSW1 wall switch"
+		(exclude_from_sim no)
+		(at 150 64 0)
+		(size 80 12)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000007")
+	)
+	(text_box "Q1\nIRLB8721PbF\nlow-side switch"
+		(exclude_from_sim no)
+		(at 250 64 0)
+		(size 60 12)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 223 245 223 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000008")
+	)
+	(text_box "LA1\n5 V light\n<= 1 A"
+		(exclude_from_sim no)
+		(at 340 64 0)
+		(size 80 12)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000009")
+	)
+	(polyline
+		(pts
+			(xy 60 51) (xy 60 64)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000a")
+	)
+	(polyline
+		(pts
+			(xy 190 51) (xy 190 64)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000b")
+	)
+	(polyline
+		(pts
+			(xy 380 51) (xy 380 64)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000c")
+	)
+	(polyline
+		(pts
+			(xy 100 70) (xy 150 70)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000d")
+	)
+	(text "UART, 3.3 V\nTX <-> RX  (sheet 6)"
+		(exclude_from_sim no)
+		(at 125 61 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000e")
+	)
+	(polyline
+		(pts
+			(xy 230 70) (xy 250 70)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000000f")
+	)
+	(text "gate\n(sheet 3)"
+		(exclude_from_sim no)
+		(at 240 61 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000010")
+	)
+	(polyline
+		(pts
+			(xy 310 70) (xy 340 70)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000011")
+	)
+	(text "load return\n<= 1 A"
+		(exclude_from_sim no)
+		(at 325 61 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000012")
+	)
+	(polyline
+		(pts
+			(xy 420 70) (xy 436 70) (xy 436 46) (xy 420 46)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000013")
+	)
+	(polyline
+		(pts
+			(xy 60 76) (xy 60 100) (xy 200 120)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000014")
+	)
+	(polyline
+		(pts
+			(xy 190 76) (xy 190 104) (xy 200 120)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000015")
+	)
+	(polyline
+		(pts
+			(xy 280 76) (xy 280 98) (xy 200 120)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000016")
+	)
+	(polyline
+		(pts
+			(xy 436 51) (xy 452 51) (xy 452 106) (xy 200 120)
+		)
+		(stroke
+			(width 0.4)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000017")
+	)
+	(polyline
+		(pts
+			(xy 196 116) (xy 204 116) (xy 204 124) (xy 196 124) (xy 196 116)
+		)
+		(stroke
+			(width 0.7)
+			(type default)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000018")
+	)
+	(text "STAR GROUND"
+		(exclude_from_sim no)
+		(at 200 131 0)
+		(effects
+			(font
+				(size 2.2 2.2)
+				(bold yes)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000019")
+	)
+	(text "the negative terminal of PS3, and the only place\nin this system where grounds are allowed to meet"
+		(exclude_from_sim no)
+		(at 200 137 0)
+		(effects
+			(font
+				(size 1.7 1.7)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001a")
+	)
+	(text_box "READ FIRST - FIVE RULES THAT KEEP THIS SYSTEM ALIVE\n\n1  BOTH BOARDS ARE 3.3 V AND NEITHER IS 5 V TOLERANT.\n   The SAM3X's absolute maximum on an input pin is -0.3 V to\n   +4.0 V (SAM3X datasheet table 45-1). The Raspberry Pi\n   documentation says plainly \"Do not use 5V for 3.3V\n   components\", and the failure mode is latch-up, which shorts\n   the 3V3 rail inside the die. 5 V on a signal wire is a dead\n   board, not a glitch.\n\n2  THE THREE 5 V RAILS ARE NEVER TIED TOGETHER.\n   PS1 feeds the Pi, PS2 feeds the Due, PS3 feeds the light,\n   and nothing else. See sheet 2.\n\n3  ONLY THE GROUNDS ARE COMMON, AND THEY MEET AT ONE POINT.\n   Star ground at PS3(-). The load return - up to 1 A - must\n   never share a wire with anything using it as a 0 V\n   reference. See sheet 2.\n\n4  NO LOAD CURRENT THROUGH ANY I/O PIN.\n   The light is switched by Q1's drain-source path. The SAM3X\n   pin drives a gate through 1 kohm and carries at most\n   3.3 mA, ever, and only for about a microsecond.\n\n5  THE LIGHT IS OFF UNTIL FIRMWARE SAYS OTHERWISE.\n   R2 makes OFF the power-on, in-reset, unprogrammed and\n   post-fault state. That is a property of the copper, not of\n   any line of Zig - and it is the subtlest part of this\n   design, because the SAM3X's reset state actively works\n   against it. Sheet 3 has the arithmetic."
+		(exclude_from_sim no)
+		(at 20 150 0)
+		(size 185 71)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001b")
+	)
+	(text_box "BILL OF MATERIALS\n\nQ1      IRLB8721PbF     logic-level N-channel MOSFET, TO-220AB\nR1      1 kohm          gate series\nR2      12 kohm         gate pulldown - do not omit or resize\nR3      4.7 kohm        wall-switch pull-up\nR4      470 ohm         wall-switch series, caps contact current\nR5      4.7 kohm        Pi button pull-up\nR6      470 ohm         Pi button series, caps contact current\nR7      1 kohm          Pi status LED series\nR8-R11  220 ohm         UART line series, one per pin\nR12     10 kohm         Due RX idle pull-up\nR13     10 kohm         Pi RX idle pull-up\nC1      220 uF 16 V     load rail bulk, electrolytic\nC2      100 nF          load rail high-frequency decoupling\nC3      100 nF          wall-switch debounce\nC4      100 nF          Pi button debounce\nD1      LED, red        Pi boot / status indicator\nSW1     SPST maintained wall switch\nSW2     SPST momentary  Pi button\nLA1     5 V light       <= 1 A, resistive or LED module\nPS3     5 V, >= 2 A     dedicated regulated load supply\n\nAll resistors 1/4 W or better; none dissipates over 3 mW."
+		(exclude_from_sim no)
+		(at 20 227 0)
+		(size 185 57.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001c")
+	)
+	(text_box "PIN ASSIGNMENTS - THE WHOLE SYSTEM ON ONE TABLE\n\nARDUINO DUE   SAM3X8E, 144-lead LQFP, 3.3 V logic\n  signal          Arduino   SAM3X   header, position     45-2 group\n  --------------  --------  ------  -------------------  ----------\n  MOSFET gate     D24       PA15    D22-D53 LHS, pos 3   Group 1\n  Wall switch     D26       PD1     D22-D53 LHS, pos 4   Group 1\n  UART transmit   D18/TX1   PA11    26-pin, pos 23       Group 2\n  UART receive    D19/RX1   PA10    26-pin, pos 24       Group 2\n  +3V3            -         -       24-pin, pos 4        -\n  GND (switch)    -         -       24-pin, pos 6        -\n  GND (star leg)  -         -       D22-D53 LHS, pos 18  -\n\nRASPBERRY PI  40-pin J8, 3.3 V logic\n  signal          BCM       J8 pin  default pull         alt used\n  --------------  --------  ------  -------------------  ----------\n  Status LED      GPIO17    11      pull-down 50-65 k    none\n  Button          GPIO27    13      pull-down 50-65 k    none\n  UART transmit   GPIO14     8      pull-down            ALT0 TXD0\n  UART receive    GPIO15    10      pull-down            ALT0 RXD0\n  3V3             -          1, 17  -                    -\n  GND             -          6, 14  -                    -\n\nDue port mapping: ArduinoCore-sam, variants/arduino_due_x.\nDue header positions: Arduino Due datasheet A000062, 6.2.2 / 6.2.4.\nPi default pulls: BCM2835 ARM Peripherals, table 6-31."
+		(exclude_from_sim no)
+		(at 212 150 0)
+		(size 185 62.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001d")
+	)
+	(text_box "REFERENCE DESIGNATOR INDEX\n\nJ1   sheet 3   Due D22-D53 header, LHS row  ) one physical\nJ2   sheet 4   Due D22-D53 header, LHS row  ) 18-pin header\nJ3   sheet 4   Due 24-pin header\nJ4   sheet 6   Due 26-pin header\nJ5   sheet 6   Raspberry Pi J8              ) one physical\nJ6   sheet 5   Raspberry Pi J8              ) 40-pin header\nA1   sheet 2   Arduino Due, whole board\nA2   sheet 2   Raspberry Pi, whole board\nPS1  sheet 2   Raspberry Pi supply\nPS2  sheet 2   Arduino Due supply\nPS3  sheet 2   dedicated 5 V load supply\n\nA connector drawn on two sheets is ONE physical header; each\nsheet shows only the pins it uses. It is not two connectors,\nand there is no jumper between them."
+		(exclude_from_sim no)
+		(at 212 218.2 0)
+		(size 185 42.4)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001e")
+	)
+	(text_box "PROVENANCE\n\nEvery number on these sheets is traceable to one of:\n\n  SAM3X / SAM3A datasheet, Atmel-11057C-ATARM (2015-03-23)\n    sections 31.5 (PIO), 45.1 and 45.2 (electrical)\n  Arduino Due datasheet A000062, sections 5.1, 6.2.2, 6.2.4\n  ArduinoCore-sam, variants/arduino_due_x/variant.cpp\n  BCM2835 ARM Peripherals (Broadcom, 2012), section 6.2\n  Raspberry Pi documentation, \"GPIO and the 40-pin header\"\n  IRLB8721PbF datasheet, International Rectifier, 2009-04-22\n\nWhere a value could not be justified from a primary source it\nis not on the diagram. Where a datasheet does not guarantee\nwhat the design would like it to guarantee - the MOSFET's\nRDS(on) at a 3.05 V gate, on sheet 3 - the sheet says so and\nshows the margin instead of asserting the number."
+		(exclude_from_sim no)
+		(at 212 266.6 0)
+		(size 185 42.4)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 223 245 223 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-00000000001f")
+	)
+	(text_box "ELECTRICAL CEILINGS - FEEDS resource-budget.md SECTION 4\n\nARDUINO DUE / SAM3X8E             value         source\n  I/O voltage tolerance           3.3 V only    45-1: -0.3 to +4.0 V\n  VIL max / VIH min               0.99 / 2.31 V 45-2: 0.3 / 0.7 x VDDIO\n  IOH per pin, Group 1            -15 mA        45-2 at VOH = VDDIO-0.4\n  IOH per pin, Group 2            -3 mA         45-2 note 3\n  IOL per pin, Group 1            9 mA          45-2 at VOL = 0.4 V\n  IOL per pin, Group 2            6 mA          45-2 note 3\n  Input hysteresis (most pins)    150-500 mV    45-2 Vhys\n  Internal pull-up (all, after    50-150 kohm   45-2 RPULLUP\n    reset - see sheet 3)\n  TOTAL DC output, all I/O        130 mA        45-1, 144-lead LQFP\n\nRASPBERRY PI / BCM2837 class      value         source\n  I/O voltage tolerance           3.3 V only    RPi GPIO documentation\n  VIL max / VIH min               0.9 / 1.6 V   RPi GPIO voltage table\n  IOL / IOH per pin, max drive    18 / 17 mA    same, at 16 mA setting\n  Default drive strength          8 mA          same, footnote b\n  Internal pull-up / pull-down    50-65 kohm    same, RPU / RPD\n\nLOAD PATH                         value         source\n  Load rail                       5.0 V         PS3\n  Load current, design ceiling    1.0 A         this design\n  MOSFET VDS / ID                 30 V / 62 A   IRLB8721PbF datasheet\n  MOSFET VGS(th) min / max        1.35 / 2.35 V IRLB8721PbF static\n  MOSFET RDS(on) at VGS = 4.5 V   16 mohm max   IRLB8721PbF static\n\nWORST-CASE ACTUAL DRAW\n  gate drive, transient           3.3 mA    22 % of PA15's ceiling\n  wall-switch pull-up             0.70 mA   only while SW1 is closed\n  UART line, driven low           0.32 mA   per line\n  Pi status LED                   1.4 mA    17 % of the 8 mA default\n  everything on the Due           < 5 mA    4 % of the 130 mA total"
+		(exclude_from_sim no)
+		(at 404 150 0)
+		(size 172 79.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000020")
+	)
+	(text_box "SHEETS\n\n2  power-and-ground     the three supplies, the star ground,\n                        and the rules that keep them apart\n3  due-load-switch      D24 -> gate -> Q1 -> the light on PS3\n4  due-wall-switch      SW1 -> debounce -> D26\n5  pi-button-and-led    SW2 -> debounce -> GPIO27, and D1\n6  uart-interconnect    Due USART0 <-> Pi PL011, 3.3 V\n\nEach later firmware story implements against exactly one\nof these, and cites it for pin assignments, component\nvalues and the electrical ceilings its resource budget\nhas to respect.\n\nWHAT THIS PACKAGE DOES NOT DECIDE\n\nBaud rate, frame format, debounce settle time, poll\nversus interrupt, and the state-machine semantics are\nfirmware decisions and belong to their own stories.\n\nWhat is fixed here is everything an oscilloscope could\nsee with the power off: which pin, which resistor,\nwhich rail, which ground."
+		(exclude_from_sim no)
+		(at 404 235.8 0)
+		(size 172 55.6)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000021")
+	)
+	(sheet
+		(at 20 332)
+		(size 100 16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a17b0a0-0000-4000-8000-000000000100")
+		(property "Sheetname" "power-and-ground"
+			(at 20 330.73 0)
+			(effects
+				(font
+					(size 1.778 1.778)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power-and-ground.kicad_sch"
+			(at 20 349.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001"
+					(page "2")
+				)
+			)
+		)
+	)
+	(text "sheet 2\nthree supplies, one star ground"
+		(exclude_from_sim no)
+		(at 70 338 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000022")
+	)
+	(sheet
+		(at 133 332)
+		(size 100 16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a17b0a0-0000-4000-8000-000000000101")
+		(property "Sheetname" "due-load-switch"
+			(at 133 330.73 0)
+			(effects
+				(font
+					(size 1.778 1.778)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "due-load-switch.kicad_sch"
+			(at 133 349.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001"
+					(page "3")
+				)
+			)
+		)
+	)
+	(text "sheet 3\nD24 -> R1 -> Q1 -> the light"
+		(exclude_from_sim no)
+		(at 183 338 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000023")
+	)
+	(sheet
+		(at 246 332)
+		(size 100 16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a17b0a0-0000-4000-8000-000000000102")
+		(property "Sheetname" "due-wall-switch"
+			(at 246 330.73 0)
+			(effects
+				(font
+					(size 1.778 1.778)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "due-wall-switch.kicad_sch"
+			(at 246 349.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001"
+					(page "4")
+				)
+			)
+		)
+	)
+	(text "sheet 4\nSW1 -> debounce -> D26"
+		(exclude_from_sim no)
+		(at 296 338 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000024")
+	)
+	(sheet
+		(at 359 332)
+		(size 100 16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a17b0a0-0000-4000-8000-000000000103")
+		(property "Sheetname" "pi-button-and-led"
+			(at 359 330.73 0)
+			(effects
+				(font
+					(size 1.778 1.778)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "pi-button-and-led.kicad_sch"
+			(at 359 349.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001"
+					(page "5")
+				)
+			)
+		)
+	)
+	(text "sheet 5\nSW2 -> GPIO27; GPIO17 -> D1"
+		(exclude_from_sim no)
+		(at 409 338 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000025")
+	)
+	(sheet
+		(at 472 332)
+		(size 100 16)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5a17b0a0-0000-4000-8000-000000000104")
+		(property "Sheetname" "uart-interconnect"
+			(at 472 330.73 0)
+			(effects
+				(font
+					(size 1.778 1.778)
+					(bold yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "uart-interconnect.kicad_sch"
+			(at 472 349.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001"
+					(page "6")
+				)
+			)
+		)
+	)
+	(text "sheet 6\nUSART0 <-> PL011, 3.3 V, crossed"
+		(exclude_from_sim no)
+		(at 522 338 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170001-0000-4000-8000-000000000026")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
