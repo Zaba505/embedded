@@ -614,7 +614,7 @@
 			)
 		)
 	)
-	(text "to LA1 and Q1, sheet 3"
+	(text "to R14, D2 and Q1, sheet 3"
 		(exclude_from_sim no)
 		(at 127 207.62 0)
 		(effects
@@ -852,7 +852,7 @@
 			)
 		)
 	)
-	(text "leg 1  PS3(-) -> Q1 source, sheet 3, up to 1 A"
+	(text "leg 1  PS3(-) -> Q1 source, sheet 3, 9 mA fitted, 1 A ceiling"
 		(exclude_from_sim no)
 		(at 108 276 0)
 		(effects
@@ -899,7 +899,7 @@
 		)
 		(uuid "5a170002-0000-4000-8000-00000000002c")
 	)
-	(text_box "THE THREE 5 V RAILS ARE SEPARATE - DO NOT BRIDGE THEM\n\n  PS1  ->  the Raspberry Pi only    5 V, >= 2.5 A official supply\n  PS2  ->  the Arduino Due only     USB Programming port, or 7-12 V on VIN\n  PS3  ->  the light only           5 V, >= 2 A regulated\n\nThree failures this rules out:\n\n*  POWERING THE PI FROM THE DUE'S +5V PIN. That pin is the USB bus rail,\n   fused upstream at 500 mA. A Pi 3B+ idles near 400 mA and peaks well past\n   1 A. The Pi browns out, corrupts its SD card, and drags the Due down with\n   it - and the symptom looks like a firmware bug for a long time.\n\n*  POWERING THE LIGHT FROM EITHER BOARD. A 1 A load pulled through a board's\n   5 V pin and its ground plane puts the load's switching current into the\n   same copper the UART uses as its reference. See the ground rules below.\n\n*  BACK-FEEDING. Tying two 5 V rails together means two regulators fighting\n   over one node, with current flowing backwards into whichever is lower.\n   Neither supply is designed for it and neither has reverse protection.\n\nThe +5V pin on the Due's header is drawn on these sheets, unconnected and\nmarked, only so that you can see it is deliberately not used."
+	(text_box "THE THREE 5 V RAILS ARE SEPARATE - DO NOT BRIDGE THEM\n\n  PS1  ->  the Raspberry Pi only    5 V, >= 2.5 A official supply\n  PS2  ->  the Arduino Due only     USB Programming port, or 7-12 V on VIN\n  PS3  ->  the light only           5 V, >= 2 A regulated\n\nThree failures this rules out:\n\n*  POWERING THE PI FROM THE DUE'S +5V PIN. That pin is the USB bus rail,\n   fused upstream at 500 mA. A Pi 3B+ idles near 400 mA and peaks well past\n   1 A. The Pi browns out, corrupts its SD card, and drags the Due down with\n   it - and the symptom looks like a firmware bug for a long time.\n\n*  POWERING THE LIGHT FROM EITHER BOARD. A load at this switch's 1 A ceiling,\n   pulled through a board's 5 V pin and its ground plane, puts the load's\n   switching current into the same copper the UART uses as its reference. See\n   the ground rules below. D2 as fitted draws 9 mA and would not trouble\n   either board - PS3 is here for what the rail is built to permit, not for\n   what is plugged into it today.\n\n*  BACK-FEEDING. Tying two 5 V rails together means two regulators fighting\n   over one node, with current flowing backwards into whichever is lower.\n   Neither supply is designed for it and neither has reverse protection.\n\nThe +5V pin on the Due's header is drawn on these sheets, unconnected and\nmarked, only so that you can see it is deliberately not used."
 		(exclude_from_sim no)
 		(at 352 40 0)
 		(size 225 55.6)
@@ -920,10 +920,10 @@
 		)
 		(uuid "5a170002-0000-4000-8000-00000000002d")
 	)
-	(text_box "WHERE THE GROUNDS MEET, AND WHY THERE\n\nOne node: the negative terminal of PS3, the load supply. Exactly three legs\nleave it, and there is no other ground connection anywhere in the system.\n\n  leg 1   PS3(-)  ->  Q1 source                sheet 3   up to 1 A\n  leg 2   PS3(-)  ->  Due GND, LHS pos 18      sheet 3   microamps\n  leg 3   PS3(-)  ->  Pi GND, J8 pin 14        sheet 5   microamps\n\nPS1(-) and PS2(-) are not legs. Each supply's return is inside its own power\ncable and is that board's ground by construction; they are drawn here so the\ndiagram is complete, not because they are additional paths between subsystems.\n\nWHY PS3(-) AND NOT, SAY, THE DUE'S GROUND. That node is where the only large\ncurrent in the system already terminates. Star anywhere else and the 1 A load\nreturn has to travel through a length of wire that something else is using as\nits 0 V reference.\n\nHow much does that actually cost? Q1 switches in about 1 us (a 1 kohm gate\nresistor into 1077 pF of Ciss), so di/dt is roughly 1 A/us. A 300 mm jumper is\naround 0.3 uH. Share it between the load return and the UART reference and\n\n    V = L di/dt = 0.3 uH x 1 A/us = 0.3 V\n\nof ground bounce lands on a link whose low-level threshold is 0.9 V at the Pi.\nA third of the noise margin, from wiring alone. The star costs one jumper.\n\nRULES\n\n*  No ground wire anywhere else. In particular the Due-to-Pi UART harness\n   carries TX and RX only (sheet 6); a ground wire there closes a loop with\n   legs 2 and 3, and the loop it closes encircles the load return.\n*  Never omit leg 2. Q1's gate voltage is measured against its source. With\n   no shared reference, VGS is undefined and the MOSFET's state is a guess.\n*  Give the load return its own wire. Do not run it along a breadboard rail\n   that anything else is also calling ground."
+	(text_box "WHERE THE GROUNDS MEET, AND WHY THERE\n\nOne node: the negative terminal of PS3, the load supply. Exactly three legs\nleave it, and there is no other ground connection anywhere in the system.\n\n  leg 1   PS3(-)  ->  Q1 source                sheet 3   9 mA, 1 A ceiling\n  leg 2   PS3(-)  ->  Due GND, LHS pos 18      sheet 3   microamps\n  leg 3   PS3(-)  ->  Pi GND, J8 pin 14        sheet 5   microamps\n\nPS1(-) and PS2(-) are not legs. Each supply's return is inside its own power\ncable and is that board's ground by construction; they are drawn here so the\ndiagram is complete, not because they are additional paths between subsystems.\n\nWHY PS3(-) AND NOT, SAY, THE DUE'S GROUND. That node is where the load current\nalready terminates. Star anywhere else and the load return has to travel\nthrough a length of wire that something else is using as its 0 V reference.\n\nHow much does that actually cost? Q1 switches in about 1 us (a 1 kohm gate\nresistor into 1077 pF of Ciss). A 300 mm jumper is around 0.3 uH. Share it\nbetween the load return and the UART reference, and V = L di/dt gives\n\n    at the 1 A ceiling   0.3 uH x 1 A/us       =  300 mV\n    with D2 fitted       0.3 uH x 9.1 mA/us    =  2.7 mV\n\nagainst a low-level threshold of 0.9 V at the Pi. BE HONEST ABOUT WHICH ROW\nAPPLIES TODAY. 2.7 mV is nothing. With only D2 on the rail this star ground\nbuys no measurable margin, and a daisy chain would work fine on the bench.\nIt is drawn anyway because the top row is what this switch is built to permit,\nand grounds are the one thing that cannot be re-planned after the fact: a rig\nwired star from the start survives a real 5 V light replacing D2, and a rig\nwired as a chain has to come apart first. The star costs one jumper - which is\nthe entire price of keeping the top row available.\n\nRULES\n\n*  No ground wire anywhere else. In particular the Due-to-Pi UART harness\n   carries TX and RX only (sheet 6); a ground wire there closes a loop with\n   legs 2 and 3, and the loop it closes encircles the load return.\n*  Never omit leg 2. Q1's gate voltage is measured against its source. With\n   no shared reference, VGS is undefined and the MOSFET's state is a guess.\n*  Give the load return its own wire. Do not run it along a breadboard rail\n   that anything else is also calling ground."
 		(exclude_from_sim no)
 		(at 352 101.6 0)
-		(size 225 84.2)
+		(size 225 92)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -941,10 +941,10 @@
 		)
 		(uuid "5a170002-0000-4000-8000-00000000002e")
 	)
-	(text_box "SUPPLY SIZING\n\nPS3, the load supply, is the only one this design constrains:\n\n  load design ceiling      1.0 A at 5 V, i.e. 5 W\n  supply rating            >= 2 A, twice the ceiling\n  Q1 conduction loss       about 25 mW at 1 A, at the 3.05 V gate drive\n  C1 / C2                  220 uF + 100 nF across the rail, at Q1\n\nC1 supplies the switching edge locally so the inrush does not have to come\ndown the supply leads; C2 handles the high-frequency content that C1's ESR\nand lead inductance cannot. Neither is optional once the supply leads are\nlonger than a hand's width.\n\nPS1 and PS2 are simply what their boards already require - nothing in this\ndesign adds to either. 3.3 V is not supplied by anything here: both boards\nmake their own from their own 5 V input, which is why +3V3_DUE and +3V3_PI\nare separate nets on these sheets. They are separate regulators, and tying\nthem together would be the same mistake as tying the 5 V rails.\n\nTotal draw on either 3.3 V rail is under 5 mA - two pull-ups and, on the Pi,\none status LED."
+	(text_box "SUPPLY SIZING\n\nPS3, the load supply, is the only one this design constrains:\n\n  load design ceiling      1.0 A at 5 V, i.e. 5 W\n  load actually fitted     9.1 mA - D2 through R14, sheet 3\n  supply rating            >= 2 A, twice the ceiling\n  Q1 conduction loss       about 25 mW at the ceiling, 13 uW at 9 mA\n  C1 / C2                  220 uF + 100 nF across the rail, at Q1\n\nEvery row but the second is sized for the ceiling, which makes PS3 roughly two\nhundred times the supply D2 needs - a phone charger would run this rail. Keep\nthe rating if you intend a real 5 V light to replace D2; use whatever is on the\nshelf if you do not, and edit this line when you decide.\n\nC1 supplies the switching edge locally so the inrush does not have to come\ndown the supply leads; C2 handles the high-frequency content that C1's ESR\nand lead inductance cannot. At 9 mA there is no inrush worth the name and C1\nis along for the ride; it earns its place only at the ceiling. Neither is\noptional once a real load is fitted and the supply leads are longer than a\nhand's width.\n\nPS1 and PS2 are simply what their boards already require - nothing in this\ndesign adds to either. 3.3 V is not supplied by anything here: both boards\nmake their own from their own 5 V input, which is why +3V3_DUE and +3V3_PI\nare separate nets on these sheets. They are separate regulators, and tying\nthem together would be the same mistake as tying the 5 V rails.\n\nTotal draw on either 3.3 V rail is under 5 mA - two pull-ups and, on the Pi,\none status LED."
 		(exclude_from_sim no)
-		(at 352 191.8 0)
-		(size 225 53.4)
+		(at 352 198 0)
+		(size 225 66)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -962,7 +962,7 @@
 		)
 		(uuid "5a170002-0000-4000-8000-00000000002f")
 	)
-	(text_box "THE HONEST CAVEAT - USB MAY HAVE ALREADY TIED YOUR GROUNDS\n\nIf the Due and the Pi are both plugged into the same host computer, that host has bonded their grounds through its own\nchassis, and legs 2 and 3 now form a loop with it whether you drew one or not.\n\nThis is tolerable and not worth designing around: the loop carries no significant current, because the load return does\nnot pass through it. What matters is unchanged - the 1 A path is PS3(+) -> LA1 -> Q1 -> PS3(-), and nothing else shares it.\n\nIf you want the drawn topology to be the real one, power the Due from its barrel jack rather than from the same host as\nthe Pi."
+	(text_box "THE HONEST CAVEAT - USB MAY HAVE ALREADY TIED YOUR GROUNDS\n\nIf the Due and the Pi are both plugged into the same host computer, that host has bonded their grounds through its own\nchassis, and legs 2 and 3 now form a loop with it whether you drew one or not.\n\nThis is tolerable and not worth designing around: the loop carries no significant current, because the load return does\nnot pass through it. What matters is unchanged - the load path is PS3(+) -> R14 -> D2 -> Q1 -> PS3(-), and nothing else shares it.\n\nIf you want the drawn topology to be the real one, power the Due from its barrel jack rather than from the same host as\nthe Pi."
 		(exclude_from_sim no)
 		(at 20 330 0)
 		(size 320 27)

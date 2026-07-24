@@ -162,7 +162,7 @@
 		)
 		(uuid "5a170001-0000-4000-8000-000000000008")
 	)
-	(text_box "LA1\n5 V light\n<= 1 A"
+	(text_box "R14 + D2\nred LED, 330 ohm\n9 mA of a 1 A ceiling"
 		(exclude_from_sim no)
 		(at 340 64 0)
 		(size 80 12)
@@ -263,7 +263,7 @@
 		)
 		(uuid "5a170001-0000-4000-8000-000000000011")
 	)
-	(text "load return\n<= 1 A"
+	(text "load return\n9 mA"
 		(exclude_from_sim no)
 		(at 325 61 0)
 		(effects
@@ -354,10 +354,10 @@
 		)
 		(uuid "5a170001-0000-4000-8000-00000000001a")
 	)
-	(text_box "READ FIRST - FIVE RULES THAT KEEP THIS SYSTEM ALIVE\n\n1  BOTH BOARDS ARE 3.3 V AND NEITHER IS 5 V TOLERANT.\n   The SAM3X's absolute maximum on an input pin is -0.3 V to\n   +4.0 V (SAM3X datasheet table 45-1). The Raspberry Pi\n   documentation says plainly \"Do not use 5V for 3.3V\n   components\", and the failure mode is latch-up, which shorts\n   the 3V3 rail inside the die. 5 V on a signal wire is a dead\n   board, not a glitch.\n\n2  THE THREE 5 V RAILS ARE NEVER TIED TOGETHER.\n   PS1 feeds the Pi, PS2 feeds the Due, PS3 feeds the light,\n   and nothing else. See sheet 2.\n\n3  ONLY THE GROUNDS ARE COMMON, AND THEY MEET AT ONE POINT.\n   Star ground at PS3(-). The load return - up to 1 A - must\n   never share a wire with anything using it as a 0 V\n   reference. See sheet 2.\n\n4  NO LOAD CURRENT THROUGH ANY I/O PIN.\n   The light is switched by Q1's drain-source path. The SAM3X\n   pin drives a gate through 1 kohm and carries at most\n   3.3 mA, ever, and only for about a microsecond.\n\n5  THE LIGHT IS OFF UNTIL FIRMWARE SAYS OTHERWISE.\n   R2 makes OFF the power-on, in-reset, unprogrammed and\n   post-fault state. That is a property of the copper, not of\n   any line of Zig - and it is the subtlest part of this\n   design, because the SAM3X's reset state actively works\n   against it. Sheet 3 has the arithmetic."
+	(text_box "READ FIRST - FIVE RULES THAT KEEP THIS SYSTEM ALIVE\n\n1  BOTH BOARDS ARE 3.3 V AND NEITHER IS 5 V TOLERANT.\n   The SAM3X's absolute maximum on an input pin is -0.3 V to\n   +4.0 V (SAM3X datasheet table 45-1). The Raspberry Pi\n   documentation says plainly \"Do not use 5V for 3.3V\n   components\", and the failure mode is latch-up, which shorts\n   the 3V3 rail inside the die. 5 V on a signal wire is a dead\n   board, not a glitch.\n\n2  THE THREE 5 V RAILS ARE NEVER TIED TOGETHER.\n   PS1 feeds the Pi, PS2 feeds the Due, PS3 feeds the light,\n   and nothing else. See sheet 2.\n\n3  ONLY THE GROUNDS ARE COMMON, AND THEY MEET AT ONE POINT.\n   Star ground at PS3(-). The load return must never share a\n   wire with anything using it as a 0 V reference. At the 9 mA\n   D2 draws this buys nothing measurable; it is drawn for the\n   1 A ceiling the switch is built to permit, because grounds\n   cannot be re-planned later. See sheet 2.\n\n4  NO LOAD CURRENT THROUGH ANY I/O PIN.\n   The light is switched by Q1's drain-source path, and D2\n   sits on PS3's rail rather than on a pin - which is the one\n   thing that makes this different from blinky. The SAM3X pin\n   drives a gate through 1 kohm and carries at most 3.3 mA,\n   ever, and only for about a microsecond.\n\n5  THE LIGHT IS OFF UNTIL FIRMWARE SAYS OTHERWISE.\n   R2 makes OFF the power-on, in-reset, unprogrammed and\n   post-fault state. That is a property of the copper, not of\n   any line of Zig - and it is the subtlest part of this\n   design, because the SAM3X's reset state actively works\n   against it. Sheet 3 has the arithmetic."
 		(exclude_from_sim no)
 		(at 20 150 0)
-		(size 185 71)
+		(size 185 75)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -375,10 +375,10 @@
 		)
 		(uuid "5a170001-0000-4000-8000-00000000001b")
 	)
-	(text_box "BILL OF MATERIALS\n\nQ1      IRLB8721PbF     logic-level N-channel MOSFET, TO-220AB\nR1      1 kohm          gate series\nR2      12 kohm         gate pulldown - do not omit or resize\nR3      4.7 kohm        wall-switch pull-up\nR4      470 ohm         wall-switch series, caps contact current\nR5      4.7 kohm        Pi button pull-up\nR6      470 ohm         Pi button series, caps contact current\nR7      1 kohm          Pi status LED series\nR8-R11  220 ohm         UART line series, one per pin\nR12     10 kohm         Due RX idle pull-up\nR13     10 kohm         Pi RX idle pull-up\nC1      220 uF 16 V     load rail bulk, electrolytic\nC2      100 nF          load rail high-frequency decoupling\nC3      100 nF          wall-switch debounce\nC4      100 nF          Pi button debounce\nD1      LED, red        Pi boot / status indicator\nSW1     SPST maintained wall switch\nSW2     SPST momentary  Pi button\nLA1     5 V light       <= 1 A, resistive or LED module\nPS3     5 V, >= 2 A     dedicated regulated load supply\n\nAll resistors 1/4 W or better; none dissipates over 3 mW."
+	(text_box "BILL OF MATERIALS\n\nQ1      IRLB8721PbF     logic-level N-channel MOSFET, TO-220AB\nR1      1 kohm          gate series\nR2      12 kohm         gate pulldown - do not omit or resize\nR3      4.7 kohm        wall-switch pull-up\nR4      470 ohm         wall-switch series, caps contact current\nR5      4.7 kohm        Pi button pull-up\nR6      470 ohm         Pi button series, caps contact current\nR7      1 kohm          Pi status LED series\nR8-R11  220 ohm         UART line series, one per pin\nR12     10 kohm         Due RX idle pull-up\nR13     10 kohm         Pi RX idle pull-up\nR14     330 ohm         D2 series - sheet 3, numbered last because it\n                        was added after R1-R13 were assigned\nC1      220 uF 16 V     load rail bulk, electrolytic\nC2      100 nF          load rail high-frequency decoupling\nC3      100 nF          wall-switch debounce\nC4      100 nF          Pi button debounce\nD1      LED, red        Pi boot / status indicator\nD2      LED, red        the light - same 5 mm part as D1 and as blinky\nSW1     SPST maintained wall switch\nSW2     SPST momentary  Pi button\nPS3     5 V, >= 2 A     dedicated regulated load supply\n\nAll resistors 1/4 W or better. R14 dissipates 27 mW; every other\nresistor is under 3 mW.\n\nTHE LOAD IS AN LED, AND THE SWITCH IS BUILT FOR MORE. D2 draws\n9.1 mA. Q1, PS3, C1 and the star ground are sized for the 1.0 A\nceiling on sheet 3, so a real 5 V light can replace D2 without\ntouching anything else. Where these sheets say 1 A they mean that\nceiling, never the current flowing today."
 		(exclude_from_sim no)
-		(at 20 227 0)
-		(size 185 57.8)
+		(at 20 230 0)
+		(size 185 73)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -458,10 +458,10 @@
 		)
 		(uuid "5a170001-0000-4000-8000-00000000001f")
 	)
-	(text_box "ELECTRICAL CEILINGS - FEEDS resource-budget.md SECTION 4\n\nARDUINO DUE / SAM3X8E             value         source\n  I/O voltage tolerance           3.3 V only    45-1: -0.3 to +4.0 V\n  VIL max / VIH min               0.99 / 2.31 V 45-2: 0.3 / 0.7 x VDDIO\n  IOH per pin, Group 1            -15 mA        45-2 at VOH = VDDIO-0.4\n  IOH per pin, Group 2            -3 mA         45-2 note 3\n  IOL per pin, Group 1            9 mA          45-2 at VOL = 0.4 V\n  IOL per pin, Group 2            6 mA          45-2 note 3\n  Input hysteresis (most pins)    150-500 mV    45-2 Vhys\n  Internal pull-up (all, after    50-150 kohm   45-2 RPULLUP\n    reset - see sheet 3)\n  TOTAL DC output, all I/O        130 mA        45-1, 144-lead LQFP\n\nRASPBERRY PI / BCM2837 class      value         source\n  I/O voltage tolerance           3.3 V only    RPi GPIO documentation\n  VIL max / VIH min               0.9 / 1.6 V   RPi GPIO voltage table\n  IOL / IOH per pin, max drive    18 / 17 mA    same, at 16 mA setting\n  Default drive strength          8 mA          same, footnote b\n  Internal pull-up / pull-down    50-65 kohm    same, RPU / RPD\n\nLOAD PATH                         value         source\n  Load rail                       5.0 V         PS3\n  Load current, design ceiling    1.0 A         this design\n  MOSFET VDS / ID                 30 V / 62 A   IRLB8721PbF datasheet\n  MOSFET VGS(th) min / max        1.35 / 2.35 V IRLB8721PbF static\n  MOSFET RDS(on) at VGS = 4.5 V   16 mohm max   IRLB8721PbF static\n\nWORST-CASE ACTUAL DRAW\n  gate drive, transient           3.3 mA    22 % of PA15's ceiling\n  wall-switch pull-up             0.70 mA   only while SW1 is closed\n  UART line, driven low           0.32 mA   per line\n  Pi status LED                   1.4 mA    17 % of the 8 mA default\n  everything on the Due           < 5 mA    4 % of the 130 mA total"
+	(text_box "ELECTRICAL CEILINGS - FEEDS resource-budget.md SECTION 4\n\nARDUINO DUE / SAM3X8E             value         source\n  I/O voltage tolerance           3.3 V only    45-1: -0.3 to +4.0 V\n  VIL max / VIH min               0.99 / 2.31 V 45-2: 0.3 / 0.7 x VDDIO\n  IOH per pin, Group 1            -15 mA        45-2 at VOH = VDDIO-0.4\n  IOH per pin, Group 2            -3 mA         45-2 note 3\n  IOL per pin, Group 1            9 mA          45-2 at VOL = 0.4 V\n  IOL per pin, Group 2            6 mA          45-2 note 3\n  Input hysteresis (most pins)    150-500 mV    45-2 Vhys\n  Internal pull-up (all, after    50-150 kohm   45-2 RPULLUP\n    reset - see sheet 3)\n  TOTAL DC output, all I/O        130 mA        45-1, 144-lead LQFP\n\nRASPBERRY PI / BCM2837 class      value         source\n  I/O voltage tolerance           3.3 V only    RPi GPIO documentation\n  VIL max / VIH min               0.9 / 1.6 V   RPi GPIO voltage table\n  IOL / IOH per pin, max drive    18 / 17 mA    same, at 16 mA setting\n  Default drive strength          8 mA          same, footnote b\n  Internal pull-up / pull-down    50-65 kohm    same, RPU / RPD\n\nLOAD PATH                         value         source\n  Load rail                       5.0 V         PS3\n  Load current, design ceiling    1.0 A         this design\n  Load current, as fitted         9.1 mA        D2 via R14, sheet 3\n  MOSFET VDS / ID                 30 V / 62 A   IRLB8721PbF datasheet\n  MOSFET VGS(th) min / max        1.35 / 2.35 V IRLB8721PbF static\n  MOSFET RDS(on) at VGS = 4.5 V   16 mohm max   IRLB8721PbF static\n\nWORST-CASE ACTUAL DRAW\n  gate drive, transient           3.3 mA    22 % of PA15's ceiling\n  wall-switch pull-up             0.70 mA   only while SW1 is closed\n  UART line, driven low           0.32 mA   per line\n  Pi status LED                   1.4 mA    17 % of the 8 mA default\n  everything on the Due           < 5 mA    4 % of the 130 mA total\n  D2, the light                   9.1 mA    on PS3, not on any pin"
 		(exclude_from_sim no)
 		(at 404 150 0)
-		(size 172 79.8)
+		(size 172 84)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -587,7 +587,7 @@
 			)
 		)
 	)
-	(text "sheet 3\nD24 -> R1 -> Q1 -> the light"
+	(text "sheet 3\nD24 -> R1 -> Q1 -> R14 -> D2"
 		(exclude_from_sim no)
 		(at 183 338 0)
 		(effects

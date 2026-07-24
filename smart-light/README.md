@@ -1,7 +1,13 @@
 # smart-light
 
-A wall switch, a light on its own 5 V supply, and a bare-metal Raspberry Pi that can toggle the light
-over a UART — controlled by an [Arduino Due](https://docs.arduino.cc/hardware/due/) (Atmel SAM3X8E).
+A wall switch, an LED on its own 5 V supply, and a bare-metal Raspberry Pi that can toggle it over a
+UART — controlled by an [Arduino Due](https://docs.arduino.cc/hardware/due/) (Atmel SAM3X8E).
+
+The "light" is `D2`, the same 5 mm red LED [blinky](../arduino-due/blinky/README.md) uses. What is
+different is *where* it sits: not on an I/O pin, but on a dedicated 5 V rail with a MOSFET underneath
+it. The switching topology is sized for a 1 A load; the LED draws 9 mA of that. Both numbers appear
+throughout these sheets and they are never interchangeable — see
+[Two currents](#two-currents-and-which-one-a-number-means).
 
 **There is no firmware here yet, and that is the point.** Per the repo's
 [hardware-first rule](../CLAUDE.md), the electrical design is the first deliverable of a project and
@@ -41,6 +47,28 @@ Two boards, three supplies, one ground:
 - The **light** never draws current through an I/O pin, and it is **off** whenever the Due is in
   reset, unprogrammed, or halted after a fault.
 
+### Two currents, and which one a number means
+
+Two LEDs in this system are wired in genuinely different ways, and the contrast is the point:
+
+| | Driven by | Series R | Current | Limited by |
+|---|---|---|---|---|
+| `D1`, Pi status LED (sheet 5) | `GPIO17` **directly** | `R7` = 1 kΩ | 1.4 mA | the pin's 8 mA drive |
+| `D2`, the light (sheet 3) | `Q1`, off the **PS3 rail** | `R14` = 330 Ω | 9.1 mA | only the rail and `R14` |
+
+`D1` is blinky's arrangement: an LED hanging off a GPIO, its brightness capped by what the pin may
+source. `D2` is what this project is actually about — the pin drives a *gate*, the load current comes
+from somewhere else entirely, and the LED could be a 1 A lamp without the firmware knowing.
+
+Which means **`Q1`, `PS3`, `C1` and the star ground are all sized for 1 A, and `D2` draws 9 mA of
+it.** That gap is deliberate: a real 5 V light can replace `D2` with no other change. But it makes
+every current on these sheets ambiguous unless it says which it is, so they all do. Where a sheet
+says 1 A it means *the ceiling this switch is built to permit*, never the current flowing today.
+
+The honest cost of that choice: a 62 A MOSFET is switching 9 mA, `PS3` is roughly two hundred times
+the supply `D2` needs, and the star ground buys 2.7 mV of margin where it was drawn to buy 300 mV.
+The sheets say so rather than letting the arithmetic imply a load that is not there.
+
 ## The sheets
 
 Editable KiCad source is in [`hardware/`](hardware/); the SVG next to each is the export of that
@@ -51,16 +79,37 @@ sheet. Each firmware story implements against exactly one of them.
 ![Power and ground](hardware/smart-light-power-and-ground.svg)
 
 Three separate 5 V rails that are never bridged, and a **star ground at the load supply's negative
-terminal** with exactly three legs. The rationale is quantitative rather than folklore: Q1 switches
-1 A in about 1 µs, a 300 mm jumper is roughly 0.3 µH, and `V = L·di/dt` puts **0.3 V** of ground
-bounce onto any wire shared between the load return and a signal reference — a third of the Pi's
-0.9 V low-level noise margin, from wiring alone.
+terminal** with exactly three legs. Q1 switches in about 1 µs and a 300 mm jumper is roughly 0.3 µH,
+so `V = L·di/dt` on a wire shared between the load return and a signal reference gives:
+
+| | Ground bounce | Against the Pi's 0.9 V low-level margin |
+|---|---|---|
+| at the 1 A ceiling | **300 mV** | a third of it, from wiring alone |
+| with `D2` fitted | **2.7 mV** | nothing |
+
+Only the first row justifies a star ground, and it is not the row that applies today. It is drawn
+anyway because grounds are the one thing that cannot be re-planned after the fact — a rig wired star
+from the start survives a real light replacing `D2`, a rig wired as a daisy chain has to come apart
+first — and because the star costs exactly one jumper.
 
 ### 3 — Due low-side load switch
 
 ![Due load switch](hardware/smart-light-due-load-switch.svg)
 
-`D24`/`PA15` → 1 kΩ → the gate of an IRLB8721PbF, with the light on PS3 and a 12 kΩ gate pulldown.
+`D24`/`PA15` → 1 kΩ → the gate of an IRLB8721PbF, with `R14` → `D2` on PS3 and a 12 kΩ gate pulldown.
+
+The load branch is `+5V_LOAD` → `R14` (330 Ω) → `D2` anode, cathode → Q1's drain:
+
+```
+I = (5.0 V − Vf) / 330 Ω = (5.0 − 2.0) / 330 = 9.1 mA
+```
+
+Q1's drain-source drop is not in that sum — at 9 mA even a pessimistic 160 mΩ contributes 1.4 mV.
+Across the 1.8–2.1 V Vf spread of red LEDs the current lands between 8.8 and 9.7 mA, under half a
+5 mm LED's 20 mA rating. `R14` dissipates 27 mW, `D2` about 18 mW. Anode (long leg, round rim) goes
+to `R14`; cathode (short leg, flat on the rim) to Q1's drain. Backwards, `D2` simply never lights and
+nothing is damaged — so a dark load with a correct gate voltage is a polarity check before it is a
+fault.
 
 **This sheet is why the hardware-first rule exists.** "Default-OFF" needs more than a gate pulldown,
 because the SAM3X datasheet (§31.5.1) says *"After reset, all of the pull-ups are enabled, i.e.
@@ -76,6 +125,9 @@ An unprogrammed board with the 100 kΩ part sits with the MOSFET half-enhanced, 
 glowing. No firmware can fix that, because none is running. The sheet records the design *rule*, not
 just the number: **`V_gate` at reset must stay below the MOSFET's minimum `V_GS(th)` with the
 internal pull-up at its minimum resistance.**
+
+This argument is untouched by the load being an LED. It is about the gate, and the gate does not know
+what is on the drain — which is exactly why it was worth settling before any firmware exists.
 
 ### 4 — Due wall switch
 
@@ -213,6 +265,7 @@ These are the rows the firmware stories' `resource-budget.md` §4 inherits, from
 | Pi — default drive strength | 8 mA | same, footnote b |
 | Pi — internal pull-up / pull-down | 50–65 kΩ | same, `RPU` / `RPD` |
 | **Load rail** | 5.0 V, **1.0 A design ceiling** | PS3, this design |
+| Load current, as fitted | 9.1 mA | `D2` via `R14`, sheet 3 |
 | MOSFET `VDS` / `ID` | 30 V / 62 A at `VGS = 10 V` | IRLB8721PbF datasheet |
 | MOSFET `VGS(th)` | 1.35 / 1.80 / 2.35 V (min/typ/max) | same, static characteristics |
 | MOSFET `RDS(on)` | 16 mΩ max at `VGS = 4.5 V` | same |
@@ -226,12 +279,18 @@ Worst-case *actual* draw, for contrast — the system is nowhere near any of the
 | UART line, driven low | 0.32 mA | per line |
 | Pi status LED | 1.4 mA | 17 % of the 8 mA default drive |
 | Everything on the Due | < 5 mA | 4 % of the 130 mA device total |
+| `D2`, the light | 9.1 mA | on PS3, through no pin at all |
 
 One number is deliberately *not* asserted. The IRLB8721PbF's lowest guaranteed `RDS(on)` row is at
 `VGS = 4.5 V`, and this gate network delivers 3.05 V. Rather than quote a number the datasheet does
 not give, sheet 3 shows the margin: `VGS(th)` max is 2.35 V so the part is 0.7 V above threshold at
-the worst corner, figure 3 reads roughly 10 A at `VGS = 3.0 V` — ten times this design's load — and
-even at a pessimistic ten times the 4.5 V figure a 1 A load dissipates 0.16 W in a part rated 65 W.
+the worst corner, figure 3 reads roughly 10 A at `VGS = 3.0 V` — ten times the ceiling — and even at
+a pessimistic ten times the 4.5 V figure a 1 A load dissipates 0.16 W in a part rated 65 W.
+
+All of which is an argument about the ceiling, and at 9 mA none of it is stressed: a 62 A MOSFET
+switching an LED is a placeholder holding a size open, not engineering. Q1 stays this part so that
+substituting a real light is a one-component change. That is the whole reason, and it is better
+stated than left for the numbers to imply.
 
 ## Bill of materials
 
@@ -245,17 +304,23 @@ even at a pessimistic ten times the 4.5 V figure a 1 A load dissipates 0.16 W in
 | `R7` | 1 kΩ | Pi status LED series |
 | `R8`–`R11` | 220 Ω | UART line series, one per pin |
 | `R12`, `R13` | 10 kΩ | UART receiver idle pull-ups |
+| `R14` | 330 Ω | `D2` series — numbered last because it was added after `R1`–`R13` |
 | `C1` | 220 µF, 16 V | load rail bulk, electrolytic |
 | `C2` | 100 nF | load rail high-frequency decoupling |
 | `C3`, `C4` | 100 nF | wall-switch and Pi-button debounce |
 | `D1` | LED, red | Pi boot / status indicator |
+| `D2` | LED, red | the light — same 5 mm part as `D1` and as blinky's |
 | `SW1` | SPST maintained | wall switch — an edge in *either* direction is one toggle |
 | `SW2` | SPST momentary | Pi button — only its closing edge is an event |
-| `LA1` | 5 V light, ≤ 1 A | resistive or LED module; an inductive load needs a flyback diode |
-| `PS3` | 5 V, ≥ 2 A regulated | dedicated load supply |
+| `PS3` | 5 V, ≥ 2 A regulated | dedicated load supply, rated for the ceiling rather than for `D2` |
 
-All resistors 1/4 W or better; none dissipates over 3 mW. `PS1` and `PS2` are whatever the two
-boards already require — a 5 V/2.5 A supply for the Pi, and USB or 7–12 V on `VIN` for the Due.
+All resistors 1/4 W or better. `R14` dissipates 27 mW; every other resistor is under 3 mW. `PS1` and
+`PS2` are whatever the two boards already require — a 5 V/2.5 A supply for the Pi, and USB or 7–12 V
+on `VIN` for the Due.
+
+Substituting a real 5 V light for `D2` is a one-component change and needs nothing else resized. An
+**inductive** load — a relay coil, a fan, a motor — additionally needs a flyback diode (cathode to
+`+5V_LOAD`, anode to Q1's drain) fitted *before* power is applied; sheet 3 says why.
 
 ## What comes next
 
