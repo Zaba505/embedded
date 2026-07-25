@@ -18,6 +18,8 @@ Cross-project, architecture-agnostic building blocks live in [`lib/`](lib):
 | Library | Description |
 |---|---|
 | [`lib/assert`](lib/assert) | A flash-cheap assertion primitive: a failed assertion lowers to a bare trap, configurable on/off per project, with the safe failure state delegated to the project |
+| [`lib/readback`](lib/readback) | Write-then-verify helpers for peripheral register configuration: after a config write, read the status back and assert the change took, so a silently-dropped write is caught at its cause |
+| [`lib/hal`](lib/hal) | A `comptime` hardware-abstraction seam: logic talks to an injected representation of its hardware — one contract, a memory-mapped backend and a host backend — so it builds for its target and for the host, at zero bytes of code |
 
 ## Dagger modules
 
