@@ -6,11 +6,30 @@ on:
   pull_request:
 
 # Module pins live in dagger.json now: the top-level `ci` Dagger module installs
-# the `zig` and `bossac` toolchains, pinning zig by commit SHA (z5labs/devex
-# publishes no tags -- bump it deliberately). So the steps below call
-# `dagger call <fn>` against that module directly, no `-m <ref>@SHA` per step.
+# the `zig`, `bossac` and `flash` toolchains, pinning the z5labs/devex ones by
+# commit SHA (that repo publishes no tags -- bump them deliberately). So the
+# steps below call `dagger call <fn>` against that module directly, no
+# `-m <ref>@SHA` per step. `flash` is installed for the developer flashing path
+# documented in arduino-due/blinky/README.md; no job here calls it, since
+# nothing in CI has a board attached.
 # DAGGER_VERSION pins the CLI to the engine the module targets; the toolchain
 # feature is experimental in this version, so the CLI is pinned with it.
+#
+# EVERY STEP IN THIS FILE IS A `dagger call`, WITH TWO EXCEPTIONS (#41), and
+# they are the two that appear in every job -- so they are justified here once
+# rather than five times:
+#
+#   - `actions/checkout` puts the repository on disk. Nothing to daggerize:
+#     Dagger's own inputs are host paths, so a checkout is the precondition for
+#     calling anything at all, not a gate that could live in the module.
+#   - `Install Dagger CLI` bootstraps the tool the rest of the file uses. A
+#     function cannot install the thing that invokes functions. It is pinned to
+#     DAGGER_VERSION so the bootstrap is as reproducible as the gates it runs.
+#
+# Everything else -- including the plumbing that materializes build artifacts
+# for the gates that take files -- is a function in the `ci` module or one of
+# its toolchains, runnable by a developer with the same single command. Adding
+# a step that is neither means writing down, here, why it cannot be a function.
 env:
   DAGGER_VERSION: "0.21.7"
   PROJECT: ./arduino-due/blinky
@@ -98,12 +117,18 @@ jobs:
       - name: Build firmware
         run: dagger call zig build --source="$PROJECT"
 
-      - name: Export ELF and raw image
+      # Plumbing, not a gate -- but a function all the same. This used to be two
+      # chained `dagger call`s: the ELF was exported to the host purely so a
+      # second call could hand it back to `zig obj-copy`, which made the
+      # composition workflow text rather than something a developer could run
+      # as one command. The ci module's artifacts function is that chain, so
+      # what remains here is a single call whose output the gates below read.
+      # It builds through the same cached `zig build` the step above ran, which
+      # stays a step of its own so a compile failure is reported as one.
+      - name: Export the firmware artifacts
         run: |
-          dagger call zig build --source="$PROJECT" \
-            file --path=bin/blinky.elf export --path=./blinky.elf
-          dagger call zig obj-copy \
-            --input=./blinky.elf --format=binary export --path=./blinky.bin
+          dagger call artifacts --source="$PROJECT" --elf=bin/blinky.elf \
+            export --path=./artifacts
 
       # The strongest check available without a board attached, and the same
       # `dagger call` a developer runs locally. The ci module's image checker
@@ -116,7 +141,7 @@ jobs:
       - name: Assert the image is well-formed
         run: |
           dagger call image-check \
-            --image=./blinky.elf \
+            --image=./artifacts/blinky.elf \
             --target="$PROJECT/target.json"
 
       # Exercises the flash path as far as is possible with no hardware: this
@@ -124,7 +149,7 @@ jobs:
       - name: Render the flash command
         run: |
           dagger call bossac sam-ba \
-            --firmware=./blinky.bin \
+            --firmware=./artifacts/blinky.bin \
             --usbip=ci.invalid:3240 --busid=0-0 \
             plan
 
@@ -155,10 +180,13 @@ jobs:
       # firmware's "Assert the reset vectors are sane": build the size-delta
       # benchmark for a real MCU target and fail if a failed assertion costs
       # more than a bare trap -- i.e. if formatting/unwind/panic machinery ever
-      # sneaks back into the failure path. The script is the same one a
-      # developer runs locally, so CI and the README measure identically.
+      # sneaks back into the failure path. Which images to compare, over how
+      # many assertions and against what budget, all come from this package's
+      # bench/size-budget.json, so the gate is config here exactly as the image
+      # checker is a target.json -- and the same single command a developer
+      # runs locally, so CI and the README measure identically.
       - name: Assert an assertion compiles to a bare trap
-        run: ./lib/assert/bench/measure.sh
+        run: dagger call size-check --source="$LIB"
 
   readback:
     name: lib/readback
@@ -214,7 +242,8 @@ jobs:
       # discovered by this package's build.zig `test` step.
       #
       # What remains here is the claim the host cannot make: that the
-      # abstraction is free. The script below builds the same logic twice --
+      # abstraction is free. The same size gate lib/assert runs, pointed at this
+      # package's bench/size-budget.json: it builds the same logic twice --
       # through the seam and as hand-written register pokes -- for a Cortex-M3
       # and a Cortex-A53 at ReleaseSmall, and fails if the seam's .text exceeds
       # the hand-written version's by even a byte. Two architectures because
@@ -222,4 +251,4 @@ jobs:
       # already caught a real regression (see the note on `Level`'s tag type in
       # hal.zig), which is why it is a gate and not a README table.
       - name: Assert the seam costs nothing
-        run: ./lib/hal/bench/measure.sh
+        run: dagger call size-check --source="$LIB"

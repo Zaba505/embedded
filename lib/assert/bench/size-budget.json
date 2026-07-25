@@ -1,0 +1,25 @@
+{
+  "name": "lib/assert",
+  "claim": "a failed assertion compiles to a bare trap",
+  "step": "bench",
+  "optimize": "ReleaseSmall",
+  "section": "text",
+  "costs": [
+    {
+      "name": "8 assertions",
+      "baseline": "off8",
+      "subject": "on8",
+      "instances": 8,
+      "unit": "assertion",
+      "max_bytes": 32
+    },
+    {
+      "name": "16 assertions",
+      "baseline": "off16",
+      "subject": "on16",
+      "instances": 16,
+      "unit": "assertion",
+      "max_bytes": 32
+    }
+  ]
+}

@@ -146,17 +146,25 @@ off a link, a report written back), because an abstraction's cost shows up in br
 not in straight-line stores.
 
 ```
-  optimize=ReleaseSmall  threshold=0 bytes of .text per architecture
+lib/hal -- the hardware-abstraction seam costs nothing
+  step=bench  optimize=ReleaseSmall  section=.text
 
-  cortex-m3    direct  198 bytes   seam  198 bytes   delta +0
-  cortex-a53   direct  296 bytes   seam  296 bytes   delta +0
+  cortex-m3  (thumb, SAM3X8E)    direct-cortex-m3    198 B  ->  seam-cortex-m3    198 B   delta +0 B = 0.0 B/architecture  (max 0)
+  cortex-a53 (aarch64, BCM2837)  direct-cortex-a53   296 B  ->  seam-cortex-a53   296 B   delta +0 B = 0.0 B/architecture  (max 0)
 
-OK: the seam costs 0 bytes on every architecture measured.
+OK: 2 measurement(s) within budget; the hardware-abstraction seam costs nothing.
 ```
 
 Not merely equal in size: on both targets the two roots compile to a **byte-identical instruction
-stream**. `./bench/measure.sh` is the gate (threshold 0 bytes), and CI runs the same script a
-developer does.
+stream**. Reproduce it, from the repository root, with the single command CI runs:
+
+```
+dagger call size-check --source=./lib/hal
+```
+
+The budget — 0 bytes per architecture — and the image pairs it compares live in
+[`bench/size-budget.json`](bench/size-budget.json); the gate itself is the `ci` module's shared
+`size-check` function, the same one [`lib/assert`][assert] holds its per-assertion cost to.
 
 > **The gate has already earned its keep.** `Level` began as `enum(u1)` — the width the values
 > actually need — and cost 56 bytes of `.text` on Cortex-M3 and 68 on Cortex-A53. A one-bit value
@@ -185,7 +193,7 @@ developer does.
 |---|---|
 | Logic builds for both its real target and the host | `bench/seam.zig` builds for two freestanding targets; the same wrappers and the `fake` backends build and run on the host in `zig build test` |
 | Real and host backends interchangeable behind one interface | `hal.zig`'s "an mmio backend and a fake backend are interchangeable" test runs one generic routine over both, asserting the same observable outcome; every backend in this package is asserted to `conform`, and a backend that does not is asserted *not* to |
-| Runtime-free via `comptime`, verified against code size | `bench/measure.sh`: 0 bytes on Cortex-M3 and Cortex-A53, byte-identical instruction streams, gated in CI |
+| Runtime-free via `comptime`, verified against code size | `dagger call size-check --source=./lib/hal`: 0 bytes on Cortex-M3 and Cortex-A53, byte-identical instruction streams, gated in CI |
 | Architecture-neutral, documented as the prerequisite for host testing / simulation | No CPU, peripheral or address appears in `hal.zig`; the backends are parameterized by register shape and proven on two architectures; [`docs/host-testing.md`][host-testing] records the seam as the prerequisite |
 | Applied to a project whose logic warrants it | **Not yet, and deliberately.** See below. |
 
@@ -222,7 +230,7 @@ no library decides another's policy.
 | [`hal.zig`](hal.zig) | The seam: `Level`, the contract machinery (`Contract`/`verify`/`conforms`), the four contracts, the four wrappers, host tests |
 | [`mmio.zig`](mmio.zig) | Memory-mapped backends, parameterized by register shape, plus their host tests |
 | [`fake.zig`](fake.zig) | Host backends: observable, controllable, bounded, deterministic |
-| [`bench/`](bench) | The size evidence: identical logic through the seam and by hand, two architectures, plus `measure.sh` (the CI gate) |
+| [`bench/`](bench) | The size evidence: identical logic through the seam and by hand, two architectures, plus `size-budget.json` (what the CI gate holds them to) |
 | [`build.zig`](build.zig) | Exports the `hal` module; the `test` step and the `bench` step |
 | [`build.zig.zon`](build.zig.zon) | Package manifest (name, Zig version pin) |
 

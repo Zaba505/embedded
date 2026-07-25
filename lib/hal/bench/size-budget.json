@@ -1,0 +1,25 @@
+{
+  "name": "lib/hal",
+  "claim": "the hardware-abstraction seam costs nothing",
+  "step": "bench",
+  "optimize": "ReleaseSmall",
+  "section": "text",
+  "costs": [
+    {
+      "name": "cortex-m3  (thumb, SAM3X8E)",
+      "baseline": "direct-cortex-m3",
+      "subject": "seam-cortex-m3",
+      "instances": 1,
+      "unit": "architecture",
+      "max_bytes": 0
+    },
+    {
+      "name": "cortex-a53 (aarch64, BCM2837)",
+      "baseline": "direct-cortex-a53",
+      "subject": "seam-cortex-a53",
+      "instances": 1,
+      "unit": "architecture",
+      "max_bytes": 0
+    }
+  ]
+}

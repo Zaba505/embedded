@@ -1,13 +1,27 @@
 // Continuous-integration gates for this repository, as Dagger functions.
 //
 // The GitHub Actions workflow is a thin shell: it installs the Dagger CLI and
-// calls the functions here, plus the `zig` and `bossac` toolchains this module
-// installs (see dagger.json). So every gate is defined once, runs identically
-// on a developer's machine and in CI, and is versioned with the code it checks.
+// calls the functions here, plus the toolchains this module installs (see
+// dagger.json). So every gate is defined once, runs identically on a
+// developer's machine and in CI, and is versioned with the code it checks.
+//
+// The toolchains are `zig` (build, fmt, size, objcopy), `bossac` and `flash`.
+// The last two flash a board, so CI never calls them -- `flash` is installed
+// anyway, because a tool reached only from a developer's machine is precisely
+// the one that would otherwise be invoked with a floating module ref, and one
+// pinned toolchain list is easier to keep honest than a pin in a README.
+//
+// That is now true without exception (#41): checking out the repository and
+// installing the CLI are the only steps in ci.yaml that are not a `dagger
+// call`, and the workflow says in its own header why neither can be a function.
+// The size gates that used to be bash entry points are SizeCheck; the firmware
+// export that used to be two calls chained through a host file is Artifacts.
 //
 // The Zig toolchain is pinned by commit SHA in dagger.json: z5labs/devex
 // publishes no git tags, and floating on its main branch would let an upstream
 // change break the build with no commit here to point at. Bump it deliberately.
+// That pin exists in exactly one place -- every gate reaches the toolchain
+// through this module, so there is no second copy to drift out of step with it.
 package main
 
 import (
