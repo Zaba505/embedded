@@ -29,7 +29,8 @@
 //! the indirection it adds, and here there is none to add. The claim is not
 //! taken on faith: `bench/` builds the same logic twice, once through the seam
 //! and once as hand-written register pokes, for two different architectures,
-//! and `bench/measure.sh` gates the `.text` delta at zero.
+//! and `dagger call size-check --source=./lib/hal` gates the `.text` delta at
+//! zero (the budget lives in `bench/size-budget.json`).
 //!
 //! ## Four things this package deliberately does NOT do
 //!
@@ -621,7 +622,8 @@ pub fn Clock(comptime Backend: type) type {
 // a broken one, that the wrappers' derived logic is right, and -- the headline
 // -- that logic written once against the seam runs unchanged over a memory
 // mapped backend and a fake one. What they cannot prove is the code-size claim;
-// that is measured on target by bench/measure.sh, the same division of labour
+// that is measured on target by the size gate over `bench/` (`dagger call
+// size-check --source=./lib/hal`), the same division of labour
 // docs/host-testing.md describes.
 
 const testing = std.testing;

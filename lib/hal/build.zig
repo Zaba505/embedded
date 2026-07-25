@@ -50,8 +50,10 @@ pub fn build(b: *std.Build) void {
     // Two roots implementing the SAME logic -- one through the seam, one as
     // hand-written register pokes -- built for two different architectures. The
     // .text delta between the pair is the seam's runtime cost, and the claim is
-    // that it is exactly zero. See bench/measure.sh, which builds this step and
-    // reads each image's .text.
+    // that it is exactly zero. The gate that builds this step, reads each
+    // image's .text and holds the delta to a budget is the ci module's shared
+    // size check -- `dagger call size-check --source=./lib/hal` -- configured
+    // by bench/size-budget.json.
     //
     // Two architectures rather than one because "architecture-neutral" is a
     // claim about more than one machine: Cortex-M3 (thumb, the Arduino Due's

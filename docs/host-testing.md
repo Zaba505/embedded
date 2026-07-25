@@ -65,8 +65,10 @@ else in host-side simulation is reachable until that is true.
 [`lib/hal`](../lib/hal) ([#18]) is that seam, in reusable form: logic is written against a
 **contract** — the operations a project needs to *do* — with a memory-mapped backend on target and a
 host backend a test drives. It is `comptime`, so the indirection resolves at compile time and the
-seam costs **0 bytes** of `.text` (measured on two architectures), which is what makes it affordable
-on a flash budget.
+seam costs **0 bytes** of `.text` — measured on two architectures by the size gate
+(`dagger call size-check --source=./lib/hal`), which is what makes it affordable on a flash budget.
+That gate is the other half of the division of labour this document draws: code size is a claim
+about generated machine code, so it is proven by weighing built images, never by a host test.
 
 What that changes about this document:
 

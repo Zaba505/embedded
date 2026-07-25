@@ -71,25 +71,20 @@ ARM Cortex Debug standard (`Arduino pin N == Cortex pin (11 − N)`).
 ## Build
 
 No host Zig toolchain. The version is pinned by `minimum_zig_version` in `build.zig.zon`, which the
-module reads.
+module reads. Run these **from the repository root**: the toolchain comes from the [`ci`](../../ci)
+module, which pins it once in [`dagger.json`](../../dagger.json), so no command here carries a
+module ref or a commit SHA of its own — and these are the same commands CI runs.
 
 ```sh
-DEVEX=github.com/z5labs/devex/daggerverse
-SHA=bc5cee36080549722c6d3bf02152aa7d46d2dcf3
-
 # Format check (check-only; never rewrites)
-dagger -m $DEVEX/zig@$SHA call fmt --source=./arduino-due/blinky
+dagger call zig fmt --source=./arduino-due/blinky
 
-# Build, and export the ELF
-dagger -m $DEVEX/zig@$SHA call build --source=./arduino-due/blinky \
-  file --path=bin/blinky.elf export --path=./blinky.elf
-
-# Raw image, which is what bossac wants
-dagger -m $DEVEX/zig@$SHA call obj-copy \
-  --input=./blinky.elf --format=binary export --path=./blinky.bin
+# Build, and export both artifacts: the ELF, and the raw image bossac wants
+dagger call artifacts --source=./arduino-due/blinky --elf=bin/blinky.elf \
+  export --path=./artifacts
 
 # Footprint
-dagger -m $DEVEX/zig@$SHA call size --input=./blinky.elf flash
+dagger call zig size --input=./artifacts/blinky.elf flash
 ```
 
 The image is ~244 bytes with empty `.data` and `.bss`. That figure, the 256 KB flash and 64 KB SRAM0
@@ -147,14 +142,14 @@ still never touches the host:
 ```sh
 sudo podman run --rm --device /dev/ttyACM0 \
   -v "$PWD/bossac:/usr/local/bin/bossac:ro,Z" \
-  -v "$PWD/blinky.bin:/fw/firmware.bin:ro,Z" \
+  -v "$PWD/artifacts/blinky.bin:/fw/firmware.bin:ro,Z" \
   debian:bookworm-slim sh -c '
     stty -F /dev/ttyACM0 raw ispeed 1200 ospeed 1200 cs8 -cstopb ignpar eol 255 eof 255
     sleep 2
     bossac --port=ttyACM0 --force_usb_port=false --erase --write --verify --boot=1 --reset /fw/firmware.bin'
 ```
 
-`dagger -m ./daggerverse/bossac call sam-ba … plan` renders exactly this command.
+`dagger call bossac sam-ba … plan` renders exactly this command.
 
 ### Without a probe — bossac over the Programming port (Dagger path, currently blocked)
 
@@ -166,7 +161,7 @@ container, never on your machine.
 > container*: Dagger has no device passthrough, and a serial port is not a unix socket, so there is
 > no lighter way to hand the board to a containerized process. If that trade is not worth it to you,
 > `bossac --port=ttyACM0 --usb-port=0 --arduino-erase --erase --write --verify --boot=1 --reset
-> blinky.bin` on the host does the same job — the build above stays hermetic either way.
+> artifacts/blinky.bin` on the host does the same job — the build above stays hermetic either way.
 
 So **host-side setup is required**: `usbip-utils`, the `usbip-host` and `vhci-hcd` kernel modules,
 and a privileged Dagger engine. It is a one-time cost, and it is the same plumbing the probe path
@@ -186,13 +181,13 @@ sudo usbipd -D
 sudo usbip bind --busid 3-1                   # substitute your busid
 
 # 2. Confirm the board is reachable (writes nothing):
-dagger -m ./daggerverse/bossac call sam-ba \
-  --firmware=./blinky.bin --usbip=10.88.0.1:3240 --busid=3-1 \
+dagger call bossac sam-ba \
+  --firmware=./artifacts/blinky.bin --usbip=10.88.0.1:3240 --busid=3-1 \
   info output
 
 # 3. Flash:
-dagger -m ./daggerverse/bossac call sam-ba \
-  --firmware=./blinky.bin --usbip=10.88.0.1:3240 --busid=3-1 \
+dagger call bossac sam-ba \
+  --firmware=./artifacts/blinky.bin --usbip=10.88.0.1:3240 --busid=3-1 \
   run exit-code
 ```
 
@@ -212,17 +207,24 @@ Per the story's original toolchain, using
 [`z5labs/devex//daggerverse/flash`](https://github.com/z5labs/devex/tree/main/daggerverse/flash).
 **Untested here — no probe on hand.**
 
+This is the one path that still names a module ref and a commit SHA: `flash` is not among the
+toolchains [`dagger.json`](../../dagger.json) installs, because nothing in CI flashes a board. If it
+ever is, these commands lose the pin the way the build commands above did.
+
 ```sh
+DEVEX=github.com/z5labs/devex/daggerverse
+SHA=bc5cee36080549722c6d3bf02152aa7d46d2dcf3
+
 dagger -m $DEVEX/flash@$SHA call bridge-command --busid 3-1
 
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./blinky.elf --chip=ATSAM3X8E \
+dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 plan
 
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./blinky.elf --chip=ATSAM3X8E \
+dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 run exit-code
 
 # verify chains off probe-rs, not off run -- one command cannot do both
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./blinky.elf --chip=ATSAM3X8E \
+dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 verify output
 ```
 

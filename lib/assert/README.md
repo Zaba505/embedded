@@ -95,23 +95,24 @@ cost of the assertions and nothing else:
 | `off16` | 16, disabled | 102 B |
 | `on16`  | 16, enabled  | 278 B |
 
-- `(on8 − off8) / 8` = **8 bytes per assertion**
+- `(on8 − off8) / 8` = **8.5 bytes per assertion**
 - `(on16 − off16) / 16` = **11 bytes per assertion**
 
 A handful of bytes each — a compare and a cold branch to a shared trap site —
 and flat as the count grows. If a failed assertion pulled in formatting, an
 unwinder, or panic plumbing, this would be hundreds of bytes to kilobytes, and
-the two figures would not agree. Reproduce it with:
+the two figures would not agree. Reproduce it, from the repository root, with:
 
 ```
-./bench/measure.sh
+dagger call size-check --source=./lib/assert
 ```
 
-which prints the table and **exits non-zero if the per-assertion cost exceeds a
-threshold** (default 32 bytes). CI runs that same script as the
-"Assert an assertion compiles to a bare trap" gate — a negative-space check over
-the built image, in the spirit of the firmware's "Assert the reset vectors are
-sane" step.
+which prints the table and **exits non-zero if the per-assertion cost exceeds
+the budget** — 32 bytes, declared in [`bench/size-budget.json`](bench/size-budget.json)
+along with which images to compare and over how many assertions. CI runs that
+exact command as the "Assert an assertion compiles to a bare trap" gate — a
+negative-space check over the built image, in the spirit of the firmware's
+"Assert the reset vectors are sane" step.
 
 ### 2. Behavior in optimized / size-optimized builds: on by default, configurable
 
@@ -196,7 +197,7 @@ proven here by its own tests and the on-target size gate.
 | [`assert.zig`](assert.zig) | The primitive: `Config`, `Assert`, the default asserter, and host tests |
 | [`build.zig`](build.zig) | Exports the `assert` module; `test` and `bench` steps |
 | [`build.zig.zon`](build.zig.zon) | Package manifest (name, Zig version pin) |
-| [`bench/`](bench) | The size-delta benchmark and `measure.sh`, the evidence for criterion 1 |
+| [`bench/`](bench) | The size-delta benchmark and `size-budget.json`, the evidence for criterion 1 and the budget the CI gate holds it to |
 
 [#11]: https://github.com/Zaba505/embedded/issues/11
 [#12]: https://github.com/Zaba505/embedded/issues/12

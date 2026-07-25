@@ -150,8 +150,13 @@ it, so a blown budget fails a build rather than surprising a person:
   not a lint — this is exactly how the reference project's debug build is caught overflowing flash by
   ~35 KB. Set the regions to the true ceilings (§1–2) and the linker enforces them for every build.
 - **Code footprint is measured by the `size` verb** of the pinned `zig` Dagger module, and a
-  **size-delta gate** turns a footprint regression into a failed check (the `lib/assert` benchmark is
-  the worked example: it fails CI if per-assertion cost exceeds a threshold).
+  **size-delta gate** turns a footprint regression into a failed check. The gate is one shared
+  function — `dagger call size-check --source=<package>`, the same single command in CI and on a
+  developer's machine — and a package opts in by writing a `bench/size-budget.json` naming the image
+  pairs to compare, over how many instances, and the per-instance budget. Two worked examples:
+  [`lib/assert`](../lib/assert) fails CI if a failed assertion costs more than 32 bytes of `.text`,
+  and [`lib/hal`](../lib/hal) fails if its abstraction seam costs a single byte on either of two
+  architectures.
 - **Timing width-ceilings become `comptime` assertions.** A reload checked against its counter width
   at compile time costs zero flash and zero cycles and fails on the developer's machine — the safest
   place a correctness bug can surface. This is the cheapest, highest-value rung of the whole staircase.

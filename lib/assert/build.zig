@@ -37,8 +37,10 @@ pub fn build(b: *std.Build) void {
     // --- bench: the size-delta evidence ----------------------------------
     // Freestanding images that differ only in how many assertions they run and
     // whether the asserts are enabled, so the .text delta between them is
-    // exactly the cost of an assertion. See bench/README-less note and
-    // bench/measure.sh, which builds this step and reads each image's .text.
+    // exactly the cost of an assertion. The gate that builds this step, reads
+    // each image's .text and holds the delta to a budget is the ci module's
+    // shared size check -- `dagger call size-check --source=./lib/assert` --
+    // configured by bench/size-budget.json.
     //
     // The target is a representative MCU (Cortex-M3), not a special one: any
     // freestanding target shows the same shape because @trap() lowers to
