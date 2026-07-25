@@ -10,6 +10,11 @@
       "source": "daggerverse/bossac"
     },
     {
+      "name": "flash",
+      "source": "github.com/z5labs/devex/daggerverse/flash@bc5cee36080549722c6d3bf02152aa7d46d2dcf3",
+      "pin": "bc5cee36080549722c6d3bf02152aa7d46d2dcf3"
+    },
+    {
       "name": "zig",
       "source": "github.com/z5labs/devex/daggerverse/zig@bc5cee36080549722c6d3bf02152aa7d46d2dcf3",
       "pin": "bc5cee36080549722c6d3bf02152aa7d46d2dcf3"

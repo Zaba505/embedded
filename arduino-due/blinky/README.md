@@ -71,9 +71,10 @@ ARM Cortex Debug standard (`Arduino pin N == Cortex pin (11 − N)`).
 ## Build
 
 No host Zig toolchain. The version is pinned by `minimum_zig_version` in `build.zig.zon`, which the
-module reads. Run these **from the repository root**: the toolchain comes from the [`ci`](../../ci)
-module, which pins it once in [`dagger.json`](../../dagger.json), so no command here carries a
-module ref or a commit SHA of its own — and these are the same commands CI runs.
+module reads. Run these — and every `dagger` command in this document — **from the repository
+root**: every toolchain comes from the [`ci`](../../ci) module, which pins each one in
+[`dagger.json`](../../dagger.json), so no command here carries a module ref or a commit SHA of its
+own. These are the same commands CI runs.
 
 ```sh
 # Format check (check-only; never rewrites)
@@ -207,29 +208,28 @@ Per the story's original toolchain, using
 [`z5labs/devex//daggerverse/flash`](https://github.com/z5labs/devex/tree/main/daggerverse/flash).
 **Untested here — no probe on hand.**
 
-This is the one path that still names a module ref and a commit SHA: `flash` is not among the
-toolchains [`dagger.json`](../../dagger.json) installs, because nothing in CI flashes a board. If it
-ever is, these commands lose the pin the way the build commands above did.
+`flash` is installed as a toolchain in [`dagger.json`](../../dagger.json), pinned to a commit like
+every other, so these commands carry no module ref and no SHA either — even though nothing in CI
+runs them. A tool used only from a developer's machine is exactly the one that would otherwise
+float, and it is pinned here for the same reason the build toolchain is: an upstream change should
+break with a commit in this repo to point at.
 
 ```sh
-DEVEX=github.com/z5labs/devex/daggerverse
-SHA=bc5cee36080549722c6d3bf02152aa7d46d2dcf3
+dagger call flash bridge-command --busid 3-1
 
-dagger -m $DEVEX/flash@$SHA call bridge-command --busid 3-1
-
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
+dagger call flash probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 plan
 
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
+dagger call flash probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 run exit-code
 
 # verify chains off probe-rs, not off run -- one command cannot do both
-dagger -m $DEVEX/flash@$SHA call probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
+dagger call flash probe-rs --firmware=./artifacts/blinky.elf --chip=ATSAM3X8E \
   --usbip=10.88.0.1:3240 --busid=3-1 verify output
 ```
 
-`ATSAM3X8E` is in probe-rs's registry, confirmed via `chip-info`. Note its memory map is narrower
-than Arduino's linker script assumes — see `link.ld`.
+`ATSAM3X8E` is in probe-rs's registry, confirmed via `dagger call flash chip-info --chip=ATSAM3X8E`.
+Note its memory map is narrower than Arduino's linker script assumes — see `link.ld`.
 
 ## How it works
 

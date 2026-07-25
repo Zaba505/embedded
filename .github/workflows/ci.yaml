@@ -6,9 +6,12 @@ on:
   pull_request:
 
 # Module pins live in dagger.json now: the top-level `ci` Dagger module installs
-# the `zig` and `bossac` toolchains, pinning zig by commit SHA (z5labs/devex
-# publishes no tags -- bump it deliberately). So the steps below call
-# `dagger call <fn>` against that module directly, no `-m <ref>@SHA` per step.
+# the `zig`, `bossac` and `flash` toolchains, pinning the z5labs/devex ones by
+# commit SHA (that repo publishes no tags -- bump them deliberately). So the
+# steps below call `dagger call <fn>` against that module directly, no
+# `-m <ref>@SHA` per step. `flash` is installed for the developer flashing path
+# documented in arduino-due/blinky/README.md; no job here calls it, since
+# nothing in CI has a board attached.
 # DAGGER_VERSION pins the CLI to the engine the module targets; the toolchain
 # feature is experimental in this version, so the CLI is pinned with it.
 #

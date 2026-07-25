@@ -1,9 +1,15 @@
 // Continuous-integration gates for this repository, as Dagger functions.
 //
 // The GitHub Actions workflow is a thin shell: it installs the Dagger CLI and
-// calls the functions here, plus the `zig` and `bossac` toolchains this module
-// installs (see dagger.json). So every gate is defined once, runs identically
-// on a developer's machine and in CI, and is versioned with the code it checks.
+// calls the functions here, plus the toolchains this module installs (see
+// dagger.json). So every gate is defined once, runs identically on a
+// developer's machine and in CI, and is versioned with the code it checks.
+//
+// The toolchains are `zig` (build, fmt, size, objcopy), `bossac` and `flash`.
+// The last two flash a board, so CI never calls them -- `flash` is installed
+// anyway, because a tool reached only from a developer's machine is precisely
+// the one that would otherwise be invoked with a floating module ref, and one
+// pinned toolchain list is easier to keep honest than a pin in a README.
 //
 // That is now true without exception (#41): checking out the repository and
 // installing the CLI are the only steps in ci.yaml that are not a `dagger
