@@ -417,12 +417,20 @@ The distinction the guide turns on — what a tool gates versus what a human jud
 | §4.3 ~70-line function cap | judgment | Mechanizable via a line counter; review rule today |
 | §1.2–1.7, §3.x, §4.1–4.2, §4.4–4.5, §5.1–5.5, §5.7–5.8, §6.1, §7.1, §8.1 | judgment | Code review and author discipline |
 
-Rules that lean on shared infrastructure name it. Three pieces have landed: the flash-cheap assert
+Rules that lean on shared infrastructure name it. Four pieces have landed: the flash-cheap assert
 ([`lib/assert`][lib-assert], [#11][issue-11]), the fault-response policy
-([`docs/fault-response-policy.md`][fault-policy], [#12][issue-12]), and the readback / pair-assertion
-helpers ([`lib/readback`][lib-readback], [#15][issue-15]) — use them. The rest are still open
-stories: artifact checker ([#16][issue-16]) and host test step ([#17][issue-17]); those rules are
-stated here so projects code *toward* them.
+([`docs/fault-response-policy.md`][fault-policy], [#12][issue-12]), the readback / pair-assertion
+helpers ([`lib/readback`][lib-readback], [#15][issue-15]), and the `comptime`
+hardware-abstraction seam ([`lib/hal`][lib-hal], [#18][issue-18]) — use them. The rest are still
+open stories: artifact checker ([#16][issue-16]) and host test step ([#17][issue-17]); those rules
+are stated here so projects code *toward* them.
+
+The seam is worth one line here because it interacts with two rules above. It is what lets §5.2's
+compile-time discipline and §4.5's poll-driven control flow be *checked on the host* for logic that
+touches a peripheral — the logic is written against a contract, and a host backend stands in for the
+register. It costs nothing to do so (0 bytes of `.text`, measured on two architectures), which is
+the only reason it clears §7.1's bound-every-resource bar. Reach for it where a project's logic is
+worth testing off-hardware, not on firmware the size of the blinky, where it would be pure overhead.
 
 ---
 
@@ -441,6 +449,7 @@ stated here so projects code *toward* them.
 [check-line-length]: ../ci/main.go
 [lib-assert]: ../lib/assert
 [lib-readback]: ../lib/readback
+[lib-hal]: ../lib/hal
 [fault-policy]: fault-response-policy.md
 [fault-policy-blinky]: ../arduino-due/blinky/fault-response-policy.md
 [issue-3]: https://github.com/Zaba505/embedded/issues/3
@@ -451,4 +460,5 @@ stated here so projects code *toward* them.
 [issue-15]: https://github.com/Zaba505/embedded/issues/15
 [issue-16]: https://github.com/Zaba505/embedded/issues/16
 [issue-17]: https://github.com/Zaba505/embedded/issues/17
+[issue-18]: https://github.com/Zaba505/embedded/issues/18
 [issue-20]: https://github.com/Zaba505/embedded/issues/20

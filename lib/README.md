@@ -17,6 +17,8 @@ full-repo build flow exists.
 |---|---|
 | [`assert`](assert) | A flash-cheap assertion primitive: a failed assertion lowers to a bare trap (no formatting/unwind/panic machinery), configurable on/off per project, with the safe failure state delegated to the project. Follow-up [#11] from the [TigerBeetle-for-embedded study](../docs/research/tigerbeetle-for-embedded.md). |
 | [`readback`](readback) | Write-then-verify (pair-assertion) helpers for peripheral register configuration: after a config write, read the status back and assert the change took, catching a silently-dropped write (gated clock, write-protected or wrong-address register). Architecture-neutral, delegates the failure state to an asserter (`lib/assert`), and is for the config phase, not hot paths. Follow-up [#15]. |
+| [`hal`](hal) | A `comptime` hardware-abstraction seam: logic talks to an *injected* representation of its hardware — a contract with a memory-mapped backend and a host backend — so the same code builds for its target and for the host. Backends are parameterized by register *shape*, not by a board, and the seam costs **0 bytes** of `.text` (measured on Cortex-M3 and Cortex-A53). The prerequisite for host-side testing and simulation. Follow-up [#18]. |
 
 [#11]: https://github.com/Zaba505/embedded/issues/11
 [#15]: https://github.com/Zaba505/embedded/issues/15
+[#18]: https://github.com/Zaba505/embedded/issues/18

@@ -26,7 +26,7 @@ projects or informs how they are built.
 
 | Document | What it is |
 |---|---|
-| [`host-testing.md`](host-testing.md) | What runs in the shared **host-test** CI gate and, more importantly, its limits — the architecture-neutral division between what target-independent logic the host can prove (pure-logic unit tests, `comptime` invariant checks) and what only a board reveals (register reset values, interrupts firing, timing, electrical levels). Explains how a project contributes host tests (a `test` step in its `build.zig`, no edit to the shared gate) and where the host-side simulation story plugs in. `lib/assert` and `lib/readback` are the worked instances. |
+| [`host-testing.md`](host-testing.md) | What runs in the shared **host-test** CI gate and, more importantly, its limits — the architecture-neutral division between what target-independent logic the host can prove (pure-logic unit tests, `comptime` invariant checks) and what only a board reveals (register reset values, interrupts firing, timing, electrical levels). Explains how a project contributes host tests (a `test` step in its `build.zig`, no edit to the shared gate), why logic that touches hardware needs the [`lib/hal`](../lib/hal) seam before it can be host-tested at all, and where the host-side simulation story plugs in. `lib/assert`, `lib/readback` and `lib/hal` are the worked instances. |
 
 ## Research
 

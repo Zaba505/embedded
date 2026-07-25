@@ -188,3 +188,38 @@ jobs:
       # directly and this package needs no separate on-target gate -- which is
       # why, with the tests moved to the shared job, only the fmt gate remains
       # here.
+
+  hal:
+    name: lib/hal
+    runs-on: ubuntu-latest
+    env:
+      LIB: ./lib/hal
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dagger CLI
+        run: |
+          curl -fsSL https://dl.dagger.io/dagger/install.sh \
+            | DAGGER_VERSION="$DAGGER_VERSION" BIN_DIR=/usr/local/bin sudo -E sh
+          dagger version
+
+      # Same check-only fmt gate as the firmware and the other libraries.
+      - name: zig fmt --check
+        run: dagger call zig fmt --source="$LIB"
+
+      # The seam's host tests -- the contract checks (a conforming backend is
+      # accepted, a broken one is not), the wrappers' derived logic, and one
+      # generic routine driven over a memory-mapped and a fake backend to show
+      # they are interchangeable -- run in the shared host-tests job above,
+      # discovered by this package's build.zig `test` step.
+      #
+      # What remains here is the claim the host cannot make: that the
+      # abstraction is free. The script below builds the same logic twice --
+      # through the seam and as hand-written register pokes -- for a Cortex-M3
+      # and a Cortex-A53 at ReleaseSmall, and fails if the seam's .text exceeds
+      # the hand-written version's by even a byte. Two architectures because
+      # "architecture-neutral" is a claim about more than one machine. This has
+      # already caught a real regression (see the note on `Level`'s tag type in
+      # hal.zig), which is why it is a gate and not a README table.
+      - name: Assert the seam costs nothing
+        run: ./lib/hal/bench/measure.sh
