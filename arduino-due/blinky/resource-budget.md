@@ -68,37 +68,91 @@ comptime {
 }
 ```
 
+**New with the feedback path, and comfortably ignorable.** Sampling the sense input has to wait for
+`Q1` to settle after `PB26` changes. The dominant term is the sense node's RC — `R3` at 10 kΩ against
+a breadboard node of a few tens of pF, so a few hundred nanoseconds — with the 2N3904's own switching
+times of the same order. Against a 500 ms half period that is six orders of magnitude of margin, so
+it earns no counter and no row of its own; the firmware story has only to avoid sampling in the same
+breath as the store.
+
 ## 4. Electrical / I/O limits
+
+Three pins now, not one: the LED on `PB26`, the current-sense input on `PA15`, and the fault lamp on
+`PD1`. Every figure below is derived on the [schematic](hardware/due-blinky.kicad_sch) and cited
+there against the SAM3X datasheet (Atmel-11057C).
 
 | | Value | Source |
 |---|---|---|
 | I/O voltage tolerance | **3.3 V** — **not 5 V-tolerant**; 5 V damages the board | SAM3X datasheet; [README](README.md) |
-| Per-pin source current (ceiling) | **`IOH = −3 mA`** at `VOH = VDDIO − 0.4 V` — `PB26` is in **Group 2** (`PB[25–31]`), *not* the −15 mA Group 1 | datasheet table 45-2, notes 2 & 3 |
-| Budget | **~1–2 mA** via a 1 kΩ series resistor (red LED) | [README](README.md) wiring |
-| Actual / headroom | **~1 mA**; ~2 mA headroom to the −3 mA ceiling | [README](README.md) |
-| Total device current | one LED at ~1 mA — trivial | — |
+| Per-pin source ceiling, `PB26` | **`IOH = −3 mA`** at `VOH = VDDIO − 0.4 V` — **Group 2** (`PB[25–31]`), *not* the −15 mA Group 1 | table 45-2, note 3 |
+| Per-pin source ceiling, `PA15` / `PD1` | **`IOH = −15 mA`** — both are **Group 1** (`PA[14–15]`, `PD[0–30]`) | table 45-2, note 2 |
+| Logic thresholds at the sense input | `VIL` max **0.99 V**, `VIH` min **2.31 V** (`0.3`/`0.7 × VDDIO`); `Vhys` 150–500 mV | table 45-2 |
+| Budget | `D1` **≤ 2 mA** via 560 Ω; `D2` **≤ 2 mA** via 1 kΩ; sense network off the `+3V3` rail | schematic |
+| Actual — `PB26` (`D1`) | **1.16 mA** nominal, **1.88 mA** worst case → **63 %** of ceiling, 1.12 mA headroom | schematic |
+| Actual — `PD1` (`D2`) | **1.10 mA** nominal, **1.40 mA** worst case → **9 %** of ceiling | schematic |
+| Actual — `PA15` (sense) | an input; ≤ **18 nA** leakage, ≤ **66 µA** sourced by its internal pull-up | table 45-2, §31.5.1 |
+| Off-pin draw | `R3` pulls **0.31 mA** from the `+3V3` **rail** while `D1` is lit — not a pin budget | schematic |
+| Total device current | **3.66 mA** with both LEDs lit — still trivial | schematic |
 
 The per-pin ceiling is the subtle one: `PB26`'s datasheet **group** caps it at −3 mA, a fifth of the
-−15 mA that the headline Group-1 pins allow, so the resistor must be sized against −3 mA and not the
-number most Due pinouts quote. The 1 kΩ resistor sets ~1 mA, well inside that. The [README](README.md)
-records the trap this rules out: **do not substitute 220 Ω** (~4 mA, over the −3 mA ceiling); 470 Ω
-(~2 mA) is the practical floor. Voltage is a hard fact, not a budget — the header pin next to `D22`
-is +5 V, so a one-position wiring slip feeds 5 V into a 3.3 V pin, which the README flags in bold.
+−15 mA that the headline Group-1 pins allow (and well under the flat 8 mA Arduino's own datasheet
+quotes), so its resistor must be sized against −3 mA and not the number most Due pinouts give. The
+two new pins happen to be Group 1, which is headroom rather than a plan — `R4` is sized to the −3 mA
+rule anyway, so no jumper on the sheet can put a pin out of spec wherever it ends up.
+
+**`R1` moved from 1 kΩ to 560 Ω, and that is a budget change, not a preference.** `Q1`'s
+base-emitter junction takes ~0.7 V out of the same 3.3 V that `D1` and its limit resistor share, so
+1 kΩ would have left `D1` at ~0.65 mA. 560 Ω restores 1.16 mA nominal — about 17 % dimmer than the
+old circuit and still 63 % under the ceiling at the worst corner. The [README](README.md) records
+what this rules out: **330 Ω (3.18 mA) and 220 Ω (4.77 mA) are both over the −3 mA ceiling**; 470 Ω
+(74 %) is the practical floor.
+
+Voltage is a hard fact rather than a budget, and there are now **two** places to get it wrong: the
+header pin next to `D22` is +5 V, and on the 24-pin power header `+3V3` sits directly beside `+5V`.
+A one-position slip at either feeds 5 V into a 3.3 V pin, which the README flags in bold.
+
+The **logic thresholds are new to this table** because the design now has an input to satisfy, and
+they are the constraint that shaped the circuit: `VIL`…`VIH` leaves a forbidden band of
+0.99–2.31 V, and a passive tap on the LED could only ever reach `VOH − Vf ≤ 1.70 V` — inside it. The
+drawn topology clears the band by 0.79 V low and 0.99 V high.
 
 ## 5. Project-specific resources
 
-**None beyond the four categories above** — and each absence is a deliberate design fact, not an
-omission:
+**One, new with the feedback path: diagnostic channels.** The other three candidates remain
+deliberate absences.
+
+### 5.1 Diagnostic channels
+
+| | Value | Source |
+|---|---|---|
+| Ceiling | **2** channels readable without instrumentation — `D1` and `D2` — plus SWD, which needs a probe | [schematic](hardware/due-blinky.kicad_sch) |
+| Budget | at least **one** channel that survives a *load* fault, i.e. shares no component with `D1`'s branch | second-indicator decision, on the schematic |
+| Actual | `D1` (1 Hz blink, or its absence) and `D2` (solid, fault only) — `D2`'s path is disjoint from `D1`/`R1`/`R2`/`R3`/`Q1` | schematic |
+| Headroom | **none spare** — a third channel would cost another pin, another jumper and another part | — |
+
+This row exists because the feedback path created a failure mode the old design could not have had:
+the board can now *detect* that its load did not light, and `D1` was the only way it had to say so —
+the report would have travelled through the failed part. Bounding the channels, and requiring that
+one of them share nothing with the load, is the same "bound every resource at design time" discipline
+the four rows above apply, pointed at observability instead of at flash or current. The regress stops
+at two because `D2` may only ever assert **fault**: every way it can fail lands on dark, which is
+also the no-fault state, so a broken watcher costs an alarm and can never manufacture one.
+
+### 5.2 Still none
 
 - **Energy / battery:** none. The board is USB-powered; there is no sleep state, duty-cycle, or
-  battery life to budget (a `WFI`-based low-power design *would* add an energy row).
+  battery life to budget (a `WFI`-based low-power design *would* add an energy row). The sense
+  network's 0.31 mA of rail draw is an electrical figure (§4), not an energy budget.
 - **I/O bandwidth:** none. The firmware masters no bus — no I²C/SPI/UART, no sensor sample rate. Its
-  entire I/O surface is four register writes and one status-flag poll.
+  entire I/O surface is a handful of register writes and, once the sense input is read, one more
+  level poll.
 - **Interrupt latency:** none. The design is **poll-driven, not interrupt-driven** — SysTick is read
   via `COUNTFLAG` in the main loop, and the one wired interrupt vector (SysTick) points at the fault
   trap precisely so a spurious interrupt *stops* the board rather than being serviced. There is no ISR
-  whose latency needs budgeting.
+  whose latency needs budgeting, and the sense input is a level to sample rather than an edge to catch.
 
-That this list is empty is the same measurement the [research study](../../docs/research/tigerbeetle-for-embedded.md)
-makes from the other direction: the blinky has almost no I/O surface, which is exactly why heavier
-machinery (fault injection, a simulator) is not yet worth building here.
+That this list is *almost* empty is the same measurement the [research study](../../docs/research/tigerbeetle-for-embedded.md)
+makes from the other direction: the blinky has almost no I/O surface, which is why heavier machinery
+(a fault-injection harness, a simulator) is still not worth building here. What the feedback path
+adds is the cheapest possible instance of that machinery in hardware instead — pulling `D1` out of
+the breadboard is fault injection with no code at all, and it is now a fault the board can notice.

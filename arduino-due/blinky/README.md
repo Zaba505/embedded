@@ -6,16 +6,38 @@ A bare-metal Zig blinky for the [Arduino Due](https://docs.arduino.cc/hardware/d
 The firmware is trivial on purpose. The point is the toolchain: building and flashing go entirely
 through Dagger modules, with no host-installed Zig and no host-installed flashing tool.
 
+The schematic also defines a **current-feedback path** so the firmware can read back whether the LED
+actually conducted, rather than assuming the store worked. That circuit is drawn and derived here;
+the firmware that consumes it is a later story.
+
 ![Wiring schematic](hardware/due-blinky.svg)
 
-Editable KiCad source is in [`hardware/`](hardware/). Regenerate the SVG with:
+Editable KiCad source is in [`hardware/`](hardware/). Regenerate the SVG **from the repository
+root** — no host KiCad, the same way nothing else here needs a host toolchain:
 
 ```sh
-flatpak run --command=kicad-cli org.kicad.KiCad sch export svg \
-  --output arduino-due/blinky/hardware arduino-due/blinky/hardware/due-blinky.kicad_sch
+dagger call kicad project --source=./arduino-due/blinky/hardware \
+  sch svg export --path=./arduino-due/blinky/hardware
 ```
 
-(Drop the `flatpak run --command=kicad-cli org.kicad.KiCad` prefix if KiCad is installed natively.)
+`kicad` is a toolchain pinned by commit SHA in [`dagger.json`](../../dagger.json) like every other,
+so the command carries no module ref and no SHA of its own. `sch svg` plots one file per sheet; this
+design is a single sheet, so the export drops `due-blinky.svg` back into `hardware/` and leaves the
+rest of the directory alone. `dagger call kicad version` reports which KiCad the pin ships — 10.0.4
+at the moment, against a sheet still written in the 9.0 file format, which it reads unchanged.
+
+The same toolchain reaches the rest of `kicad-cli` — `sch pdf`, `sch bom`, `sch netlist`, and
+`sch erc` for the Electrical Rule Check:
+
+```sh
+dagger call kicad project --source=./arduino-due/blinky/hardware sch erc
+```
+
+That passes today. It defaults to `--severity=error`, and the sheet has none; `--severity=all`
+surfaces 11 warnings, all of them expected — nine `lib_symbol_issues` because the symbols are
+embedded in the sheet rather than in a configured library, and two `isolated_pin_label` for
+`PB26_D22` and `PD1_D26`, which are labels on single-pin nets because those wires leave to a board
+header that is deliberately not drawn as a symbol. ERC is not wired into CI.
 
 ## Why not the on-board LED
 
@@ -33,40 +55,95 @@ A steady 1 Hz there can only be this code.
 
 ## Hardware
 
+The [schematic](hardware/due-blinky.kicad_sch) is the source of truth for every value below. It also
+carries the derivations, the rejected alternatives, and the datasheet citations behind them.
+
 **Required**
 
 | Item | Notes |
 |---|---|
 | Arduino Due | Any revision |
 | USB cable | Into the **Programming** port (the one nearer the DC jack) |
-| LED | Any colour; red assumed for the resistor sizing below |
-| 1 kΩ resistor | See the warning below before substituting |
-| Breadboard + 2 jumpers | |
+| `D1` — LED | The blink indicator. Any colour; red assumed for the resistor sizing below |
+| `R1` — 560 Ω | **Changed from 1 kΩ.** See the warning below before substituting |
+| `Q1` — 2N3904 NPN | The sense element. BC547 or 2N2222 work too — but **a BC547's TO-92 pinout is reversed** |
+| `R2` — 10 kΩ | `Q1`'s base bleed |
+| `R3` — 10 kΩ | `Q1`'s collector pull-up to `+3V3` |
+| `D2` — LED | The fault lamp. **Any colour except `D1`'s** — green assumed below |
+| `R4` — 1 kΩ | `D2`'s limit resistor |
+| Breadboard + 5 jumpers | `D22`, `D24`, `D26`, `+3V3`, `GND` |
 
-**Wiring** — on the `D22`–`D53` header, even-numbered (LHS) row:
+**Wiring — the `D22`–`D53` header, even-numbered (LHS) row** (Due datasheet §6.2.4):
 
 ```
   position  1  =  +5V     <-- DANGER: directly beside D22
-  position  2  =  D22     ----> 1k resistor ----> LED anode
-  position  3  =  D24
+  position  2  =  D22     ----> R1 (560 Ω) ----> D1 anode
+  position  3  =  D24     <---- sense, from Q1's collector
+  position  4  =  D26     ----> R4 (1 kΩ) ----> D2 anode
      ...
-  position 18  =  GND     <---- LED cathode
+  position 18  =  GND     <---- the breadboard ground rail
 ```
 
-> **D22 is the second pin in that row and the pin next to it is +5V.** Miscounting by one position
-> feeds 5 V into a board whose I/O pins tolerate 3.3 V. Count twice and confirm GND with a
-> continuity check before applying power.
+**…and the 24-pin power header** (Due datasheet §6.2.1):
 
-> **Do not substitute 220 Ω.** `PB26` is in the SAM3X datasheet's **Group 2** (`PB[25–31]`), whose
-> source limit is `IOH = −3 mA` at `VOH = VDDIO − 0.4 V` — not the −15 mA that Group 1 pins allow.
-> At 220 Ω the LED would draw roughly 4 mA, outside spec. 470 Ω (~2 mA) is the practical floor.
-> (Datasheet table 45-2, notes 2 and 3.)
+```
+  position  4  =  +3V3    ----> R3 (10 kΩ) ----> Q1 collector
+  position  5  =  +5V     <-- DANGER: directly beside +3V3
+```
+
+> **Two places to miscount now, not one.** On the `D22` row the three jumpers are a *contiguous run*
+> starting at position 2, so one slip toward position 1 does not move a single wire onto +5 V — it
+> moves **all three**, and `D22`'s lands there. Confirm position 1 *is* +5 V with a meter, then fill
+> 2, 3 and 4 in order without recounting. And on the power header **`+3V3` and `+5V` are adjacent**
+> (pins 4 and 5) — that is the wire that did not exist before, and the one most likely to go one
+> hole over. The I/O pins tolerate 3.3 V and 5 V damages the board: count twice, and confirm GND
+> with a continuity check, before applying power.
+
+> **`R1` is 560 Ω now, and 220 Ω is still wrong.** `PB26` is in the SAM3X datasheet's **Group 2**
+> (`PB[25–31]`, table 45-2 note 3), whose source limit is `IOH = −3 mA` at `VOH = VDDIO − 0.4 V` —
+> not the −15 mA of Group 1, and not the flat 8 mA Arduino's own datasheet quotes for an I/O pin.
+> `Q1`'s base-emitter junction takes ~0.7 V out of the same 3.3 V, so leaving `R1` at 1 kΩ would
+> drop `D1` to ~0.65 mA; 560 Ω puts it back to **1.16 mA nominal, 1.88 mA worst case — 63 % of the
+> ceiling**. 470 Ω is legal and the practical floor (74 %). **330 Ω is 3.18 mA and 220 Ω is 4.77 mA,
+> both over the ceiling.**
 
 **Optional — a debug probe.** Not needed to flash. Needed for breakpoints, memory inspection and
 GDB, none of which SAM-BA can do. Any 3.3 V probe-rs-supported SWD probe works: CMSIS-DAP,
 J-Link, ST-Link. **3.3 V only — a 5 V probe will damage the board.** The schematic documents the
 header wiring, including the trap that Arduino numbers that connector from the opposite end to the
 ARM Cortex Debug standard (`Arduino pin N == Cortex pin (11 − N)`).
+
+## The feedback path — making the LED answer back
+
+Driving the pin is not evidence that the load changed state. Reading the *register* back
+(`PIO_ODSR`) proves only that the write landed; reading the *pad* back (`PIO_PDSR`) proves only that
+the pin is at the commanded level. **An open circuit is invisible to both** — pull the jumper out of
+`D22`, or fit `D1` backwards, and the pad still reads exactly what the driver put there, because the
+pad's level is set by the driver and not by the load. Both checks are nearly free and belong in the
+firmware as corroboration; neither one is feedback.
+
+So the diagram closes the loop in hardware. `D1`'s return current develops a base drive across `R2`;
+`Q1` saturates; its collector — held up by `R3` — is dragged down to `VCE(sat)`. The sense input on
+`PA15` / `D24` is therefore **active low: 0 while `D1` conducts, 1 while it does not**, which is the
+polarity [`hal.mmio.LevelInput`](../../lib/hal)'s `active_low` option already exists for.
+
+A plain logic tap on `D1` cannot do this job, and that is arithmetic rather than a component choice.
+The only informative node in `D1`'s branch is its return, and while lit that node sits at most at
+`VOH − Vf ≤ 3.30 − 1.60 = 1.70 V` — **0.61 V short of `VIH`** (`0.7 × VDDIO = 2.31 V`, table 45-2),
+so it lands inside the forbidden band. A 3.3 V rail cannot carry an LED's forward drop *and* a valid
+logic swing at the same time; gain is mandatory. `Q1`'s collector, by contrast, swings 3.10 V of the
+3.3 V rail: ≤ 0.20 V lit against a 0.99 V `VIL`, and 3.30 V dark against a 2.31 V `VIH`.
+
+**`D2` exists because `D1` is the board's only output.** If the sense reports "the load did not
+light" and the [fault response policy](fault-response-policy.md) halts, the fault would be reported
+*through the failed load* — a halted board and a dead board would look identical. `D2` gives that
+report a channel that shares nothing with `D1`, `R1`, `R2`, `R3` or `Q1`. It only ever asserts
+**fault**, never health, and every way it can fail lands on *dark*: you can lose the alarm, you can
+never gain a false one. That is why it does not contradict the policy's rejection of a second
+indicator, which was aimed at indicators that claim things are working.
+
+**None of this is in the firmware yet.** This is the diagram; the code that samples the sense input,
+decides what a disagreement means, and drives `D2` is the next story.
 
 ## Build
 
@@ -273,3 +350,9 @@ halt rather than reset, so a fault stops the LED dead instead of producing a bli
 because a device's safe failure state depends on what it controls — is written up in this project's
 [fault response policy](fault-response-policy.md), completed from the repo-wide
 [template](../../docs/fault-response-policy.md).
+
+**`D2` stays dark for now, and the sense path is checked with a meter.** No firmware reads `D24` or
+drives `D26` yet, so the only way to exercise the feedback path today is by hand: with `D1` lit, the
+sense node should read under 0.2 V; with `D1` dark, ~3.3 V. Pulling `D1` out of the breadboard while
+the blink runs should hold that node high through both halves of the cycle — which is the cheapest
+possible fault injection, and exactly the failure that a `PIO_PDSR` readback would have missed.

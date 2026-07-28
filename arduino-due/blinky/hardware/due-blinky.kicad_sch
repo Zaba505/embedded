@@ -3,15 +3,16 @@
 	(generator "eeschema")
 	(generator_version "9.0")
 	(uuid "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d")
-	(paper "A3")
+	(paper "A2")
 	(title_block
-		(title "Arduino Due blinky - SWD wiring and external LED")
-		(date "2026-07-19")
-		(rev "1")
+		(title "Arduino Due blinky - SWD, external LED, feedback path")
+		(date "2026-07-27")
+		(rev "2")
 		(company "Zaba505/embedded")
 		(comment 1 "Target: Atmel SAM3X8E (Cortex-M3), 3.3 V logic")
-		(comment 2 "Pinout source: Arduino Due datasheet A000062, sections 6.2.6 and 6.5.1")
-		(comment 3 "Flashed with probe-rs via the z5labs/devex flash Dagger module, chip ATSAM3X8E")
+		(comment 2 "Pinout source: Arduino Due datasheet A000062, sections 6.2.1, 6.2.4, 6.2.6 and 6.5.1")
+		(comment 3 "Electrical limits: SAM3X / SAM3A datasheet Atmel-11057C, tables 6-1, 9-2, 9-3 and 45-2")
+		(comment 4 "Feedback path: rung 3 - NPN low-side conduction sense, active low on PA15 / D24")
 	)
 	(lib_symbols
 		(symbol "due-blinky:DUE_JTAG"
@@ -759,6 +760,192 @@
 				)
 			)
 		)
+		(symbol "due-blinky:NPN"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "Q"
+				(at 5.08 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "NPN"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "NPN_0_1"
+				(polyline
+					(pts
+						(xy -1.27 2.54) (xy -1.27 -2.54)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy 2.54 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -1.27) (xy 2.54 -3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.397 -3.048) (xy 0.532 -1.87) (xy -0.024 -2.702) (xy 1.397 -3.048)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 0 0)
+					(radius 5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "NPN_1_1"
+				(pin input line
+					(at -6.35 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 6.35 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -6.35 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 	)
 	(text_box "WARNING - 3.3 V LOGIC. DO NOT CONNECT A 5 V DEBUG PROBE.\n\nThe Arduino Due (Atmel SAM3X8E) runs at 3.3 V, unlike most other Arduino boards.\nFrom the Arduino Due datasheet (A000062):\n\n    'Unlike most traditional Arduino boards, the Arduino Due board runs at 3.3 V.\n     Keep in mind the maximum voltage that the I/O pins can tolerate is 3.3 V.\n     Applying voltages higher than 3.3 V to any I/O pin could damage the board.'\n\nUse a 3.3 V probe, or one that sets its levels from VTref. Header pin 10 (+3V3) is the\nboard's 3.3 V rail and is what feeds the probe's VTref level reference."
 		(exclude_from_sim no)
@@ -844,10 +1031,10 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000003")
 	)
-	(text_box "WHY AN EXTERNAL LED, AND NOT THE ON-BOARD ONE\n\nThis LED is wired by you. The on-board D13 'L' LED is deliberately\nNOT used and is not driven by this firmware.\n\nAn on-board LED blinking is weak evidence: bootloader activity, or a\nwatchdog reset loop, can make the board blink on its own. Issue #3\ncalls out that exact failure mode - if the watchdog is not disabled,\nthe board resets every few seconds and 'the blink looks like a boot\nloop'. Those two cases are indistinguishable by eye on D13.\n\nPB26 / D22 has no on-board LED, no boot-time role, and no peripheral\nalternate function in the Arduino variant table. If it blinks at a\nsteady 1 Hz, the firmware is running and toggling a pin.\n\nActive high: driving PB26 high lights the LED.\n1 Hz = 500 ms high / 500 ms low."
+	(text_box "WHY AN EXTERNAL LED, AND WHY IT NOW ANSWERS BACK\n\nD1 is wired by you. The on-board D13 'L' LED is deliberately\nNOT used and is not driven by this firmware.\n\nAn on-board LED blinking is weak evidence: bootloader activity,\nor a watchdog reset loop, can make the board blink on its own.\nIssue #3 calls out that exact failure mode - if the watchdog is\nnot disabled, the board resets every few seconds and 'the blink\nlooks like a boot loop'. Those two are indistinguishable by eye\non D13.\n\nPB26 / D22 has no on-board LED, no boot-time role, and no\nperipheral alternate function in the Arduino variant table. If\nit blinks at a steady 1 Hz, the firmware is running and toggling\na pin.\n\nActive high: driving PB26 high lights D1.\n1 Hz = 500 ms high / 500 ms low.\n\nWHAT IS NEW ON THIS SHEET. Driving the pin was never proof that\nthe LOAD changed state - and reading the pin back is not either,\nbecause an open circuit leaves the pad at the commanded level.\nQ1 conducts only if D1's own current does. Unplug D1, reverse\nit, or break its jumper, and the board can now say so.\n\nR2 also matters when Q1 is absent: D1 still conducts, dimly,\nrather than the sense circuit taking the load out with it."
 		(exclude_from_sim no)
-		(at 119.38 146.05 0)
-		(size 106.68 40.64)
+		(at 152.4 146.05 0)
+		(size 116.84 66.04)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -864,10 +1051,10 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000004")
 	)
-	(text_box "WHERE TO WIRE IT - MIND THE +5V PIN NEXT DOOR\n\nUse the D22-D53 header, even-numbered (LHS) row. Counting along that row:\n\n     position  1  =  +5V     <-- DANGER: directly beside D22\n     position  2  =  D22     <-- LED anode side, through R1\n     position  3  =  D24\n        ...\n     position 18  =  GND     <-- LED cathode side\n\nD22 is the SECOND pin in that row, and the pin immediately next to it is\n+5V. Miscounting by one position feeds 5 V into a board whose I/O pins\ntolerate 3.3 V. Count twice, and confirm GND with a continuity check,\nbefore applying power.\n\nSource: Arduino Due datasheet A000062, section 6.2.4."
+	(text_box "WHERE TO WIRE IT - THREE JUMPERS NOW, AND TWO PLACES TO MISCOUNT\n\nD22-D53 header, even-numbered (LHS) row - Due datasheet 6.2.4:\n\n     position  1  =  +5V   <-- DANGER: directly beside D22\n     position  2  =  D22   --> R1 --> D1 anode\n     position  3  =  D24   <-- sense, from Q1's collector\n     position  4  =  D26   --> R4 --> D2 anode\n        ...\n     position 18  =  GND   <-- the breadboard ground rail\n\n24-pin POWER header - Due datasheet 6.2.1:\n\n     position  4  =  +3V3  --> R3\n     position  5  =  +5V   <-- DANGER: directly beside +3V3\n\nTWO count-twice hazards now, not one, and the new one is on a\ndifferent connector:\n\n  On the D22 row the three wires are a CONTIGUOUS RUN starting\n  at position 2. One slip toward position 1 does not move one\n  wire onto +5V - it moves ALL THREE, and D22's jumper lands\n  there. Confirm position 1 IS +5V with a meter, then fill 2,\n  3 and 4 in order without recounting.\n\n  On the power header +3V3 and +5V are ADJACENT, pins 4 and 5.\n  That wire did not exist before, and it is the one most\n  likely to be plugged one hole over.\n\nThe I/O pins tolerate 3.3 V. 5 V damages the board. Count twice,\nand confirm GND with a continuity check, before applying power."
 		(exclude_from_sim no)
-		(at 232.41 146.05 0)
-		(size 161.29 44.45)
+		(at 274.32 146.05 0)
+		(size 119.38 66.04)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -885,10 +1072,51 @@
 		)
 		(uuid "10000000-0000-4000-8000-000000000006")
 	)
-	(text_box "R1 = 1 k, giving roughly 1 mA through a red LED - dim but plainly visible\nindoors, and far inside spec.\n\nDo NOT reach for the reflexive 220 ohm. PB26 falls in the SAM3X datasheet's\nGroup 2 (PB[25-31]), whose source limit is IOH = -3 mA at VOH = VDDIO - 0.4 V,\nnot the -15 mA that Group 1 pins allow. At 220 ohm the LED would draw roughly\n4 mA, outside that spec. 470 ohm (about 2 mA) is the practical floor if you\nwant it brighter.\n\nSource: SAM3X / SAM3A datasheet, table 45-2 with notes 2 and 3."
+	(text_box "THE LADDER OF WHAT 'VERIFY' CAN MEAN - AND WHY RUNGS 1 AND 2 ARE NOT ENOUGH\n\n  Rung 1  read back PIO_ODSR       proves the register accepted the write        free, no hardware\n  Rung 2  read the pad, PIO_PDSR   proves the pad is AT the commanded level      free, no hardware\n  Rung 3  sense LED CURRENT        proves the circuit is closed and conducting   <== DRAWN HERE\n  Rung 4  sense LED LIGHT          proves photons were actually emitted          optical part + ambient\n\nRUNGS 1 AND 2 ARE NEARLY FREE AND GENUINELY INSUFFICIENT: AN OPEN CIRCUIT IS INVISIBLE TO BOTH. Pull the\njumper out of D22, or fit D1 backwards, and the pad still reads exactly what the driver commanded, because\nthe pad's level is set by the driver and not by the load. Both belong in the firmware anyway as cheap\ncorroboration - rung 1 is free the moment SetClearOutput.driven() lands - but neither one is feedback.\n\nRUNG 3 CHOSEN. The faults actually being chased - a broken jumper, a reversed LED, an open resistor, a dead\noutput driver - are every one of them CONDUCTION faults, and rung 3 catches all four. The only gap rung 4\nwould close is 'conducts but emits nothing', which is an LED wear-out mode and not a wiring mistake.\n\nRUNG 4 REJECTED, FOR NOW. It needs an optical part held in mechanical alignment with D1, and a breadboard\ncannot reproduce alignment from a drawing - the diagram could not fully specify the build, which is the\nwhole point of drawing it first. It also brings ambient-light handling. (The 1 Hz blink is its own carrier,\nso correlating the sensed signal against the commanded pattern would beat any absolute threshold and would\nbe immune to steady ambient light. Recorded as the upgrade path if the emit-vs-conduct gap ever matters.)\n\nADC ACROSS A SENSE RESISTOR REJECTED. It measures MAGNITUDE rather than presence, and an ADC input has no\nforbidden band at all - genuinely the strongest evidence per part. Rejected because it turns a yes/no\nquestion into a calibration one: the corner spread derived below is already 5:1 on LED current, so a\nmagnitude threshold would end up nearly as coarse as a comparator. It also costs ADC bring-up and a fifth\nlib/hal contract - an analog_in - that the HAL would then have to carry. Recorded as the upgrade path if\nthis project ever needs to tell 'dim' from 'off'."
 		(exclude_from_sim no)
-		(at 119.38 189.23 0)
-		(size 106.68 25.4)
+		(at 400 20.32 0)
+		(size 178 63)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000a")
+	)
+	(text_box "TOPOLOGY - NPN LOW-SIDE CONDUCTION SENSE, AND THE FOUR ALTERNATIVES REJECTED\n\nDRAWN. D1's return current develops a base drive across R2; Q1 saturates; its collector, held up by R3, is\ndragged down to VCE(sat). ACTIVE LOW - the sense input reads 0 while D1 conducts and 1 while it does not.\nThat is the polarity hal.mmio.LevelInput's active_low option already exists for, so this costs no new HAL\ncontract. Q1 in TO-92 is E-B-C left to right with the flat face toward you; a BC547 in the same package is\nC-B-E, reversed. Check the part you actually have.\n\nREJECTED - direct base drive, R2 omitted. One part fewer and exactly the same headroom cost, but it puts\nthe base-emitter junction IN SERIES with D1, so a dead Q1 takes the LED out with it. A diagnostic must not\nbe able to disable the thing it diagnoses. R2 keeps D1 conducting if Q1 is absent, and gives the base a\ndefined DC path so it can never float.\n\nREJECTED - base tapped at D1's ANODE through a base resistor. It would turn Q1 on through that resistor\nwith D1 open, missing or reversed, reporting 'lit' while dark. A FALSE POSITIVE, which is the one failure\ndirection this story exists to eliminate.\n\nREJECTED - PNP high-side sense across R1. Its collector current would be drawn from PB26 itself, so the\nsense network would eat the same -3 mA budget it exists to protect. It needs about 0.7 V across R1\nregardless, so it saves no headroom either.\n\nREJECTED - a plain logic tap on either side of D1. Proved impossible, not merely unwise: see the levels box."
+		(exclude_from_sim no)
+		(at 400 86.5 0)
+		(size 178 51)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000b")
+	)
+	(text_box "THE OBSERVABILITY PARADOX - AND THE SECOND INDICATOR, DECIDED: YES\n\nTHE PARADOX. Once this feedback path exists the board can detect that its load did not light. This\nproject's fault response policy says HALT. But D1 is the board's only output, so the halt would be\nreported THROUGH THE FAILED LOAD: a halted board with a broken D1 and a dead board with a broken D1 are\nthe same picture. The detection would be real and unreportable.\n\nDECIDED: a second indicator. D2 on PD1 / D26, its own pin, its own resistor, its own ground return.\nNothing in D2's path passes through D1, R1, R2, R3 or Q1, so no single fault can take out both the load\nand the report of its failure.\n\nTHIS DOES NOT CONTRADICT fault-response-policy.md field 7, which says there is deliberately no second\nindicator. That clause rejects an indicator that would ASSERT HEALTH - the argument being that a blinking\nindicator can be counterfeited by a reset loop, so the ABSENCE of the 1 Hz pattern has to stay the health\nsignal. D2 asserts only FAULT. It never blinks: it is solid on, or dark. It cannot counterfeit a blink,\nand it is never evidence that anything works. The primary evidence is unchanged - D1's 1 Hz pattern, or\nits absence.\n\nWHY THE 'WHO WATCHES THE WATCHER' REGRESS STOPS HERE. Every way D2 can fail - open LED, broken jumper,\ndead pin, firmware that never drives it - lands on DARK, which is also the no-fault state. You can lose\nthe alarm; you can never gain a false one. An indicator that can only ever say the alarming thing needs\nno watcher of its own.\n\nWHAT THAT FORCES ONTO THIS SHEET:\n  ACTIVE HIGH, cathode to GND. A pin that is undriven, tri-stated or still in its reset state must leave\n  D2 DARK, so a board that never got as far as running firmware cannot display a fault it never detected.\n  A DIFFERENT COLOUR from D1 - green is drawn - and a separate position, so the two are never read for\n  each other. D2 is also the only LED on this sheet that is allowed to sit steady.\n  R4 sized so that reset-state pull-up leakage, 25 uA, is two orders below the 1.10 mA fault indication.\n\nTHE ALTERNATIVE, REJECTED: no second indicator, read the halt over SWD instead. It is an honest option -\nthe policy already sends you to a probe to learn WHERE the board halted - and it saves a wire and two\nparts. Rejected because it would make the single most interesting thing this circuit can now discover,\n'the load did not light', the one result you cannot see without attaching hardware that is optional and,\nper the README, not even on hand for this project."
+		(exclude_from_sim no)
+		(at 400 140.5 0)
+		(size 178 78)
 		(margins 1.27 1.27 1.27 1.27)
 		(stroke
 			(width 0.254)
@@ -904,7 +1132,69 @@
 			)
 			(justify left top)
 		)
-		(uuid "10000000-0000-4000-8000-000000000007")
+		(uuid "10000000-0000-4000-8000-00000000000c")
+	)
+	(text_box "CURRENT, RE-DERIVED END TO END - AND WHY R1 MOVES FROM 1 k TO 560 OHM\n\nWHAT IS ASSUMED, AND FROM WHERE\n  VDDIO = 3.3 V, the board's rail (Arduino Due datasheet A000062, 5.1: 'VDD ... is connected to the 3.3 V power rail').\n  VOH   >= VDDIO - 0.2 V at IOH ~ 0 and >= VDDIO - 0.4 V at IOH > 0 (SAM3X table 45-2), so VOH is bounded by 2.90 .. 3.30 V.\n  IOH   PB26 is GROUP 2 -> -3 mA at VOH = VDDIO - 0.4 V. Group 2 is table 45-2 note 3, which lists PB[25-31] explicitly.\n        NOT the -15 mA of note 2's Group 1, and not the flat 8 mA that Arduino's own datasheet quotes for an I/O pin.\n  Q1    VBE(sat) 0.65 typ / 0.85 max and VCE(sat) 0.20 max - ON Semi 2N3903/2N3904 datasheet, ON CHARACTERISTICS,\n        both at IC = 10 mA / IB = 1.0 mA.\n  D1    Vf 1.60 .. 1.85 V for a red LED at a few hundred uA to 2 mA. THIS IS A PART ASSUMPTION, not a datasheet-of-\n        record fact, and it is why 470 ohm below is a floor rather than a target.\n\nD1 BRANCH.  I(D1) = ( VOH - Vf(D1) - VBE(sat) ) / R1,  with R1 = 560 ohm:\n\n     corner                 VOH     Vf     VBE       I(D1)      share of the -3 mA ceiling\n     max-current bound     3.30    1.60   0.65      1.88 mA     63 %\n     nominal               3.15    1.75   0.75      1.16 mA     39 %\n     min-current bound     2.90    1.85   0.85      0.36 mA     12 %\n\nWHY R1 CHANGES. Q1's base-emitter junction takes about 0.7 V out of the same 3.3 V that D1 and its limit resistor\nalready share - exactly the headroom cost this topology was warned to expect. Left at 1 k, D1's nominal 1.40 mA\nwould have fallen to 0.65 mA. Dropping to 560 ohm buys most of it back: 1.16 mA nominal against 1.40 mA before, so\nD1 ends up about 17 % dimmer and no more.\n  470 ohm is legal and brighter - 1.38 mA nominal, 2.23 mA worst case, 74 % of the ceiling - and is the practical\n  floor. 560 ohm is drawn because it holds the worst case under two thirds of the ceiling.\n  DO NOT FIT 330 OHM (3.18 mA) OR 220 OHM (4.77 mA). Both are over the -3 mA ceiling.\n  Dimmer is affordable now in a way it was not before: the eye is no longer the only witness that D1 lit.\n\nSATURATION, CHECKED AT BOTH ENDS. IC is capped by R3 and by the sense pin's internal pull-up (50-150 k, enabled\nafter reset - SAM3X 31.5.1):  IC <= 3.10/10k + 3.30/50k = 0.38 mA. R2 bleeds I(R2) = VBE/R2 = 75 uA nominal,\nleaving IB = 1.09 mA, a forced beta of 0.35. At the min-current corner IB is still 0.27 mA, a forced beta of 1.4.\nThe 2N3904's minimum hFE is 70 at IC = 1 mA, so saturation is not in question at any corner.\n\nWHAT THE SENSE NETWORK DRAWS, AND FROM WHERE\n  R3 pulls 0.31 mA from the +3V3 RAIL while D1 is lit, and nothing while it is dark. This does NOT touch PB26's\n  -3 mA: that current enters at Q1's collector and leaves at its emitter, never through the driven pin.\n  PA15 is an INPUT. Leakage <= 18 nA (table 45-2). With its internal pull-up enabled it sources at most\n  3.30/50k = 66 uA into the node while Q1 is on - 0.4 % of PA15's own Group-1 -15 mA ceiling.\n  Return through the GND jumper = I(D1) + IC = 1.47 mA nominal, 2.26 mA worst case.\n\nD2 BRANCH, the fault lamp.  I(D2) = ( VOH - Vf(D2) ) / R4, with R4 = 1 k and a green LED at Vf 1.9 .. 2.2 V:\n0.70 mA min, 1.10 mA nominal, 1.40 mA max. PD1 is GROUP 1 - note 2 lists PD[0-30] - so the ceiling is -15 mA and\nthis is 9 % of it. R4 is deliberately sized to stay under the GROUP 2 -3 mA as well, so moving this jumper to any\nother pin on the board can never put a pin out of spec.\n  At reset PD1 is a PIO input with its pull-up on, so D2 can see at most (3.30 - 2.0)/51k = 25 uA: a faint glow in\n  a dark room, dark in any normal light, and two orders below the 1.10 mA fault indication. Firmware may remove\n  even that with the pull-up disable register; the diagram does not depend on it.\n\nPER PIN, AND IN TOTAL\n  PB26 / D22   output   Group 2   ceiling  -3 mA   worst case  -1.88 mA   37 % headroom\n  PA15 / D24   input    Group 1   ceiling -15 mA   worst case  -0.07 mA   99 % headroom  (internal pull-up only)\n  PD1  / D26   output   Group 1   ceiling -15 mA   worst case  -1.40 mA   91 % headroom\n  +3V3 rail    -        not a pin           -      worst case   0.38 mA\n  Everything this sheet adds to the board, with D1 and D2 lit at the same time: 3.66 mA."
+		(exclude_from_sim no)
+		(at 25.4 252 0)
+		(size 180 116)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000d")
+	)
+	(text_box "LOGIC LEVELS AT THE SENSE INPUT - THE FORBIDDEN BAND, AND THE PROOF THAT GAIN IS MANDATORY\n\nFrom the SAM3X / SAM3A datasheet, Atmel-11057C-ATARM-SAM3X-SAM3A-Datasheet_23-Mar-15, table 45-2\n'DC Characteristics', page 1379, for PIOA/B/C/D/E/F[0-31]:\n\n    VIL    Input Low-level Voltage     max = 0.3 x VDDIO  =  0.99 V   at VDDIO = 3.3 V\n    VIH    Input High-level Voltage    min = 0.7 x VDDIO  =  2.31 V   at VDDIO = 3.3 V\n    Vhys   Hysteresis Voltage          150 mV min, 500 mV max\n\n    ==>  FORBIDDEN BAND = 0.99 V .. 2.31 V. It is 1.32 V wide - 40 % of the whole rail.\n\nPA15 is NOT in that table's list of pins excluded from the hysteresis row, so the sense input does get\nits 150-500 mV of Schmitt hysteresis. (PD[10-30] IS on that list - see the pin-choice box.)\n\nWHY NO PASSIVE TAP ON D1 CAN WORK - THIS IS ARITHMETIC, NOT A COMPONENT CHOICE.\nThe only node in D1's branch that carries information is its RETURN; the anode side merely follows the\ndriven pin. While D1 conducts, that return node sits at most at\n\n         V(return)  <=  VOH - Vf(D1)  <=  3.30 - 1.60  =  1.70 V\n\nand it has to read LOW when D1 is dark, so it must cross the band to be readable at all. 1.70 V is\n0.61 V SHORT of VIH. No resistor value changes that, and a real part makes it worse, since Vf climbs\nwith current while VOH sags with load. Only an LED with Vf <= 0.99 V would escape, and no visible LED\nhas one. In the OLD circuit that same node was tied straight to GND: 0 V lit, 0 V dark, no information\nwhatsoever. And neither tap sees an OPEN CIRCUIT, which is rung 2's blind spot exactly.\n\n  ==>  A 3.3 V rail cannot carry Vf and a valid logic swing at the same time. GAIN IS MANDATORY.\n       Q1 supplies it, and its collector is a node that swings the FULL rail rather than a fraction.\n\nA tap held inside the band is not merely unreliable, either: it biases both halves of a CMOS input\npair on at once, which is a shoot-through path through the input stage.\n\nTHE SENSE NODE AS DRAWN, IN BOTH STATES:\n\n  D1 conducting  ->  Q1 saturated  ->  V = VCE(sat) <= 0.20 V        margin below VIL:  0.79 V\n       0.20 V is the 2N3904 maximum at IC = 10 mA / IB = 1.0 mA. Q1 here runs IC = 0.38 mA at a\n       forced beta near 1, far deeper into saturation, so a few tens of mV is the realistic figure.\n\n  D1 dark        ->  Q1 off        ->  V = 3.30 - IIH_lkg x (R3 || Rpu) = 3.2999 V\n       IIH_lkg <= 18 nA (table 45-2); across 10k || 50k = 8.3k that is 0.15 mV.\n                                                                       margin above VIH:  0.99 V\n\nBoth margins clear the 500 mV MAXIMUM hysteresis, and each is more than half the width of the band\nitself. The node swings 3.10 V of a 3.30 V rail, which is what a logic input is entitled to expect.\n\nWHY R3 IS ON THE SHEET AT ALL, given that PA15's internal pull-up is already enabled out of reset\n(SAM3X 31.5.1). Three reasons. The internal pull-up is 50-150 k, a soft node on a breadboard. Its\nstate is a firmware register, and the hardware-first rule says the diagram must define the sense\nnode's DC behaviour without depending on software. And the node has to be defined BEFORE firmware\nruns at all. The two pull-ups sit in parallel and never fight: the internal one only stiffens the\nhigh state, and adds at most 66 uA to what Q1 has to sink."
+		(exclude_from_sim no)
+		(at 209 252 0)
+		(size 180 116)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000e")
+	)
+	(text_box "THE SENSE INPUT PIN AND THE FAULT-LAMP PIN - JUSTIFIED ON THE SAME THREE GROUNDS AS D22\n\n  SENSE INPUT  =  PA15  =  D24            FAULT LAMP  =  PD1  =  D26\n\n1. NO ON-BOARD LED. The Due has exactly three, and Arduino's variant table names every one of them:\n   PB27 (pin 13, the amber 'L'), PC30 ('RX') and PA21 ('TX'). Neither PA15 nor PD1 is among them.\n\n2. NO BOOT-TIME ROLE. This is the ground that matters most for an INPUT, because a pin with a boot\n   role can read as asserted before the firmware ever runs. SAM3X table 6-1, 'System I/O\n   Configuration Pin List', is exhaustive - it is every pin whose function after reset is something\n   other than plain PIO - and it holds only PC0 (ERASE, which must additionally be held low at\n   startup) and PB28-PB31 (the SWJ-DP pins). PA15 and PD1 appear nowhere in it, so out of reset each\n   is a PIO input with its pull-up enabled (SAM3X 31.5.1) - which is exactly the state this circuit\n   wants for both of them.\n\n3. NO PERIPHERAL ALTERNATE FUNCTION IN ARDUINO'S VARIANT TABLE. Both rows carry an empty function\n   column, and both descriptors read { PIOx, PIO_PA15 / PIO_PD1, ID_PIOx, PIO_OUTPUT_0, PIO_DEFAULT,\n   PIN_ATTR_DIGITAL, NO_ADC, NO_ADC, NOT_ON_PWM, NOT_ON_TIMER } - no ADC channel, no PWM, no timer.\n     Held to the same standard as D22, and it matters that the standard is the same one: at the CHIP\n   level PA15 also carries CTS1 / TF / WKUP8, precisely as PB26 carries CTS0 / TCLK0 / WKUP15\n   (tables 9-2 and 9-3). Those are inert until firmware selects them. That is why D22 passed this\n   test, and it is why PA15 and PD1 pass it too.\n\nAND ONE MORE, WHICH ONLY AN INPUT NEEDS. Table 45-2's hysteresis row names the pins that DO NOT get\n150-500 mV of Schmitt hysteresis, and PD[10-30] is on that list - so D32 and upward on PIOD would\nhave made a worse sense input than the variant table alone suggests. PA15 is not on the list, and\nneither is PD[0-9]. The sense input keeps its hysteresis.\n\nCURRENT GROUPS, WHICH DIFFER BETWEEN THESE PINS AND D22. Table 45-2 note 2 puts PA[14-15] and\nPD[0-30] in GROUP 1, ceiling -15 mA, while note 3 puts PB[25-31] - and therefore D22 - in GROUP 2 at\n-3 mA. D22 was fixed by the earlier story, so the tight ceiling stays on the load branch and the two\nnew pins happen to land on the generous side. That is headroom, not a plan: R4 is still sized to the\n-3 mA rule, so no jumper on this sheet can put a pin out of spec wherever it ends up.\n\nWHY THESE TWO AND NOT ANY OTHER FREE PIN. D24 and D26 are simply the next two positions along the\nsame header row as D22 - Due datasheet 6.2.4 gives position 2 = D22, 3 = D24, 4 = D26 - so all three\njumpers leave from one contiguous run and can be counted once, together, against a single landmark.\nThat is also the new hazard: see the wiring note.\n\nBILL OF MATERIALS FOR THIS SHEET - what changed, and what is new\n\n  ref   value        note\n  R1    560 ohm      WAS 1 k. Re-derived opposite. Do not fit 330 ohm or 220 ohm.\n  D1    red LED      unchanged - the blink indicator\n  R2    10 k         NEW - base bleed; keeps D1 conducting even if Q1 is absent\n  Q1    2N3904 NPN   NEW - TO-92, E-B-C left to right with the flat face toward you.\n                     A BC547 or 2N2222 works too, but a BC547 is C-B-E, reversed.\n  R3    10 k         NEW - collector pull-up to +3V3\n  R4    1 k          NEW - D2's limit resistor\n  D2    green LED    NEW - the fault lamp; any colour except D1's\n\n  And three more jumpers than before: D24, D26, and +3V3 off the 24-pin power header."
+		(exclude_from_sim no)
+		(at 392.6 252 0)
+		(size 185.4 116)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "10000000-0000-4000-8000-00000000000f")
 	)
 	(text_box "BEFORE YOU WIRE ANYTHING - CONFIRM PIN 1\n\nA keyed 2x5 1.27 mm ribbon cable between a standard ARM Cortex Debug probe and this header mates correctly. The connectors are physically compatible, and the reversed\nnumbering documented above is a labelling convention, not a wiring difference - SEGGER lists the Arduino Due as a standard Cortex-M 10-pin target.\n\nIf you instead hand-wire flying leads, the two numbering conventions are exact opposites, and following the wrong one connects +3V3 to nRESET and vice versa. Identify pin 1 on\nthe physical board (silkscreen dot / square pad) and confirm it with a continuity check against a known GND pin before applying power.\n\nFlashing over SWD overwrites flash, but there is NO bootloader to lose - SAM-BA is burned into the SAM3X ROM at the factory and uses no flash space, so it cannot be erased. To go back to\nbossac, open the programming port at 1200 baud (the ATmega16U2 then asserts ERASE + RESET, dropping the chip into ROM SAM-BA) or press ERASE. probe-rs and bossac coexist; neither locks you out of the other."
 		(exclude_from_sim no)
@@ -1109,7 +1399,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 152.4) (xy 88.9 152.4)
+			(xy 40.64 152.4) (xy 55.88 152.4)
 		)
 		(stroke
 			(width 0)
@@ -1119,7 +1409,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 152.4) (xy 88.9 156.21)
+			(xy 55.88 152.4) (xy 55.88 156.21)
 		)
 		(stroke
 			(width 0)
@@ -1129,7 +1419,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 163.83) (xy 88.9 166.37)
+			(xy 55.88 163.83) (xy 55.88 166.37)
 		)
 		(stroke
 			(width 0)
@@ -1139,7 +1429,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 173.99) (xy 88.9 177.8)
+			(xy 55.88 173.99) (xy 55.88 180.34)
 		)
 		(stroke
 			(width 0)
@@ -1149,13 +1439,191 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 177.8) (xy 99.06 177.8)
+			(xy 55.88 180.34) (xy 55.88 186.69)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "20000000-0000-4000-8000-000000000017")
+	)
+	(wire
+		(pts
+			(xy 55.88 180.34) (xy 68.58 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000018")
+	)
+	(wire
+		(pts
+			(xy 55.88 194.31) (xy 55.88 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000019")
+	)
+	(wire
+		(pts
+			(xy 48.26 198.12) (xy 55.88 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001a")
+	)
+	(wire
+		(pts
+			(xy 55.88 198.12) (xy 77.47 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001b")
+	)
+	(wire
+		(pts
+			(xy 77.47 198.12) (xy 77.47 186.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001c")
+	)
+	(wire
+		(pts
+			(xy 77.47 173.99) (xy 77.47 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001d")
+	)
+	(wire
+		(pts
+			(xy 77.47 166.37) (xy 95.25 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001e")
+	)
+	(wire
+		(pts
+			(xy 95.25 166.37) (xy 95.25 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-00000000001f")
+	)
+	(wire
+		(pts
+			(xy 95.25 166.37) (xy 110.49 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000020")
+	)
+	(wire
+		(pts
+			(xy 95.25 154.94) (xy 95.25 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000021")
+	)
+	(wire
+		(pts
+			(xy 95.25 152.4) (xy 87.63 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000022")
+	)
+	(wire
+		(pts
+			(xy 113.03 152.4) (xy 128.27 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000023")
+	)
+	(wire
+		(pts
+			(xy 128.27 152.4) (xy 128.27 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000024")
+	)
+	(wire
+		(pts
+			(xy 128.27 163.83) (xy 128.27 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000025")
+	)
+	(wire
+		(pts
+			(xy 128.27 173.99) (xy 128.27 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000026")
+	)
+	(wire
+		(pts
+			(xy 128.27 177.8) (xy 138.43 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "20000000-0000-4000-8000-000000000027")
+	)
+	(junction
+		(at 55.88 180.34)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "70000000-0000-4000-8000-000000000001")
+	)
+	(junction
+		(at 55.88 198.12)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "70000000-0000-4000-8000-000000000002")
+	)
+	(junction
+		(at 95.25 166.37)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "70000000-0000-4000-8000-000000000003")
 	)
 	(no_connect
 		(at 106.68 99.06)
@@ -1245,7 +1713,7 @@
 		)
 		(uuid "40000000-0000-4000-8000-000000000008")
 	)
-	(label "VTref_3V3"
+	(label "+3V3"
 		(at 116.84 106.68 0)
 		(effects
 			(font
@@ -1255,7 +1723,7 @@
 		)
 		(uuid "40000000-0000-4000-8000-000000000009")
 	)
-	(label "VTref_3V3"
+	(label "+3V3"
 		(at 187.96 96.52 0)
 		(effects
 			(font
@@ -1346,7 +1814,7 @@
 		(uuid "40000000-0000-4000-8000-000000000012")
 	)
 	(label "PB26_D22"
-		(at 76.2 152.4 0)
+		(at 40.64 152.4 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1356,14 +1824,54 @@
 		(uuid "40000000-0000-4000-8000-000000000013")
 	)
 	(label "GND"
-		(at 99.06 177.8 0)
+		(at 48.26 198.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000014")
+	)
+	(label "+3V3"
+		(at 87.63 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000015")
+	)
+	(label "PA15_D24"
+		(at 110.49 166.37 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "40000000-0000-4000-8000-000000000014")
+		(uuid "40000000-0000-4000-8000-000000000016")
+	)
+	(label "PD1_D26"
+		(at 113.03 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000017")
+	)
+	(label "GND"
+		(at 138.43 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "40000000-0000-4000-8000-000000000018")
 	)
 	(text "Arduino Due - on-board JTAG / SWD header"
 		(exclude_from_sim no)
@@ -1387,7 +1895,7 @@
 		)
 		(uuid "50000000-0000-4000-8000-000000000002")
 	)
-	(text "External LED on PB26 / D22 - the blink indicator"
+	(text "The load on PB26 / D22, its feedback path, and the fault lamp"
 		(exclude_from_sim no)
 		(at 88.9 144.78 0)
 		(effects
@@ -1468,7 +1976,7 @@
 	)
 	(symbol
 		(lib_id "due-blinky:R")
-		(at 88.9 160.02 0)
+		(at 55.88 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1476,7 +1984,7 @@
 		(dnp no)
 		(uuid "60000000-0000-4000-8000-000000000003")
 		(property "Reference" "R1"
-			(at 92.71 158.75 0)
+			(at 59.69 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1484,8 +1992,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "1k"
-			(at 92.71 161.29 0)
+		(property "Value" "560"
+			(at 59.69 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1504,7 +2012,7 @@
 	)
 	(symbol
 		(lib_id "due-blinky:LED")
-		(at 88.9 170.18 0)
+		(at 55.88 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1512,7 +2020,7 @@
 		(dnp no)
 		(uuid "60000000-0000-4000-8000-000000000004")
 		(property "Reference" "D1"
-			(at 93.98 168.91 0)
+			(at 60.96 168.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1521,7 +2029,7 @@
 			)
 		)
 		(property "Value" "LED (red)"
-			(at 93.98 171.45 0)
+			(at 60.96 171.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1533,6 +2041,186 @@
 			(project "due-blinky"
 				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
 					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:R")
+		(at 55.88 190.5 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000005")
+		(property "Reference" "R2"
+			(at 59.69 189.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 59.69 191.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:NPN")
+		(at 74.93 180.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000006")
+		(property "Reference" "Q1"
+			(at 80.01 177.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "2N3904"
+			(at 80.01 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:R")
+		(at 95.25 158.75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000007")
+		(property "Reference" "R3"
+			(at 99.06 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 99.06 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:R")
+		(at 128.27 160.02 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000008")
+		(property "Reference" "R4"
+			(at 132.08 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "1k"
+			(at 132.08 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "due-blinky:LED")
+		(at 128.27 170.18 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "60000000-0000-4000-8000-000000000009")
+		(property "Reference" "D2"
+			(at 133.35 168.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LED (green)"
+			(at 133.35 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "due-blinky"
+				(path "/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+					(reference "D2")
 					(unit 1)
 				)
 			)
