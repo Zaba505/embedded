@@ -58,6 +58,11 @@ A steady 1 Hz there can only be this code.
 The [schematic](hardware/due-blinky.kicad_sch) is the source of truth for every value below. It also
 carries the derivations, the rejected alternatives, and the datasheet citations behind them.
 
+[`hardware/BOM.md`](hardware/BOM.md) is where to **buy** them — a sourced part per reference
+designator, plus the checks to run on arrival. Worth reading before ordering the LEDs: their forward
+voltage is the only assumption on the sheet not backed by a datasheet of record, and a high-`Vf`
+green would leave `D2` dark in precisely the situation it exists to report.
+
 **Required**
 
 | Item | Notes |
