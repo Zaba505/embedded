@@ -15,6 +15,11 @@
       "pin": "bc5cee36080549722c6d3bf02152aa7d46d2dcf3"
     },
     {
+      "name": "kicad",
+      "source": "github.com/z5labs/devex/daggerverse/kicad@16f6bda2984d9063e7953b696055964e09375003",
+      "pin": "16f6bda2984d9063e7953b696055964e09375003"
+    },
+    {
       "name": "zig",
       "source": "github.com/z5labs/devex/daggerverse/zig@bc5cee36080549722c6d3bf02152aa7d46d2dcf3",
       "pin": "bc5cee36080549722c6d3bf02152aa7d46d2dcf3"
