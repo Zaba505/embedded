@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "smart-light")(type "KiCad")(uri "${KIPRJMOD}/smart-light.kicad_sym")(options "")(descr "Project-local symbols for the smart-light system diagrams"))
+)

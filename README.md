@@ -2,13 +2,20 @@
 
 Home for various embedded projects that are not significant enough to get their own repo.
 
-Projects are scoped by vendor, so boards from different families sit alongside each other cleanly.
+Single-board projects are scoped by vendor, so boards from different families sit alongside each
+other cleanly. A project that spans **several boards** gets its own top-level directory instead and
+is grouped by *system*, since filing a two-board system under one vendor puts half of it in the
+wrong place.
+
+Every project starts with its **electrical diagrams**, committed and reviewed before any firmware
+exists — see [`CLAUDE.md`](CLAUDE.md) for why.
 
 ## Projects
 
 | Project | Board | Description |
 |---|---|---|
 | [`arduino-due/blinky`](arduino-due/blinky) | Arduino Due (Atmel SAM3X8E) | Bare-metal Zig blinky, built and flashed entirely through Dagger |
+| [`smart-light`](smart-light) | Arduino Due (Atmel SAM3X8E) + bare-metal Raspberry Pi | A wall switch, a light on its own 5 V rail behind a low-side MOSFET, and a Pi that can toggle it over a 3.3 V UART — currently the [KiCad schematics for the whole system](smart-light/hardware), which the firmware stories implement against |
 | [`smart-stethoscope`](smart-stethoscope) | Discontinued "smart" stethoscope (NXP Kinetis MK26) | Reverse-engineering a discontinued digital stethoscope for repair — starting with a non-destructive [device recon & component inventory](smart-stethoscope/docs/recon.md) |
 
 ## Libraries

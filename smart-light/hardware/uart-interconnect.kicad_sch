@@ -1,0 +1,1129 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5a17b0a0-0000-4000-8000-000000000104")
+	(paper "A2")
+	(title_block
+		(title "Smart light - Due USART0 to Pi PL011 interconnect")
+		(date "2026-07-24")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "3.3 V at both ends; neither board is 5 V tolerant")
+		(comment 2 "TX and RX crossed exactly once, in the middle of this sheet")
+		(comment 3 "Two wires only - ground is shared at the star point, not in this harness")
+	)
+	(lib_symbols
+		(symbol "smart-light:DUE_COMM_UART"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Due 26-pin header"
+				(at 0 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DUE_COMM_UART_0_1"
+				(rectangle
+					(start -31.75 -11.43)
+					(end 31.75 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "DUE_COMM_UART_1_1"
+				(pin passive line
+					(at 34.29 3.81 180)
+					(length 2.54)
+					(name "D18/TX1/PA11(pos23)" (effects (font (size 1.27 1.27))))
+					(number "23" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 34.29 -3.81 180)
+					(length 2.54)
+					(name "D19/RX1/PA10(pos24)" (effects (font (size 1.27 1.27))))
+					(number "24" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -34.29 0 0)
+					(length 2.54)
+					(name "GND(pos4)" (effects (font (size 1.27 1.27))))
+					(number "4" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:RPI_UART"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Raspberry Pi J8 (40-pin)"
+				(at 0 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "RPI_UART_0_1"
+				(rectangle
+					(start -29.21 -11.43)
+					(end 29.21 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "RPI_UART_1_1"
+				(pin passive line
+					(at 31.75 3.81 180)
+					(length 2.54)
+					(name "3V3(pin1)" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 31.75 -3.81 180)
+					(length 2.54)
+					(name "GND(pin6)" (effects (font (size 1.27 1.27))))
+					(number "6" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -31.75 3.81 0)
+					(length 2.54)
+					(name "GPIO14/TXD0(pin8)" (effects (font (size 1.27 1.27))))
+					(number "8" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at -31.75 -3.81 0)
+					(length 2.54)
+					(name "GPIO15/RXD0(pin10)" (effects (font (size 1.27 1.27))))
+					(number "10" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+		(symbol "smart-light:R_H"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_H_0_1"
+				(rectangle
+					(start -2.54 -1.016)
+					(end 2.54 1.016)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_H_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "~" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
+				)
+			)
+		)
+	)
+	(text "UART INTERCONNECT"
+		(exclude_from_sim no)
+		(at 200 32 0)
+		(effects
+			(font
+				(size 3.5 3.5)
+				(bold yes)
+			)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000001")
+	)
+	(symbol
+		(lib_id "smart-light:DUE_COMM_UART")
+		(at 69.85 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-000000000002")
+		(property "Reference" "J4"
+			(at 69.85 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Due 26-pin header"
+			(at 69.85 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:RPI_UART")
+		(at 330.2 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-000000000003")
+		(property "Reference" "J5"
+			(at 330.2 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Raspberry Pi J8"
+			(at 330.2 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "J5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 124.46 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-000000000004")
+		(property "Reference" "R8"
+			(at 124.46 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220"
+			(at 124.46 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 104.14 115.57) (xy 120.65 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000005")
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 275.59 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-000000000006")
+		(property "Reference" "R11"
+			(at 275.59 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220"
+			(at 275.59 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 128.27 115.57) (xy 190.5 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000007")
+	)
+	(wire
+		(pts
+			(xy 190.5 115.57) (xy 190.5 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000008")
+	)
+	(wire
+		(pts
+			(xy 190.5 134.62) (xy 260.35 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000009")
+	)
+	(wire
+		(pts
+			(xy 260.35 134.62) (xy 260.35 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000000a")
+	)
+	(wire
+		(pts
+			(xy 260.35 123.19) (xy 271.78 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000000b")
+	)
+	(wire
+		(pts
+			(xy 279.4 123.19) (xy 298.45 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000000c")
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 275.59 115.57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-00000000000d")
+		(property "Reference" "R10"
+			(at 275.59 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220"
+			(at 275.59 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 298.45 115.57) (xy 279.4 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000000e")
+	)
+	(symbol
+		(lib_id "smart-light:R_H")
+		(at 124.46 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-00000000000f")
+		(property "Reference" "R9"
+			(at 124.46 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220"
+			(at 124.46 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 271.78 115.57) (xy 229.87 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000010")
+	)
+	(wire
+		(pts
+			(xy 229.87 115.57) (xy 229.87 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000011")
+	)
+	(wire
+		(pts
+			(xy 229.87 100.33) (xy 149.86 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000012")
+	)
+	(wire
+		(pts
+			(xy 149.86 100.33) (xy 149.86 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000013")
+	)
+	(wire
+		(pts
+			(xy 149.86 123.19) (xy 128.27 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000014")
+	)
+	(wire
+		(pts
+			(xy 120.65 123.19) (xy 104.14 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000015")
+	)
+	(text "TX <-> RX CROSSOVER"
+		(exclude_from_sim no)
+		(at 150 90 0)
+		(effects
+			(font
+				(size 2.2 2.2)
+				(bold yes)
+			)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000016")
+	)
+	(text "the two lines cross exactly once, and this is it"
+		(exclude_from_sim no)
+		(at 150 95 0)
+		(effects
+			(font
+				(size 1.6 1.6)
+			)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000017")
+	)
+	(symbol
+		(lib_id "smart-light:R")
+		(at 111.76 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-000000000018")
+		(property "Reference" "R12"
+			(at 114.3 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 114.3 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 111.76 123.19) (xy 111.76 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000019")
+	)
+	(junction
+		(at 111.76 123.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170006-0000-4000-8000-00000000001a")
+	)
+	(wire
+		(pts
+			(xy 111.76 137.16) (xy 111.76 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000001b")
+	)
+	(wire
+		(pts
+			(xy 111.76 144.78) (xy 97.79 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000001c")
+	)
+	(global_label "+3V3_DUE"
+		(shape input)
+		(at 97.79 144.78 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000001d")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 97.79 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "smart-light:R")
+		(at 289.56 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5a170006-0000-4000-8000-00000000001e")
+		(property "Reference" "R13"
+			(at 292.1 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10k"
+			(at 292.1 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "smart-light"
+				(path "/5a17b0a0-0000-4000-8000-000000000001/5a17b0a0-0000-4000-8000-000000000104"
+					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 289.56 123.19) (xy 289.56 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000001f")
+	)
+	(junction
+		(at 289.56 123.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a170006-0000-4000-8000-000000000020")
+	)
+	(wire
+		(pts
+			(xy 289.56 137.16) (xy 289.56 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000021")
+	)
+	(wire
+		(pts
+			(xy 289.56 144.78) (xy 304.8 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000022")
+	)
+	(global_label "+3V3_PI"
+		(shape input)
+		(at 304.8 144.78 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000023")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 304.8 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 35.56 119.38) (xy 25.4 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000024")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 25.4 119.38 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000025")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 25.4 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 361.95 115.57) (xy 378.46 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000026")
+	)
+	(global_label "+3V3_PI"
+		(shape input)
+		(at 378.46 115.57 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000027")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 378.46 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 361.95 123.19) (xy 378.46 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000028")
+	)
+	(global_label "GND"
+		(shape input)
+		(at 378.46 123.19 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5a170006-0000-4000-8000-000000000029")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 378.46 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(text_box "5 V ON THIS LINK DESTROYS A BOARD - BOTH ENDS ARE 3.3 V\n\n  Arduino Due   SAM3X8E   absolute maximum on an input pin: -0.3 V to +4.0 V\n                          (SAM3X datasheet, table 45-1)\n  Raspberry Pi  BCM2837   not 5 V tolerant; the documented failure mode is\n                          latch-up, which shorts the 3V3 rail inside the die\n\n5 V is not \"slightly over spec\" on either part. It is past the absolute maximum\nrating of one and a documented kill mechanism on the other.\n\nTHE MISTAKE THAT ACTUALLY HAPPENS is not miswiring these two boards to each other.\nThey are both 3.3 V, so that is safe by construction. It is reaching for a THIRD\ndevice to watch the link: a 5 V USB-to-serial adapter, an Arduino Uno, a logic\nanalyser with 5 V outputs, or a \"5 V / 3.3 V\" FTDI cable with the jumper on the\nwrong post. Any of those turns a debugging session into a dead board.\n\nIf you need to watch this link, use a 3.3 V adapter, and check it with a meter\nbefore it touches either header: measure its idle TX against its own ground. It\nshould read 3.3 V, not 5 V.\n\nR8 to R11 below reduce the damage. They do not license the mistake."
+		(exclude_from_sim no)
+		(at 20 175 0)
+		(size 274 51.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000002a")
+	)
+	(text_box "TX TO RX, CROSSED - AND HOW TO CHECK IT BEFORE POWERING UP\n\n  Arduino Due                          Raspberry Pi\n  D18 / TX1 / PA11   26-pin pos 23  -> GPIO15 / RXD0   J8 pin 10\n  D19 / RX1 / PA10   26-pin pos 24  <- GPIO14 / TXD0   J8 pin  8\n  GND                26-pin pos  4     shared at the star point, sheet 2\n\nThe single crossing in the middle of this sheet is the whole point of the drawing.\nStraight-through, TX to TX, is the classic error, and it is silent: two push-pull\noutputs facing each other, neither receiver ever seeing an edge. Nothing is damaged\nand nothing works.\n\nCHECK IT WITH A METER, POWER OFF, before trusting it: continuity from Due position 23\nto Pi pin 10, and from Due position 24 to Pi pin 8. If either reads open, or if\nposition 23 rings out to pin 8, the harness is wrong.\n\nTHE DUE'S USART0 IS USED, NOT ITS UART. The UART on D0 / D1 is wired to the ATmega16U2\non the Programming port and is what bossac and the serial console use; taking it would\ncost the flashing path. USART0 appears on D18 / D19 as peripheral A on PA11 / PA10\n(ArduinoCore-sam variant table) and is otherwise unused on this board.\n\nOn the Pi, GPIO14 and GPIO15 are ALT0 = TXD0 / RXD0, which is the PL011. Bare metal,\nthe alt-function routing is a register write, and none of the Linux-side \"PL011 is\ntaken by Bluetooth, use the mini-UART\" advice applies - there is no Linux here."
+		(exclude_from_sim no)
+		(at 20 232.2 0)
+		(size 274 57.8)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000002b")
+	)
+	(text_box "THE SERIES RESISTORS AND THE IDLE PULL-UPS\n\nR8 TO R11, 220 ohm, ONE PER PIN - four of them, not two. A resistor in the middle of a\nwire protects whichever end is on the far side of it from a fault injected on the near\nside. One at each pin means every pin on this link has 220 ohm between it and anything\nthat goes wrong on the wire, wherever the fault comes from.\n\n  fault current if 5 V lands on a line:\n      (5 V - 3.3 V - 0.7 V) / 220 ohm = 4.5 mA into the clamp diode\n\nSurvivable, where a direct connection is not. It is a mitigation, not permission - see\nthe warning opposite.\n\nCost at signalling speed: against roughly 30 pF of jumper capacitance, 440 ohm\nend-to-end gives a 13 ns time constant, against an 8.7 us bit at 115200 baud. Three\norders of magnitude of margin.\n\nR12 AND R13, 10 kohm, ARE NOT OPTIONAL, and the reason is specific. An idle UART line\nis HIGH. GPIO15 - the Pi's receiver - powers up with a DEFAULT PULL-DOWN (BCM2835 ARM\nPeripherals table 6-31 lists GPIO9-27 as \"Low\"), so with the Due unplugged, unpowered\nor still in reset, the Pi's RX sits LOW. A UART receiver reads a continuously low line\nas a BREAK condition and a stream of framing errors - not as \"quiet\".\n\nR12 and R13 make the idle state HIGH in copper, at both ends, so that \"the other board\nis not there\" is indistinguishable from \"the other board has nothing to say\". Each\npulls to its OWN board's 3.3 V rail. Never across the link: that would make one board\npartly power the other's pin.\n\n  driven-low level at the receiver, worst case:\n      3.3 V x 440 / (440 + 10k) = 0.14 V\n  against VIL max of 0.9 V at the Pi and 0.99 V at the Due. Fine."
+		(exclude_from_sim no)
+		(at 300 175 0)
+		(size 274 73.2)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000002c")
+	)
+	(text_box "GROUND, AND WHAT IS DELIBERATELY NOT IN THIS HARNESS\n\nThis harness is TWO WIRES: TX and RX. It does not carry a ground wire, and adding one\nis a mistake. Both boards already reach ground at the star point on PS3's negative\nterminal, the only place grounds meet in this system (sheet 2). A third ground wire\nstrung directly between the two boards closes a loop with those two star legs, and the\nloop it closes encircles the 1 A load return.\n\nThe GND label drawn at the Due's position 4 on this sheet is that same net, reached\nthrough the star. It is drawn so the return path for these signals is explicit rather\nthan assumed. It is not a licence to run a jumper.\n\nIF, AND ONLY IF, the two boards have no other common reference - testing the link on\nits own, with no load supply present - run a single ground wire here, and know that you\nare outside the drawn topology. Take it out when the load supply goes in."
+		(exclude_from_sim no)
+		(at 300 254.2 0)
+		(size 274 38)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000002d")
+	)
+	(text_box "WHAT THIS SHEET DOES NOT DECIDE, AND WHAT IT NEVERTHELESS CONSTRAINS\n\nBaud rate, frame format, parity, the framing of the command protocol and its behaviour on a corrupt or truncated frame\nare firmware, and belong to the protocol story. Three things the wiring does settle for it:\n\n*  NO HARDWARE FLOW CONTROL. RTS and CTS are not wired, so the protocol has to be safe without them - a receiver that\n   cannot keep up drops bytes rather than back-pressuring the sender.\n*  LENGTH. These are jumper wires, not a cable plant. Keep the harness under about 300 mm; at that length 115200 baud is\n   uneventful. Neither end is differentially driven and neither is isolated.\n*  THE LINK IS ALLOWED TO BE ABSENT. R12 and R13 make an unplugged peer read as an idle line rather than as a fault,\n   which is what lets the wall switch keep working with the Pi unplugged - a system-level requirement settled here, in\n   hardware, before any firmware exists."
+		(exclude_from_sim no)
+		(at 300 298.2 0)
+		(size 274 31.4)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 232 232 232 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5a170006-0000-4000-8000-00000000002e")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
