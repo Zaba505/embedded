@@ -1,0 +1,1411 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5d1c0003-0000-4000-8000-000000000013")
+	(paper "User" 420.0 520.19)
+	(title_block
+		(title "Power - both nodes, achievable session length, brownout and the write path")
+		(date "2026-08-01")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "Two build variants. EXACTLY ONE of the two sources on this sheet exists in any built node.")
+		(comment 2 "SAM3X8E supply monitor: Atmel-11057C section 16.4.5, SUPC_SMMR (SMTH, SMSMPL, SMRSTEN, SMIEN).")
+		(comment 3 "Due 3V3 rail: A000062 section 6.4. Due normal-mode current: A000062 section 5.3.")
+		(comment 4 "The brownout mechanism here is what #52's fault policy depends on.")
+	)
+	(lib_symbols
+		(symbol "rtk:CP"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "CP"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Polarised bulk capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "CP_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0.635) (xy 2.54 0.635)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -1.016) (xy 2.54 -1.016)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 2.032) (xy -1.016 2.032)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 1.524) (xy -1.524 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "CP_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:PWR_SOURCE"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "BT"
+				(at 0 10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "5 V source"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Regulated 5 V source"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "PWR_SOURCE_0_1"
+				(rectangle
+					(start -31.75 -7.62)
+					(end 31.75 7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "5 V SOURCE"
+					(at 0 5.08 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "PWR_SOURCE_1_1"
+				(pin passive line
+					(at 34.29 0 180)
+					(length 2.54)
+					(name "+5V OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 -2.54 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:PWR_UPS"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "BT"
+				(at 0 10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "pass-through bank"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Pass-through USB power bank used as an inline UPS"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "PWR_UPS_0_1"
+				(rectangle
+					(start -31.75 -7.62)
+					(end 31.75 7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "PASS-THROUGH BANK (UPS)"
+					(at 0 5.08 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "PWR_UPS_1_1"
+				(pin passive line
+					(at -34.29 0 0)
+					(length 2.54)
+					(name "+5V IN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "IN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -34.29 -2.54 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ING"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 0 180)
+					(length 2.54)
+					(name "+5V OUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 -2.54 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "G"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:R"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:TP"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TP"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Test point / meter probe pad"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "TP_0_1"
+				(circle
+					(center 0 1.27)
+					(radius 0.762)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TP_1_1"
+				(pin passive line
+					(at 0 -1.27 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(rectangle
+		(start 20.32 40.64)
+		(end 233.68 143.51)
+		(stroke
+			(width 0.254)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "5d1c0003-0001-4000-8000-000000000001")
+	)
+	(text "ROVER BUILD  -  5 V USB power bank"
+		(exclude_from_sim no)
+		(at 25.4 46.99 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0002-4000-8000-000000000002")
+	)
+	(symbol
+		(lib_id "rtk:PWR_SOURCE")
+		(at 76.2 76.2 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-0003-4000-8000-000000000003")
+		(property "Reference" "BT1"
+			(at 76.2 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "USB power bank, 5 V, 5000 mAh"
+			(at 76.2 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 76.2 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 76.2 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "BT1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 110.49 76.2) (xy 130.81 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0004-4000-8000-000000000004")
+	)
+	(global_label "+5V"
+		(at 130.81 76.2 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0005-4000-8000-000000000005")
+	)
+	(wire
+		(pts
+			(xy 110.49 78.74) (xy 130.81 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0006-4000-8000-000000000006")
+	)
+	(global_label "GND"
+		(at 130.81 78.74 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0007-4000-8000-000000000007")
+	)
+	(symbol
+		(lib_id "rtk:R")
+		(at 152.4 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-0008-4000-8000-000000000008")
+		(property "Reference" "R2"
+			(at 154.94 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k 1%"
+			(at 154.94 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 152.4 87.63) (xy 152.4 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0009-4000-8000-000000000009")
+	)
+	(global_label "+5V"
+		(at 152.4 83.82 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-000a-4000-8000-00000000000a")
+	)
+	(symbol
+		(lib_id "rtk:R")
+		(at 152.4 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-000b-4000-8000-00000000000b")
+		(property "Reference" "R3"
+			(at 154.94 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k 1%"
+			(at 154.94 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 152.4 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 152.4 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 152.4 97.79) (xy 152.4 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-000c-4000-8000-00000000000c")
+	)
+	(junction
+		(at 152.4 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5d1c0003-000d-4000-8000-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 152.4 102.87) (xy 173.99 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-000e-4000-8000-00000000000e")
+	)
+	(global_label "VBAT_SENSE"
+		(at 173.99 102.87 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-000f-4000-8000-00000000000f")
+	)
+	(wire
+		(pts
+			(xy 152.4 116.84) (xy 152.4 120.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0010-4000-8000-000000000010")
+	)
+	(global_label "GND"
+		(at 152.4 120.65 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-0011-4000-8000-000000000011")
+	)
+	(symbol
+		(lib_id "rtk:CP")
+		(at 210.82 92.71 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-0012-4000-8000-000000000012")
+		(property "Reference" "C8"
+			(at 214.63 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "4700u / 10 V"
+			(at 214.63 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 210.82 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 210.82 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 210.82 88.9) (xy 210.82 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0013-4000-8000-000000000013")
+	)
+	(global_label "+3V3"
+		(at 210.82 83.82 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-0014-4000-8000-000000000014")
+	)
+	(wire
+		(pts
+			(xy 210.82 96.52) (xy 210.82 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0015-4000-8000-000000000015")
+	)
+	(global_label "GND"
+		(at 210.82 101.6 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-0016-4000-8000-000000000016")
+	)
+	(text "hold-up on the 3.3 V rail"
+		(exclude_from_sim no)
+		(at 219.71 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0017-4000-8000-000000000017")
+	)
+	(text "(see the brownout box)"
+		(exclude_from_sim no)
+		(at 219.71 95.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0018-4000-8000-000000000018")
+	)
+	(rectangle
+		(start 20.32 160.02)
+		(end 246.38 236.22)
+		(stroke
+			(width 0.254)
+			(type dash)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "5d1c0003-0019-4000-8000-000000000019")
+	)
+	(text "BASE BUILD  -  mains, with a pass-through bank as an inline UPS"
+		(exclude_from_sim no)
+		(at 25.4 166.37 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-001a-4000-8000-00000000001a")
+	)
+	(symbol
+		(lib_id "rtk:PWR_SOURCE")
+		(at 76.2 194.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-001b-4000-8000-00000000001b")
+		(property "Reference" "PS1"
+			(at 76.2 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "USB wall adapter, 5 V / 2.4 A"
+			(at 76.2 204.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 76.2 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 76.2 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "PS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 110.49 194.31) (xy 130.81 194.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-001c-4000-8000-00000000001c")
+	)
+	(global_label "BASE_5V_RAW"
+		(at 130.81 194.31 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-001d-4000-8000-00000000001d")
+	)
+	(wire
+		(pts
+			(xy 110.49 196.85) (xy 130.81 196.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-001e-4000-8000-00000000001e")
+	)
+	(global_label "GND"
+		(at 130.81 196.85 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-001f-4000-8000-00000000001f")
+	)
+	(symbol
+		(lib_id "rtk:PWR_UPS")
+		(at 190.5 194.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-0020-4000-8000-000000000020")
+		(property "Reference" "BT2"
+			(at 190.5 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "pass-through USB bank, 5 V, 10000 mAh"
+			(at 190.5 204.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 190.5 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 190.5 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "BT2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 156.21 194.31) (xy 140.97 194.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0021-4000-8000-000000000021")
+	)
+	(global_label "BASE_5V_RAW"
+		(at 140.97 194.31 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-0022-4000-8000-000000000022")
+	)
+	(wire
+		(pts
+			(xy 156.21 196.85) (xy 140.97 196.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0023-4000-8000-000000000023")
+	)
+	(global_label "GND"
+		(at 140.97 196.85 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-0024-4000-8000-000000000024")
+	)
+	(wire
+		(pts
+			(xy 224.79 194.31) (xy 240.03 194.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0025-4000-8000-000000000025")
+	)
+	(global_label "+5V"
+		(at 240.03 194.31 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0026-4000-8000-000000000026")
+	)
+	(wire
+		(pts
+			(xy 224.79 196.85) (xy 240.03 196.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-0027-4000-8000-000000000027")
+	)
+	(global_label "GND"
+		(at 240.03 196.85 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0003-0028-4000-8000-000000000028")
+	)
+	(symbol
+		(lib_id "rtk:TP")
+		(at 129.54 217.17 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0003-0029-4000-8000-000000000029")
+		(property "Reference" "TP1"
+			(at 132.08 215.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BASE_5V_RAW"
+			(at 132.08 218.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 129.54 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 129.54 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000013"
+					(reference "TP1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 129.54 218.44) (xy 129.54 223.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0003-002a-4000-8000-00000000002a")
+	)
+	(global_label "BASE_5V_RAW"
+		(at 129.54 223.52 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0003-002b-4000-8000-00000000002b")
+	)
+	(text_box "ROVER POWER - AND WHY A FOUR-HOUR BATTERY IS NOT A REQUIREMENT\n\nTHE COLLECTION METHOD MAKES THE SESSION SHORT ON PURPOSE. Because PPK ties every session back to the\nsame base, sessions stitch with no registration step - two afternoons of driving merge as if they were\none. The method is a coarse pass at 1 m track spacing (about 1.7 hours including turns over the drivable\n28,600 sf) and then selective densification only where the gradient is interesting. Nothing about that\nneeds one long battery, and building for one buys weight on a cart that already has a tilt problem.\n\nTWO 3.3 V DOMAINS, NOT ONE, AND BOTH COME FROM THE SAME 5 V. The Due's on-board regulator feeds the\nMCU, the radio, the card and the display. The GNSS carrier is fed 5 V and makes its own 3.3 V with its\nAP2112K, so the receiver never shares a rail with a 60 mA radio burst or a 100 mA card write. Common\nground throughout; both rails rise and fall together because both come from the same source.\n\nTHE DRAW, ROW BY ROW, AT 5 V. A linear regulator passes the current it supplies, so a 3.3 V load costs\nthe same current at 5 V.\n\n  consumer                             average    worst-case burst   source\n  ----------------------------------   --------   ----------------   -------------------------------\n  Arduino Due board (normal mode)      130 mA     130 mA             A000062 section 5.3, INM min\n  GNSS carrier on its own LDO          105 mA     150 mA             F9P table 16 (85 mA tracking,\n                                                                     130 mA peak) + 15 mA antenna\n                                                                     (ANN-MB table 2) + board LEDs\n  XBee-PRO 900HP, receive only          29 mA      35 mA             XBee UG A-01, idle/receive\n  microSD                               20 mA     100 mA             SD spec Table 3-6 footnote:\n                                                                     SPI mode is capped at 100 mA\n  memory LCD breakout                    2 mA       2 mA             panel is microwatts; the LDO and\n                                                                     charge pump on the breakout are not\n  RGB LED + buzzer                      15 mA      45 mA             10 mA per channel, on +5V\n  ----------------------------------   --------   ----------------\n  TOTAL at 5 V                         301 mA     462 mA\n  with 10 % for cable and connector    330 mA     462 mA\n                                       1.65 W     2.31 W\n\n  AND ON THE DUE'S OWN 3.3 V REGULATOR:  76.5 mA (SAM3X at 84 MHz, table 45-12) + 35 + 100 + 2\n  = 214 mA, say 238 mA. It dissipates (5.0 - 3.3) x 0.238 = 0.40 W, which is warm and not hot.\n  Section 5.3 bounds the whole board at 800 mA in normal mode and this is 58 % of that.\n\nSESSION LENGTH. A \"5000 mAh\" bank is 5 Ah at a 3.7 V cell, 18.5 Wh, of which roughly 90 % survives the\nboost to 5 V: 16.7 Wh, or 3.33 Ah at 5 V.\n\n    5000 mAh bank   3.33 Ah / 0.330 A  = 10.1 hours      <-- DRAWN.  3.0x the longest planned session\n    2500 mAh bank                      =  5.0 hours          also sufficient; 1.5x\n   10000 mAh bank                      = 20.2 hours          6.0x, and 190 g of cart nobody needs\n\n  ==>  5000 mAh. The requirement it is sized against is the 3.4-hour worst case (full property at\n       0.5 m spacing), not a four-hour rule, and the margin exists to absorb a cold day and an ageing\n       pack rather than to enable a longer day.\n\nTHE ONE TRAP IN USING A POWER BANK. Many banks shut down when the load falls below 50-100 mA, on the\nassumption that the phone finished charging. This node draws 301 mA and will never trip that - but a\nbank that also needs a double-press to enable a low-current mode is a bank that will switch itself off\nif the design ever gets more efficient. Buy one that stays on, and test it by leaving the node running\nfor an hour before trusting it in the field.\n\nFED INTO THE 5V PIN, DELIBERATELY, AND NOT INTO THE USB PORT. The Due's USB inputs sit behind a 500 mA\nresettable polyfuse. A 462 mA worst-case burst is 92 % of its hold current, and a polyfuse's hold\ncurrent derates with ambient temperature - which for a cart in the sun is precisely the wrong\ndirection. The 5V pin bypasses that fuse. It also bypasses the on-board regulator and its protection,\nso THE SOURCE MUST BE A REGULATED 5 V AND NOTHING ELSE: 5.5 V is the board's own limit for VUSB\n(A000062 section 5.1) and 3.3 V is what its I/O tolerates. There is no reverse-polarity risk here\nbecause a USB connector is polarised, and the board's antipolarity protection (section 2.3) covers the\nbarrel jack rather than this pin.\n\nNO POWER SWITCH, AND THAT IS ALSO A DECISION. A switch in the 5 V line is one more thing that can open\nhalfway through a sector write, and it buys nothing that unplugging the cable does not. What DOES get\nbuilt is the opposite: the USB connection is strain-relieved and cable-tied to the cart frame, because\nthe most likely unplanned power cut on a hand-pushed cart is not a flat battery, it is a connector\nwalking out of its socket over rough ground. The cheapest brownout mitigation on this sheet is a\ncable tie."
+		(exclude_from_sim no)
+		(at 250 15.24 0)
+		(size 124.5136 144.9606)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0003-002c-4000-8000-00000000002c")
+	)
+	(text_box "BASE POWER - PERMANENT, AND DEFINED ACROSS A POWER CUT\n\n  mains -> 5 V / 2.4 A USB wall adapter -> pass-through USB power bank -> Due 5V pin\n\nTHE BANK IS THE UPS AND IT COSTS NOTHING TO DESIGN. A pass-through bank charges from the adapter while\nsimultaneously supplying the load, so a mains cut is simply the moment it stops charging. Base draw is\n295 mA average at 5 V (the rover's rows minus the display, buzzer and mark button, plus the radio's\nsmall transmit duty), so a 10000 mAh bank carries roughly 22 hours of ride-through.\n\n    base 5 V average   130 (Due) + 105 (F9P + antenna) + 30 (XBee) + 20 (SD) + 10 (RGB)  =  295 mA\n    10000 mAh bank     33 Wh delivered / 1.48 W                                          =  22 hours\n\n  THE RADIO'S TRANSMIT DUTY IS WHY 30 mA COVERS IT. Trimmed RTCM3 at MSM4 is about 900 B/s; over a\n  200 kbps air rate that is 36 ms of transmitting per second, a 3.6 % duty cycle. 29 mA of receive\n  plus 3.6 % of the 31 mA transmit increment is 30.1 mA. The burst still needs C3 next to the module;\n  the average does not need anything.\n\nWHY A UPS AT ALL, GIVEN THAT THE ROVER'S DATA SURVIVES ANYWAY. It does not survive: PPK reprocesses the\nrover's raw observations AGAINST THE BASE'S, so a gap in the base log is a gap in the rover's\npost-processed solution for the same window. Radio dropouts are a UX risk; a base outage is a\ndata-quality risk, and it is the only one in the design. #50 makes \"logged continuously across a whole\nsession with no gaps\" a hard acceptance criterion, and this is the hardware that lets it be one.\n\n  THE TRAP: not every \"pass-through\" bank is glitch-free. Some drop their output for a few\n  milliseconds when the input disappears. Test it before trusting it - unplug the adapter with the node\n  running and watch whether the node reboots.\n\nWHAT HAPPENS WHEN THE CUT OUTLASTS THE BANK, which is the case the acceptance criterion is really\nabout. The node loses power. On restoration:\n\n  1. IT COMES BACK BY ITSELF. There is no switch to press and no button to hold. The bank resumes\n     pass-through the moment the adapter does, and the Due boots from flash.\n  2. IT COMES BACK AS A BASE, and this is the part that is a hardware decision rather than a hope. The\n     ZED-F9P's base-mode configuration must NOT be left to live only in the module's battery-backed\n     RAM. SparkFun's hookup guide advertises \"up to two weeks\" of retention; the arithmetic does not\n     support it. I_BCKP is 45 uA typical (F9P table 15) and the fitted cell is a 6.8 mm coin of about\n     5.5 mAh, which is 5.5 / 0.045 = 122 hours, or FIVE DAYS. If the part is instead the 1 mAh cell\n     named in the vendor's own CAD library, it is 22 HOURS. Either way a fortnight of retention is not\n     available, and a base that silently comes back as a rover after a long outage is precisely the\n     failure this criterion exists to rule out.\n\n     ==>  THE MCU RE-APPLIES THE FULL BASE CONFIGURATION OVER UART1 ON EVERY BOOT. Nothing in the\n          system then depends on the module's non-volatile state, the backup cell becomes a hot-start\n          convenience rather than a load-bearing part, and a receiver swapped in from a drawer behaves\n          identically to one that has been running for a year.\n\n  3. THE LOG RESUMES, IT DOES NOT RESTART. Append-only at a fixed stride with monotonic sequence\n     numbers means the gap is visible as a gap. That is #51's guarantee and it is what makes an outage\n     detectable at the desk instead of invisible.\n  4. THE FRAME IS UNCHANGED, because the antenna did not move. This is the whole reason the mount is a\n     roof mount or a driven pipe with forced centering rather than a tripod: a power cut must not be\n     able to change where the base thinks it is, and the only thing that could is somebody moving it.\n\nAND THE FAULT POLICY FOLLOWS FROM THE HARDWARE, not the other way round. The base is unattended and has\nnothing to de-energise, so halting is its worst possible response - it would silently downgrade every\nepoch the rover collects for the rest of the afternoon. #50 is expected to be this repo's first RESET\npolicy, and this sheet is why: there is no load to make safe, and there is a rover in a field waiting."
+		(exclude_from_sim no)
+		(at 250 165.2806 0)
+		(size 123.3452 120.2718)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 222 245 222 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0003-002d-4000-8000-00000000002d")
+	)
+	(text_box "THE BROWNOUT AND THE WRITE PATH - THE ROVER'S ONLY GENUINE HARDWARE HAZARD\n\nThere is no energised load anywhere in this system. Nothing gets hot, nothing moves, nothing can hurt\nanybody. The one thing that can be destroyed is DATA, and the way to destroy it is to collapse the\nsupply partway through a card write.\n\nSTART WITH WHAT THE SPECIFICATION ACTUALLY PROMISES, BECAUSE IT IS LESS THAN EVERYONE ASSUMES.\nSD Physical Layer Simplified Specification 9.10, section 4.3.3, with the carve-out emphasised:\n\n    \"The SD Memory Card ensures that data is not destroyed during all the conditions EXCEPT WRITE OR\n     ERASE OPERATIONS ISSUED BY THE HOST even in the event of sudden shut down or removal.\"\n\nand section 7.2.4, on terminating a program in progress:\n\n    \"This may destroy the data formats on the card. It is in the responsibility of the host to prevent\n     this for occurring.\"\n\n  ==>  THERE IS NO GUARANTEE THAT DAMAGE IS CONFINED TO THE BLOCK BEING WRITTEN. The card has a flash\n       translation layer with its own metadata, and a host cannot see it or protect it. Vendor\n       power-failure literature (Swissbit AN2109en) documents, in ascending severity: loss of the block\n       in flight; loss of data written LONG BEFORE, because it had not been flushed; spare-block\n       exhaustion that eventually leaves the card read-only; and corruption of the card's own firmware\n       metadata, after which \"the host no longer identifies the medium\".\n\n       Any sheet that claimed \"append-only bounds the damage to one record\" would be claiming something\n       the SD specification explicitly declines to promise. What append-only genuinely buys is that\n       NONE OF *OUR* METADATA IS IN THE PATH - no FAT chain, no directory entry, nothing that a partial\n       write can make self-inconsistent. The card's own metadata remains exposed and no host-side design\n       choice changes that.\n\nSO THE MECHANISM IS FOUR LAYERS, CHEAPEST FIRST, AND THE LAST ONE IS AN ADMISSION.\n\n  1. DO NOT LOSE POWER UNEXPECTEDLY. Strain-relieved, cable-tied USB connection; a bank sized to three\n     times the longest session; and R2/R3 dividing the 5 V rail by two into A0 (PA16/AD7), 2.5 V\n     nominal at a 3.3 V reference, drawing 25 uA. A REGULATED rail tells you nothing until it fails -\n     the 5 V side sags first and visibly as a bank approaches cutoff. That is the warning the ROVER can\n     act on, because a human is standing there: stop starting new writes, close the region out, and say\n     so on the indicator. That is #52's \"stop and say so, loudly\", and it is why the rover's fault\n     policy is the opposite of the base's.\n\n  2. DETECT THE COLLAPSE IN HARDWARE, WITH NO EXTERNAL PARTS. The SAM3X8E has a programmable supply\n     monitor in its Supply Controller (Atmel-11057C section 16.4.5): SUPC_SMMR.SMTH selects a threshold\n     from 1.9 V to 3.4 V in 100 mV steps, SMSMPL selects continuous or periodic sampling, SMRSTEN resets\n     the core on detection and SMIEN raises an interrupt instead.\n\n         DECIDED:  SMTH = 3.0 V.  SMSMPL = continuous.  SMIEN = 1.  SMRSTEN = 0.\n\n     THE INTERRUPT, NOT THE RESET, AND THIS IS THE IMPORTANT ONE. A reset at an arbitrary instant leaves\n     the SPI chip selects in an arbitrary state - possibly with the card still selected and a command\n     half-issued, which is exactly the condition section 7.2.4 warns about. An interrupt lets firmware\n     de-select, stop clocking and stop starting anything new. 3.0 V is chosen as the last threshold at\n     which STORAGE is still healthy: the card's minimum is 2.7 V (SD 9.10 section 2). The receiver has\n     already browned out by then - its antenna bias needs the rail above 3.1 V - and that is accepted,\n     because by 3.0 V the session is over and the only remaining job is to end it cleanly.\n\n  3. HOLD UP LONG ENOUGH TO FINISH THE TRANSACTION IN FLIGHT AND TO SHUT THE BUS DOWN IN ORDER.\n     C8, 4700 uF, on the 3.3 V rail, plus C3/C6/C7 at the loads - about 5.4 mF in total. At 214 mA the\n     rail falls at I/C = 0.214 / 5.4 mF = 40 V/s:\n\n         3.3 V -> 3.0 V  (supply monitor trips)      7.6 ms\n         3.0 V -> 2.7 V  (microSD minimum)           7.6 ms of usable time after the interrupt\n         a 512-byte sector at 8 MHz SPI              0.51 ms of wire time\n\n     Fifteen times over. AND THE ORDER MATTERS AS MUCH AS THE TIME: the breakout's 47 kOhm pull-ups can\n     back-power the card's controller from host pins that are still high after VDD has gone - Swissbit\n     AN2109en section 3.3 warns that \"it is important to disconnect positive voltage before it reaches\n     the pull-up resistors\". A partially powered flash controller is how metadata gets corrupted, so the\n     shutdown drives the bus low rather than leaving it high.\n\n  4. ASSUME THE CARD CAN STILL BE LOST, AND MAKE THAT SURVIVABLE RATHER THAN INVISIBLE.\n     * a magic header at the start of the region, so a card that has been quietly reformatted by a\n       laptop is recognised instead of silently overwritten;\n     * a per-record check field and monotonic sequence numbers (#51 already requires both), so the desk\n       finds exactly where the log stopped being trustworthy rather than trusting all of it;\n     * a spare card in the operator's pocket, because the part costs a few pounds and a re-driven\n       afternoon costs an afternoon;\n     * and the base's own continuous log, which is the second copy of the one thing that cannot be\n       re-driven at all - the correction frame every past session is tied to.\n\nWHAT IS DELIBERATELY NOT BUILT. A hold-up big enough to guarantee the card finishes. SD 9.10 section\n4.6.2.2 defines the maximum length of busy as 250 ms for all write operations on a High Capacity card,\nand allows an SDXC or SDUC card that cannot hold to that to indicate up to 500 ms in four named cases -\namong them \"the last busy in any write operation\" and a consecutive two-block write that \"spans across\nthe physical block boundary\". Section 4.6.2's application notes then tell hosts to \"use a fixed timeout\nfor write operations rather than using a timeout calculated from the R2W_FACTOR parameter\", and add\nthat \"it is strongly recommended for hosts to implement more than 500ms timeout value even if the card\nindicates the 250ms maximum busy length\". Carrying 214 mA for 500 ms across the 0.6 V window needs\n178,000 uF. That is not a capacitor, it is a supercapacitor bank with its own charge-limiting problem\non a cart that is already fighting mass on a lever arm. The design spends that money on layers 1 and 4\ninstead.\n\nTWO RULES THIS PUTS ON THE FIRMWARE, recorded here because they are consequences of the hardware:\n  * SINGLE-BLOCK WRITES ONLY, and a FIXED write timeout of more than 500 ms - not one calculated from\n    R2W_FACTOR, which section 4.6.2 explicitly advises against. Never an open-ended multi-block write:\n    aborting one leaves more sectors in an undefined state, for no benefit here.\n  * AND NEVER CMD0 A BUSY CARD TO ESCAPE A HUNG WRITE. That is the exact action section 7.2.4 says\n    \"may destroy the data formats on the card\". Wait the full timeout out, then power-cycle.\n  * THE RAM RING IS THE REAL LATENCY ABSORBER. A 250-500 ms card stall must not sit inside the 200 ms\n    epoch period, so epochs are appended to a RAM ring and drained to the card asynchronously. At\n    ~2.5 kB/s a 32 KB ring covers about 13 seconds of stall, and 32 KB is a third of the Due's SRAM.\n    #52 owns the number; this sheet's contribution is that the SRAM to do it exists, and that the ring\n    is also exactly what layer 1 flushes when the battery warning arrives."
+		(exclude_from_sim no)
+		(at 15.24 250.19 0)
+		(size 124.5136 212.8548)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0003-002e-4000-8000-00000000002e")
+	)
+	(embedded_fonts no)
+)

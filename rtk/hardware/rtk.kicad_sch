@@ -1,0 +1,357 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5d1c0000-0000-4000-8000-000000000001")
+	(paper "User" 783.59 400.01)
+	(title_block
+		(title "RTK survey system - overview, shared decisions and electrical ceilings")
+		(date "2026-08-01")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "Two nodes: a permanently mounted base station and a hand-pushed rover cart.")
+		(comment 2 "Receiver: u-blox ZED-F9P (UBX-21044850 R05). Antenna: u-blox ANN-MB-00 (UBX-18049862 R05).")
+		(comment 3 "Radio: Digi XBee-PRO 900HP S3B (90002173 rev N). Logger: Arduino Due / SAM3X8E (Atmel-11057C).")
+		(comment 4 "No firmware in this story. Every later story implements against these sheets.")
+	)
+	(lib_symbols
+
+	)
+	(text_box "WHAT THIS PROJECT IS, AND WHAT THESE FIVE SHEETS SETTLE\n\nTwo nodes and one radio link. A BASE STATION bolted permanently to a roof, and a ROVER: a hand-pushed\ncart that logs a GNSS epoch five times a second while somebody walks it over 0.69 acres of lawn, pine\nstraw and gravel. Post-processed against the base, the rover produces full-property elevation and a\ngenuinely located tree line - the half of the job a 2D boundary survey does not answer.\n\nTHIS IS AN INTEGRATION DESIGN, NOT AN RF DESIGN. The receiver is bought, the antenna is bought, the\nradio is bought. Nothing here designs a receiver front end or a filter. What these sheets settle is\neverything around those parts: which UART carries what, what powers what, where the antenna reference\npoint physically is, how far the transmitter has to sit from the GNSS antenna, and what happens to a\nhalf-written log record when the battery stops.\n\n                                     ~ 75 m\n    +---------------------------+   RTCM3    +----------------------------+\n    |  BASE  (roof, permanent)  | =========> |  ROVER  (cart, hand-pushed)|\n    |                           |  915 MHz   |                            |\n    |  ANN-MB-00 on the ridge   |  FHSS      |  ANN-MB-00 on a 0.5 m mast |\n    |    | 5 m RG-174           |  broadcast |    | 5 m RG-174            |\n    |  ZED-F9P  UART2 -> RTCM3 out           |  ZED-F9P  UART2 <- RTCM3 in|\n    |           UART1 -> raw obs             |           UART1 -> PVT+raw |\n    |  Arduino Due  -> XBee TX               |  XBee RX  -> Arduino Due   |\n    |  microSD: raw observations, always     |  microSD: epoch records    |\n    |  Mains + pass-through bank as a UPS    |  5 V USB power bank        |\n    +---------------------------+            +----------------------------+\n                    \\                                    /\n                     \\____  both logs meet at the desk  _/\n                              PPK reprocessing\n\nWHY THE LINK IS ONE-WAY. The rover never has to answer. Corrections are broadcast base -> rover with\nno acknowledgement, which means the ROVER'S RADIO NEVER TRANSMITS, which in turn means it can never\ndesense the GNSS antenna sitting half a metre from it. The cost is that the base cannot know the rover\nmissed a message - and that cost is already paid, because PPK reprocesses the whole session from raw\nobservations at the desk. A dropped correction degrades the live display and nothing else. See the\nantenna sheet for the arithmetic that makes this worth doing."
+		(exclude_from_sim no)
+		(at 15.24 15.24 0)
+		(size 122.1768 75.009)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0001-4000-8000-000000000001")
+	)
+	(text_box "ONE NODE DESIGN, BUILT TWICE - AND THAT IS THE POINT\n\nThe base and the rover are the SAME schematic. Same MCU, same receiver board, same radio, same storage,\nsame pin assignment. UART2 is wired in both directions at both ends; which direction carries traffic is\na firmware choice, not a wiring difference. One bring-up serves both nodes, and the pin table below is\nthe only pin table this project has.\n\n  what differs           base                              rover\n  --------------------   -------------------------------   ---------------------------------\n  power source           mains + pass-through bank (UPS)    5 V USB power bank\n  field indicator        RGB LED only                       RGB LED + memory LCD + buzzer\n                                                            + mark button\n  antenna mount          roof ridge, forced centering       0.5 m mast on the cart\n  radio                  transmits (PL=0, +7 dBm)           receive-only, never keys up\n  fault policy (#50/#52) reset - unattended, keep serving    stop and say so - a human is there\n\nEverything else is identical, including the parts that look like they should not be. The rover carries\na radio it never transmits with, because the module is the same part number and populating it costs\nnothing; the base carries an RGB LED nobody watches, because a person on a ladder wants to know the box\nis alive before they climb back down."
+		(exclude_from_sim no)
+		(at 15.24 95.329 0)
+		(size 123.3452 44.148)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 222 245 222 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0002-4000-8000-000000000002")
+	)
+	(text_box "THE MODULE PURCHASING DECISION - AND IMU TILT COMPENSATION, DECIDED: OUT OF SCOPE\n\nBOUGHT: u-blox ZED-F9P, on a SparkFun GPS-RTK-SMA carrier (GPS-16481), at both nodes. It is a plain\nmulti-band RTK positioning module. It has no IMU, no dead reckoning and no tilt compensation, and that\nis a decision made here rather than a discovery left for the rover story.\n\nTHE PROBLEM TILT COMPENSATION WOULD SOLVE. The antenna sits 0.5 m above the ground point it is\nreporting. Tilt the mast by 10 degrees and the antenna moves 0.5 x sin(10 deg) = 8.7 cm horizontally\nwhile the wheels have not moved at all. A survey pole is bubble-levelled by a human at every shot; a\ncart crossing roots and leaf litter is levelled by nobody. 8.7 cm is the same order as the entire rest\nof the error budget, so this is not a rounding term.\n\nWHAT WAS ACTUALLY CHECKED, RATHER THAN ASSUMED.\n\n  u-blox ZED-F9P    NO. \"The ZED-F9P firmware does not support the dead reckoning position fix type\"\n                    (Integration manual UBX-18010802 R16, section 3.1.8.3). There is no IMU on the\n                    module and no firmware option that adds one.\n  u-blox ZED-F9R    NOT THIS. It fuses an internal 6-axis IMU with GNSS AND WHEEL TICKS, and its\n                    integration manual (UBX-20039643 R10, section 3.1.10.1) says the algorithm is\n                    \"optimized for automotive, e-scooter, rail vehicle and robotic lawn mower\n                    platforms only\". It also demands an initial calibration drive. This is vehicle\n                    dead reckoning, not pole-tip compensation; the words \"tilt\", \"survey\" and \"pole\"\n                    do not appear in either F9R document.\n  Unicore UM980     NO. Neither its datasheet nor its user manual mentions tilt, IMU or inertial\n                    anything. The board people associate with tilt - SparkFun's RTK Torch - gets it\n                    from a SEPARATE IM19 inertial module, not from the receiver.\n  UM981S / Torch    YES, and at USD 2,149.95 for the Torch against USD 259.95 for a ZED-F9P carrier.\n                    Two nodes: about USD 4,300 against about USD 520.\n\nAND THE FINDING THAT SETTLES IT, WHICH IS NOT THE PRICE. Every documented tilt-compensation\ninitialisation procedure assumes A SURVEY POLE WITH ITS TIP PLANTED ON THE GROUND. The IM19\nintegration guide's working modes are \"shaking the RTK pole back and forth with the end of pole fixed\non the ground\"; SparkFun's Torch firmware hard-codes that mode, and its user procedure is: get an RTK\nFIX, enter the pole length, shake vertically, plant the tip, rock the head up to 30 degrees. Then:\n\"Tilt Compensation mode will be exited if RTK Fix is lost.\"\n\n  A CART CANNOT PERFORM THAT RITUAL. It has no tip to plant and nobody to shake it. And the exit\n  condition is fatal to the whole idea here: tilt compensation switches itself off exactly when the\n  fix drops - which is under the canopy, which is where the tilt error and the terrain both matter\n  most. It would be present in the open lawn where it is not needed and absent under the pines where\n  it is.\n\nSO THE REJECTION IS NOT \"TOO EXPENSIVE\", IT IS \"DOES NOT APPLY\". A cart with a rigidly mounted,\nnear-vertical antenna does not have the problem tilt compensation was built for; it has a small,\nslow, terrain-driven tilt, and the levers for that are mechanical: shorten the mast (4.3 cm at 0.25 m\ninstead of 8.7 cm at 0.5 m), stiffen it, or hang it in a damped gimbal. All three are cheaper than a\ndifferent receiver and none of them stops working when the fix drops.\n\nWHAT THIS COMMITS US TO. The rover applies a FIXED ARP -> ground offset (antenna sheet) and records it\nper epoch. Residual tilt is not corrected and not modelled; #54 measures it by driving over monumented\niron pipes held to 2.4 cm, and the write-up publishes it as part of the accuracy claim. That is an\nhonest 10 cm instrument rather than a silent one - and if tilt turns out to dominate, the first lever\nis the mast, not the module."
+		(exclude_from_sim no)
+		(at 15.24 144.557 0)
+		(size 122.1768 112.0422)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0003-4000-8000-000000000003")
+	)
+	(text_box "THE STORAGE DECISION - A BOUNDED APPEND-ONLY REGION ON RAW SECTORS. NO FILESYSTEM.\n\nDECIDED: a microSD card, written as RAW 512-BYTE SECTORS in SPI mode, as one append-only region of\nfixed-stride records starting at a fixed sector. No FAT, no directory, no file. Read at the desk with\ndd, not by a firmware USB stack.\n\nWHAT THE WRITE PATH BECOMES.  sector = REGION_BASE + (sequence * STRIDE) / 512.  That is the whole\naddress calculation. No allocator, no directory entry, no cluster chain, no free-space search, and\ntherefore no unbounded worst case anywhere in it. #51 already fixes a bounded maximum record size at\ncomptime, which is exactly the primitive this needs.\n\nWHAT FAT32 WOULD HAVE COST, stated so the rover story does not rediscover it. A FAT32 writer needs\ndirectory-entry management, long-file-name handling, a cluster allocator, and a free-cluster search\nwhose worst case depends on the state of the card rather than on anything this firmware controls. It\nwould be a larger subproject than the rover firmware it exists to serve. And it makes every power cut\nstrictly worse: appending to a file touches the data cluster, the FAT chain and the directory entry -\nthree writes at three distant addresses - so an interrupted append can lose the FILESYSTEM rather than\none record. Append-only at a fixed stride puts none of OUR metadata in the path of a power cut.\n\n  READ THAT LAST SENTENCE PRECISELY. It says our metadata. It does NOT say the card is safe - see the\n  power sheet, where the SD specification's own wording is quoted. Removing the filesystem removes the\n  damage this design is responsible for; the card's internal flash translation layer remains exposed\n  and no host-side choice can fix that.\n\nWHAT THE RAW-SECTOR CHOICE COSTS, honestly.\n  * The card is not mountable. Plugging it into a laptop offers to format it - a real hazard, and the\n    reason the card is labelled and the region begins with a magic header the desk tooling checks.\n  * Capacity is bounded by the region, not by the card. An 8 GB card is ~15.6 M sectors; at a 64 B\n    record and 5 Hz that is more than a year of continuous rover logging, and at ~2 kB/s of raw\n    observations it is still ~1000 hours of base logging. Capacity is not the binding constraint.\n  * Nothing enumerates the log for you. Sequence numbers do that instead, which #51 already requires.\n\nWHY NOT AN SPI NOR FLASH PART, which would have given a genuinely bounded page-program time and no\nflash translation layer to corrupt. The base logs raw observations continuously; a full multi-band\nRXM-RAWX epoch runs to roughly 2 kB, so a 16 MB part holds about two hours and a 64 MB part about\nnine. A base station whose log wraps in an afternoon is not a base station. That is the trade this\nproject makes: capacity and a removable medium, against a storage device whose failure modes under\npower loss are not fully specified by anyone."
+		(exclude_from_sim no)
+		(at 15.24 261.6792 0)
+		(size 122.1768 81.1812)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 240 228 250 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0004-4000-8000-000000000004")
+	)
+	(text_box "ELECTRICAL CEILINGS - the rows #50 and #52 copy into resource-budget.md section 4\n\nEvery figure below is a datasheet maximum, not a measurement. Section 4 of the repo template\n(docs/resource-budget.md) wants ceiling / budget / headroom; the ceiling and the budget are here, and\n#54 replaces the budget column with measured numbers.\n\n  quantity                                     ceiling        budget (worst case)   headroom   source\n  ------------------------------------------   ------------   -------------------   --------   --------------------------\n  I/O voltage on any Due pin                   3.3 V          3.3 V                 0 %        Due A000062 5.1 safety note\n  ZED-F9P input pin voltage                    VCC (3.3 V)    3.3 V                 0 %        F9P Table 15, Vin 0..VCC\n  XBee supply voltage                          3.6 V          3.3 V                 8 %        XBee UG A-01\n  microSD supply voltage                       2.7 .. 3.6 V   3.3 V                 -          SD Phys. Layer 9.10, sec. 2\n  memory LCD panel supply                      4.8 .. 5.5 V   5.0 V                 -          Sharp LCP-2110015A Table 7-1\n  Source current, Due Group 1 pin              -15 mA         -0.62 mA (LED base)   96 %       SAM3X Table 45-2 note 2\n  Source current, Due Group 2 pin              -3 mA          -0.05 mA (UART TX)    98 %       SAM3X Table 45-2 note 3\n  Sink current, Due Group 1 pin                9 mA           0.05 mA               99 %       SAM3X Table 45-2\n  Total DC output current, all Due I/O         130 mA         4.0 mA                97 %       SAM3X Table 45-1, 144-LQFP\n  DC current, any ZED-F9P digital I/O pin      5 mA           0.05 mA               99 %       F9P Table 15\n  Antenna bias current out of VCC_RF           50 mA          15 mA typ             70 %       F9P Table 15 / ANN-MB Table 2\n  Antenna bias voltage AT THE ANTENNA          3.0 .. 5.0 V   2.7 V as shipped      FAILS      see the antenna sheet\n  External gain seen at RF_IN                  17 .. 50 dB    21.4 dB typ           4.4 dB     F9P Table 15 / ANN-MB Table 2\n                                                                                    over floor\n  Input power at RF_IN                         +10 dBm        -44 dBm at 1 m        54 dB      F9P Table 14 / antenna sheet\n  microSD supply current, SPI mode             100 mA         100 mA                0 %        SD Phys. Layer 9.10 Table 3-6\n  Due 3V3 rail load                            see note       238 mA                -          power sheet\n  Due board normal-mode current                130 .. 800 mA  462 mA                42 %       Due A000062 section 5.3\n  Node draw at 5 V, average                    -              rover 330 mA          -          power sheet\n                                                              base  295 mA\n  Node draw at 5 V, worst case burst           -              462 mA                -          power sheet\n  Radio conducted output power                 +24 dBm max    +7 dBm (PL=0)         17 dB      XBee UG PL command\n  SPI clock, shared bus                        2 MHz          2 MHz with the LCD    0 %        Sharp Table 6-3-1\n                                                              8 MHz with the card              SD spec\n\nTHREE OF THESE HAVE NO MARGIN AT ALL AND ARE THE ONES WORTH READING TWICE.\n\n  3.3 V on a Due pin. 5 V damages the board, and +5 V sits at position 1 of both D22-D53 headers and\n  position 2 of the ICSP header.\n\n  +10 dBm at RF_IN is an ABSOLUTE MAXIMUM on the receiver's antenna input, not a derating. The antenna\n  sheet shows what has to be true for the radio not to exceed it, and what breaks if a cheaper antenna\n  is substituted.\n\n  THE ANTENNA BIAS VOLTAGE FAILS AS SHIPPED. The chosen carrier board feeds the antenna through a\n  33 ohm series resistor, which at the antenna's 15 mA drops 0.5 V and lands 0.3 V BELOW its minimum\n  supply. This is the one row in this table that is not satisfied by the parts as bought. The antenna\n  sheet carries the arithmetic, the bring-up measurement that confirms it, and the fix."
+		(exclude_from_sim no)
+		(at 431.8 15.24 0)
+		(size 147.8816 97.6404)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 238 238 238 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0005-4000-8000-000000000005")
+	)
+	(text_box "THE UNDER-CANOPY BET, TAKEN DELIBERATELY - AND THE WAY OUT IF IT LOSES\n\nThere is no feasibility spike ahead of this story. Hardware is being committed before anyone knows\nwhether RTK holds a fix under these pines. That is a bet, and it is recorded here rather than\ndiscovered later.\n\nWHAT IS ALREADY SAFE. The boundary half of the original job is answered - a Class A VRS RTK boundary\nsurvey exists at 0.08 ft (2.4 cm) horizontal, about four times better than this rover will ever be.\nNothing here needs to re-measure a corner.\n\nWHAT IS EXPOSED. The topography half is untouched by that survey - the tell is the letter H in\n\"positional accuracy: H 0.08'\", a horizontal figure with no vertical companion, no datum, no benchmark\nand no contour anywhere on the sheet. Elevation is the whole reason this rover exists, and elevation is\nexactly what degrades under canopy.\n\nTHE SHAPE OF THE LOSS, IF IT LOSES. Roughly two thirds of the parcel is open. A total under-canopy\nfailure therefore does not produce a dead project; it produces a complete, uniform, current surface over\nthe open two thirds and HOLES under the pines. Holes are a known deficiency of a real dataset. That is a\ncategorically better failure than a plausible one, which is why #51 makes per-epoch solution status\nstructurally impossible to omit: a FLOAT excursion under canopy is smooth and correlated and looks\nexactly like a gentle hollow in the ground.\n\nTHE ESCAPE ROUTE, NAMED NOW SO IT IS NOT A SURPRISE LATER. UWB ranging anchors placed on the monumented\niron pipes. UWB does not care about sky view, the monuments are already surveyed to 2.4 cm, and the\nrover already carries an MCU with spare UARTs and a spare SPI chip select. It is a different instrument\nbolted to the same cart, not a redesign. It is not being built now, and it is not being designed here -\nit is recorded as the thing to reach for if #53's tree-line mission comes back saying the wooded third\nnever fixes."
+		(exclude_from_sim no)
+		(at 431.8 117.9604 0)
+		(size 124.5136 60.6072)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0006-4000-8000-000000000006")
+	)
+	(text_box "HOW TO READ THESE SHEETS\n\n  rtk-node       one node, drawn once, built twice. The MCU, the receiver board, the radio, the card,\n                 the pin assignment table and the two places a jumper can be miscounted.\n  rtk-antenna    the antenna, its coax and its bias; the antenna reference point and the ARP -> ground\n                 offset that the rover subtracts from every epoch; and the radio/GNSS coexistence\n                 arithmetic that sets the minimum antenna separation.\n  rtk-power      both power plans, the achievable session length, and the brownout and write-path\n                 hazard that the rover's fault policy depends on.\n  rtk-indicator  the rover's field indicator: what the operator can see with their hands on the handle.\n\nNETS CROSS SHEETS BY GLOBAL LABEL. +3V3, +5V and GND are global, as are the signals that leave the node\nsheet for the indicator, the antenna and the power sheets. There are no hierarchical sheet pins; the\nnetlist is the proof of connectivity, and\n\n    kicad-cli sch export netlist --format kicadsexpr rtk.kicad_sch\n\nis how you check that TX really did land on RX."
+		(exclude_from_sim no)
+		(at 431.8 183.6476 0)
+		(size 123.3452 40.0332)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 238 238 238 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0007-4000-8000-000000000007")
+	)
+	(text_box "WHAT THIS STORY DELIBERATELY DOES NOT DECIDE\n\n  * Anything in firmware. No project skeleton, no linker script, no register write. #50 and #52.\n  * The epoch record's field layout. #51 owns the wire format; this sheet only fixes that it is\n    bounded and fixed-stride, because the storage decision above depends on that and nothing else.\n  * The property boundary geometry. The plat's corners and the cul-de-sac arc live in the owner's CAD\n    repo. Not here.\n  * The phone app and the desk-side GIS / PPK pipeline. Out of scope for this repo entirely.\n  * The chassis. Wheelbase and wheel diameter set the effective topographic resolution (#54 measures\n    it), and the only thing these sheets impose on the chassis is the mast height and the 1 m of\n    separation between the two antennas."
+		(exclude_from_sim no)
+		(at 431.8 228.7608 0)
+		(size 121.0084 25.6314)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 238 238 238 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0000-0008-4000-8000-000000000008")
+	)
+	(sheet
+		(at 660.4 20.32)
+		(size 110.49 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5d1c0000-0000-4000-8000-000000000011")
+		(property "Sheetname" "node"
+			(at 660.4 19.6084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rtk-node.kicad_sch"
+			(at 660.4 46.3046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 660.4 58.42)
+		(size 110.49 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5d1c0000-0000-4000-8000-000000000012")
+		(property "Sheetname" "antenna"
+			(at 660.4 57.7084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rtk-antenna.kicad_sch"
+			(at 660.4 84.4046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 660.4 96.52)
+		(size 110.49 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5d1c0000-0000-4000-8000-000000000013")
+		(property "Sheetname" "power"
+			(at 660.4 95.8084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rtk-power.kicad_sch"
+			(at 660.4 122.5046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 660.4 134.62)
+		(size 110.49 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "5d1c0000-0000-4000-8000-000000000014")
+		(property "Sheetname" "indicator"
+			(at 660.4 133.9084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "rtk-indicator.kicad_sch"
+			(at 660.4 160.6046 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001"
+					(page "5")
+				)
+			)
+		)
+	)
+	(embedded_fonts no)
+)

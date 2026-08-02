@@ -1,0 +1,1230 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5d1c0002-0000-4000-8000-000000000012")
+	(paper "User" 795.27 457.77)
+	(title_block
+		(title "Antenna chain, bias budget, ARP -> ground offset, and radio coexistence")
+		(date "2026-08-01")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "ANN-MB-00: u-blox UBX-18049862 R05 tables 1, 2, 3, 6, 7 and figure 1.")
+		(comment 2 "ZED-F9P: UBX-21044850 R05 tables 14 and 15 - Ext_gain 17..50 dB, RF_IN abs max +10 dBm.")
+		(comment 3 "XBee-PRO 900HP: Digi 90002173 rev N appendix A - PL levels and transmit current.")
+		(comment 4 "The ARP -> ground offset on this sheet is the number the rover subtracts from every epoch.")
+	)
+	(lib_symbols
+		(symbol "rtk:ANN_MB"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "E"
+				(at 0 18.415 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "u-blox ANN-MB-00"
+				(at 0 -14.605 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" "https://content.u-blox.com/sites/default/files/documents/ANN-MB_DataSheet_UBX-18049862.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "L1/L2 active GNSS antenna, SAW pre-filter + LNA, 5 m RG-174, SMA plug"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "ANN_MB_0_1"
+				(rectangle
+					(start -16.51 -11.43)
+					(end 16.51 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(polyline
+					(pts
+						(xy -6.35 11.43) (xy -6.35 15.24)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -12.7 15.24) (xy 0 15.24)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(text "ANN-MB-00"
+					(at 0 8.255 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(text "patch -> SAW -> LNA 28 dB"
+					(at 0 5.08 0)
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+				(text "5 m RG-174, SMA plug"
+					(at 0 2.54 0)
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+				(text "ARP = centre of base plate"
+					(at 0 -1.27 0)
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+				(text "bias 3.0-5.0 V, 15 mA typ"
+					(at 0 -3.81 0)
+					(effects
+						(font
+							(size 1.016 1.016)
+						)
+					)
+				)
+			)
+			(symbol "ANN_MB_1_1"
+				(pin passive line
+					(at 19.05 -8.89 180)
+					(length 2.54)
+					(name "RF + DC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:ANT_WHIP"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "E"
+				(at 6.35 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "ANT_WHIP"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Quarter-wave wire whip antenna"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "ANT_WHIP_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 3.81) (xy 3.81 3.81)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.81 3.81) (xy -1.27 7.62)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 3.81 3.81) (xy 1.27 7.62)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "ANT_WHIP_1_1"
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(text "THE ROVER'S ARP -> GROUND OFFSET, DIMENSIONED"
+		(exclude_from_sim no)
+		(at 576.58 34.29 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0001-4000-8000-000000000001")
+	)
+	(text "elevation, not to scale - every dimension is MEASURED, not computed"
+		(exclude_from_sim no)
+		(at 576.58 38.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0002-4000-8000-000000000002")
+	)
+	(polyline
+		(pts
+			(xy 624.84 67.31) (xy 655.32 67.31) (xy 655.32 77.47) (xy 624.84 77.47) (xy 624.84 67.31)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0003-4000-8000-000000000003")
+	)
+	(text "ANN-MB-00"
+		(exclude_from_sim no)
+		(at 627.38 72.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0004-4000-8000-000000000004")
+	)
+	(polyline
+		(pts
+			(xy 607.06 77.47) (xy 673.1 77.47)
+		)
+		(stroke
+			(width 0.762)
+			(type solid)
+		)
+		(uuid "5d1c0002-0005-4000-8000-000000000005")
+	)
+	(text "ground plane, >= 120 mm disc"
+		(exclude_from_sim no)
+		(at 675.64 78.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0006-4000-8000-000000000006")
+	)
+	(polyline
+		(pts
+			(xy 637.54 58.42) (xy 642.62 58.42)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0007-4000-8000-000000000007")
+	)
+	(polyline
+		(pts
+			(xy 640.08 55.88) (xy 640.08 60.96)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0008-4000-8000-000000000008")
+	)
+	(text "phase centre L1 - 8.9 mm ABOVE the ARP (L2: 7.6 mm)"
+		(exclude_from_sim no)
+		(at 646.43 59.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0009-4000-8000-000000000009")
+	)
+	(text "ANN-MB table 7.  DO NOT ADD IT to the offset below."
+		(exclude_from_sim no)
+		(at 646.43 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-000a-4000-8000-00000000000a")
+	)
+	(polyline
+		(pts
+			(xy 635 82.55) (xy 640.08 77.47) (xy 645.16 82.55) (xy 635 82.55)
+		)
+		(stroke
+			(width 0.508)
+			(type solid)
+		)
+		(uuid "5d1c0002-000b-4000-8000-00000000000b")
+	)
+	(text "ARP"
+		(exclude_from_sim no)
+		(at 594.36 78.74 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-000c-4000-8000-00000000000c")
+	)
+	(text "centre of the antenna base plate"
+		(exclude_from_sim no)
+		(at 594.36 83.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-000d-4000-8000-00000000000d")
+	)
+	(text "(u-blox UBX-18049862 figure 1, red dot)"
+		(exclude_from_sim no)
+		(at 594.36 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-000e-4000-8000-00000000000e")
+	)
+	(polyline
+		(pts
+			(xy 636.27 82.55) (xy 622.3 82.55)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-000f-4000-8000-00000000000f")
+	)
+	(polyline
+		(pts
+			(xy 638.81 77.47) (xy 638.81 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0010-4000-8000-000000000010")
+	)
+	(polyline
+		(pts
+			(xy 641.35 77.47) (xy 641.35 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0011-4000-8000-000000000011")
+	)
+	(polyline
+		(pts
+			(xy 599.44 153.67) (xy 680.72 153.67) (xy 680.72 157.48) (xy 599.44 157.48) (xy 599.44 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0012-4000-8000-000000000012")
+	)
+	(text "cart deck, top face"
+		(exclude_from_sim no)
+		(at 683.26 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0013-4000-8000-000000000013")
+	)
+	(polyline
+		(pts
+			(xy 617.22 157.48) (xy 617.22 173.99)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0014-4000-8000-000000000014")
+	)
+	(circle
+		(center 617.22 173.99)
+		(radius 22.86)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "5d1c0002-0015-4000-8000-000000000015")
+	)
+	(text "axle centre"
+		(exclude_from_sim no)
+		(at 619.76 172.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0016-4000-8000-000000000016")
+	)
+	(polyline
+		(pts
+			(xy 561.34 196.85) (xy 701.04 196.85)
+		)
+		(stroke
+			(width 0.762)
+			(type solid)
+		)
+		(uuid "5d1c0002-0017-4000-8000-000000000017")
+	)
+	(polyline
+		(pts
+			(xy 563.88 196.85) (xy 560.07 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0018-4000-8000-000000000018")
+	)
+	(polyline
+		(pts
+			(xy 572.77 196.85) (xy 568.96 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0019-4000-8000-000000000019")
+	)
+	(polyline
+		(pts
+			(xy 581.66 196.85) (xy 577.85 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001a-4000-8000-00000000001a")
+	)
+	(polyline
+		(pts
+			(xy 590.55 196.85) (xy 586.74 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001b-4000-8000-00000000001b")
+	)
+	(polyline
+		(pts
+			(xy 599.44 196.85) (xy 595.63 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001c-4000-8000-00000000001c")
+	)
+	(polyline
+		(pts
+			(xy 608.33 196.85) (xy 604.52 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001d-4000-8000-00000000001d")
+	)
+	(polyline
+		(pts
+			(xy 617.22 196.85) (xy 613.41 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001e-4000-8000-00000000001e")
+	)
+	(polyline
+		(pts
+			(xy 626.11 196.85) (xy 622.3 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-001f-4000-8000-00000000001f")
+	)
+	(polyline
+		(pts
+			(xy 635 196.85) (xy 631.19 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0020-4000-8000-000000000020")
+	)
+	(polyline
+		(pts
+			(xy 643.89 196.85) (xy 640.08 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0021-4000-8000-000000000021")
+	)
+	(polyline
+		(pts
+			(xy 652.78 196.85) (xy 648.97 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0022-4000-8000-000000000022")
+	)
+	(polyline
+		(pts
+			(xy 661.67 196.85) (xy 657.86 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0023-4000-8000-000000000023")
+	)
+	(polyline
+		(pts
+			(xy 670.56 196.85) (xy 666.75 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0024-4000-8000-000000000024")
+	)
+	(polyline
+		(pts
+			(xy 679.45 196.85) (xy 675.64 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0025-4000-8000-000000000025")
+	)
+	(polyline
+		(pts
+			(xy 688.34 196.85) (xy 684.53 200.66)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0026-4000-8000-000000000026")
+	)
+	(text "GROUND  -  the contact patch, and what the survey is about"
+		(exclude_from_sim no)
+		(at 561.34 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0027-4000-8000-000000000027")
+	)
+	(polyline
+		(pts
+			(xy 708.66 173.99) (xy 708.66 196.85)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0028-4000-8000-000000000028")
+	)
+	(polyline
+		(pts
+			(xy 706.12 173.99) (xy 711.2 173.99)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0029-4000-8000-000000000029")
+	)
+	(polyline
+		(pts
+			(xy 706.12 196.85) (xy 711.2 196.85)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-002a-4000-8000-00000000002a")
+	)
+	(text "R_wheel   wheel radius (changes with tyre pressure and load)"
+		(exclude_from_sim no)
+		(at 712.47 186.69 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-002b-4000-8000-00000000002b")
+	)
+	(polyline
+		(pts
+			(xy 708.66 153.67) (xy 708.66 173.99)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-002c-4000-8000-00000000002c")
+	)
+	(polyline
+		(pts
+			(xy 706.12 153.67) (xy 711.2 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-002d-4000-8000-00000000002d")
+	)
+	(polyline
+		(pts
+			(xy 706.12 173.99) (xy 711.2 173.99)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-002e-4000-8000-00000000002e")
+	)
+	(text "H_deck    deck top face to axle centre"
+		(exclude_from_sim no)
+		(at 712.47 165.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-002f-4000-8000-00000000002f")
+	)
+	(polyline
+		(pts
+			(xy 708.66 77.47) (xy 708.66 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0030-4000-8000-000000000030")
+	)
+	(polyline
+		(pts
+			(xy 706.12 77.47) (xy 711.2 77.47)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0031-4000-8000-000000000031")
+	)
+	(polyline
+		(pts
+			(xy 706.12 153.67) (xy 711.2 153.67)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0032-4000-8000-000000000032")
+	)
+	(text "H_mast    deck top face to the ground plane"
+		(exclude_from_sim no)
+		(at 712.47 116.84 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0033-4000-8000-000000000033")
+	)
+	(polyline
+		(pts
+			(xy 551.18 77.47) (xy 551.18 196.85)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0034-4000-8000-000000000034")
+	)
+	(polyline
+		(pts
+			(xy 548.64 77.47) (xy 553.72 77.47)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0035-4000-8000-000000000035")
+	)
+	(polyline
+		(pts
+			(xy 548.64 196.85) (xy 553.72 196.85)
+		)
+		(stroke
+			(width 0.254)
+			(type solid)
+		)
+		(uuid "5d1c0002-0036-4000-8000-000000000036")
+	)
+	(text ""
+		(exclude_from_sim no)
+		(at 554.99 138.43 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0037-4000-8000-000000000037")
+	)
+	(text "ARP -> GROUND OFFSET"
+		(exclude_from_sim no)
+		(at 474.98 135.89 0)
+		(effects
+			(font
+				(size 1.905 1.905)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0038-4000-8000-000000000038")
+	)
+	(text "=  R_wheel + H_deck + H_mast"
+		(exclude_from_sim no)
+		(at 474.98 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0039-4000-8000-000000000039")
+	)
+	(text "Measured in ONE steel-rule reading from the"
+		(exclude_from_sim no)
+		(at 474.98 146.05 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003a-4000-8000-00000000003a")
+	)
+	(text "ground plane's top face to a hard flat floor,"
+		(exclude_from_sim no)
+		(at 474.98 149.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003b-4000-8000-00000000003b")
+	)
+	(text "with the cart loaded as it will be driven."
+		(exclude_from_sim no)
+		(at 474.98 153.67 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003c-4000-8000-00000000003c")
+	)
+	(text "Recorded in millimetres, and recorded PER"
+		(exclude_from_sim no)
+		(at 474.98 158.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003d-4000-8000-00000000003d")
+	)
+	(text "EPOCH by #51 - not assumed globally, because"
+		(exclude_from_sim no)
+		(at 474.98 162.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003e-4000-8000-00000000003e")
+	)
+	(text "all three terms move between sessions."
+		(exclude_from_sim no)
+		(at 474.98 166.37 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-003f-4000-8000-00000000003f")
+	)
+	(symbol
+		(lib_id "rtk:ANN_MB")
+		(at 88.9 71.12 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0002-0040-4000-8000-000000000040")
+		(property "Reference" "E1"
+			(at 88.9 52.705 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "u-blox ANN-MB-00"
+			(at 88.9 85.725 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://content.u-blox.com/sites/default/files/documents/ANN-MB_DataSheet_UBX-18049862.pdf"
+			(at 88.9 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000012"
+					(reference "E1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "5 m RG-174, SMA plug.  RF and DC share the coax."
+		(exclude_from_sim no)
+		(at 114.3 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0041-4000-8000-000000000041")
+	)
+	(text "Bias is injected inside the carrier's SMA jack,"
+		(exclude_from_sim no)
+		(at 114.3 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0042-4000-8000-000000000042")
+	)
+	(text "from the ZED-F9P's own VCC_RF pin."
+		(exclude_from_sim no)
+		(at 114.3 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0043-4000-8000-000000000043")
+	)
+	(wire
+		(pts
+			(xy 107.95 80.01) (xy 133.35 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0002-0044-4000-8000-000000000044")
+	)
+	(global_label "GNSS_ANT"
+		(at 133.35 80.01 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0045-4000-8000-000000000045")
+	)
+	(symbol
+		(lib_id "rtk:ANT_WHIP")
+		(at 88.9 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0002-0046-4000-8000-000000000046")
+		(property "Reference" "E2"
+			(at 95.25 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "XBee 1/4-wave whip, 1.9 dBi"
+			(at 88.9 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 88.9 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 88.9 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000012"
+					(reference "E2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 88.9 135.89) (xy 88.9 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0002-0047-4000-8000-000000000047")
+	)
+	(global_label "RADIO_ANT"
+		(at 88.9 148.59 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0002-0048-4000-8000-000000000048")
+	)
+	(text_box "THE GAIN BUDGET - AND WHY YOU MUST NOT EXTEND THE ANTENNA CABLE\n\nThe ZED-F9P does not accept just any active antenna. Table 15 bounds the EXTERNAL GAIN presented at\nRF_IN at both ends:\n\n    Ext_gain   min 17 dB   max 50 dB\n\nBelow 17 dB the receiver's own 9.5 dB noise figure starts to dominate and sensitivity falls; above\n50 dB the front end overloads. The ANN-MB-00 is specified as a complete chain against exactly this\nwindow (UBX-18049862 R05 table 2):\n\n    LNA gain (LNA + SAW pre-filter)                       28 +/- 3.0 dB\n    cable insertion loss, RG-174, 5 m, L1                 6.6 dB typ\n    cable insertion loss, RG-174, 5 m, L2                 5.6 - 6.6 dB typ\n    ------------------------------------------------------------------\n    TOTAL GAIN as supplied                                21.4 dB typ (L1)\n                                                          21.4 - 22.4 dB typ (L2)\n\n    margin above the 17 dB floor, at typical LNA gain     4.4 dB\n    margin above the 17 dB floor, at LNA gain -3 dB       1.4 dB\n\n  ==>  THE SUPPLIED ASSEMBLY IS ALREADY WITHIN 1.4 dB OF THE RECEIVER'S MINIMUM AT ITS WORST CORNER.\n       An SMA extension does not add slack, it spends slack that is not there. RG-174 runs about\n       1 dB/m at L1, so a 2 m extension is 2 dB and lands under the floor at the -3 dB corner; a 5 m\n       extension is off the end of the specification entirely.\n\nTHIS IS A LAYOUT CONSTRAINT, NOT A NOTE. It is the reason the base station's electronics live in the\nattic or in an eave enclosure directly beneath the roof mount rather than somewhere convenient indoors,\nand the reason the rover's Due sits on the cart deck under its own mast rather than in a bag. Five\nmetres of cable is the whole allowance and it is spent on getting from the antenna to the box.\n\n  IF A LONGER RUN IS EVER UNAVOIDABLE, the fix is low-loss coax and re-derivation, not an extension\n  lead: LMR-195 is about 0.6 dB/m at L1 and LMR-240 about 0.4 dB/m, so a 10 m LMR-240 run\n  (4 dB) plus a 3 dB in-line loss for two extra connector pairs still clears 17 dB at typical gain and\n  fails at the -3 dB corner. Measure the corner, do not assume it."
+		(exclude_from_sim no)
+		(at 200.66 15.24 0)
+		(size 123.3452 75.009)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0002-0049-4000-8000-000000000049")
+	)
+	(text_box "THE ANTENNA BIAS - WHERE THE DC COMES FROM, AND THE ONE PLACE THE BOARDS AS BOUGHT DO NOT MEET SPEC\n\nAn active antenna needs power, and it arrives up the same coax that carries the signal down. Nothing on\nthese sheets generates it: the ZED-F9P produces it itself.\n\n    VCC_RF output voltage                     VCC - 0.1 V   =  3.2 V at a 3.3 V rail   (F9P table 15)\n    VCC_RF output current, operating max      50 mA                                    (F9P table 15)\n    VCC_RF output current, absolute max       300 mA                                   (F9P table 14)\n\n    ANN-MB-00 supply voltage range            3.0 - 5.0 V                              (ANN-MB table 2)\n    ANN-MB-00 supply current, typical         15 mA                                    (ANN-MB table 2)\n    ANN-MB-00 absolute maximum VCC            10.0 V                                   (ANN-MB table 6)\n\n    ==>  THE CURRENT BUDGET IS FINE: 15 mA is 30 % of the 50 mA the receiver will deliver.\n    ==>  THE VOLTAGE BUDGET IS NOT, AND THIS IS THE ONE ROW IN THIS PROJECT'S CEILINGS TABLE THAT IS\n         NOT SATISFIED BY THE PARTS AS BOUGHT.\n\nTHE ARITHMETIC. The SparkFun GPS-RTK-SMA does not connect VCC_RF straight to the SMA centre. Its\nschematic puts a series resistor R14 in the DC path before the bias inductor:\n\n        VCC_RF ---[ R14 ]---+---[ FB1 ]--- SMA centre pin ---> 5 m of coax ---> antenna\n                            |\n                          C1 47 pF\n                            |\n                           GND\n\n    board                          R14      drop at 15 mA    antenna sees    verdict\n    ---------------------------    -----    -------------    ------------    -----------------------\n    GPS-RTK-SMA   (GPS-16481)      33 ohm       0.50 V          2.70 V        0.30 V BELOW MINIMUM\n    GPS-RTK2      (GPS-15136)      10 ohm       0.15 V          3.05 V        in spec by 0.05 V\n    u-blox reference design        10 ohm       0.15 V          3.05 V        (UBX-18010802 R16, 4.4.1.3)\n\n    And VCC itself has tolerance: the carrier's AP2112K-3.3 is +/-1.5 %, so VCC_RF is 3.15 to 3.25 V,\n    which moves the 10 ohm case to 3.00 - 3.10 V. THE MARGIN IS 50 mV AT BEST AND NEGATIVE AS SHIPPED.\n\nWHAT A SUB-SPEC BIAS ACTUALLY DOES is the reason this matters rather than being a paperwork problem.\nBelow 3.0 V the LNA's gain and noise figure are simply unspecified - they do not fail, they drift. The\nsymptom is a receiver that tracks fewer satellites and holds a fix less well, WHICH IS INDISTINGUISHABLE\nFROM BEING UNDER A TREE. This project's central open question is whether RTK holds under this canopy.\nAnswering it with an under-volted LNA would produce a wrong answer that nobody could challenge.\n\nTHE PROCEDURE, RATHER THAN A BLIND MODIFICATION.\n\n  1. MEASURE IT AT BRING-UP. With the antenna connected and the board powered, measure the DC voltage\n     at the SMA centre (an SMA tee, or the antenna end of the coax). The 15 mA figure is a TYPICAL\n     measured at 5.0 V and LNA bias current usually falls with supply, so the real drop may be smaller\n     than the arithmetic above. If the reading is 3.0 V or more, nothing needs doing.\n  2. IF IT READS BELOW 3.0 V, REPLACE R14 WITH 10 OHM. It is one 0603 resistor and it puts the board\n     on u-blox's own reference value.\n  3. AND ACCEPT WHAT THAT COSTS, because it is a real trade and not a free win. R14 is the only current\n     limiter in the bias path - there is no fuse, and the ZED-F9P's ANT_SHORT_N / ANT_DETECT pins are\n     not connected on this board. A dead short across the coax draws 3.2 V / R14:\n\n         33 ohm  ->   97 mA    over the 50 mA operating maximum, under the 300 mA absolute maximum\n         10 ohm  ->  320 mA    OVER THE ABSOLUTE MAXIMUM\n\n     So the shipped value protects the receiver and starves the antenna, and the reference value feeds\n     the antenna and stops protecting the receiver. Having chosen the second, the mitigations are\n     procedural: use the antenna's own factory-terminated 5 m assembly, make no field connectors,\n     never extend it (which the gain budget already forbids for a different reason), and keep the SMA\n     dry. Treat a receiver reporting no satellites at all, from a mount that worked yesterday, as a\n     cable fault before it is treated as a sky-view problem.\n\n  THE STRUCTURAL POINT, WHICH IS WORTH STATING BECAUSE IT IS NOT ANYBODY'S MISTAKE. At a 3.3 V VCC\n  there are only 200 mV between VCC_RF and this antenna's minimum supply. ANY series limiter spends\n  margin that does not exist. A design that owned its own board would bias the antenna from a 5 V rail\n  through its own bias tee, where there are two whole volts to spend on protection. This project does\n  not own the board, and the honest response is to record the constraint and measure it rather than to\n  assume the vendor got it right.\n\nA GROUND PLANE IS NOT OPTIONAL AND ITS SIZE CHANGES THE ANSWER. Every figure u-blox publishes for this\nantenna is measured on a ground plane: the patch gains on 150 mm circular, the phase centre offsets on\n120 mm circular (tables 1 and 7), and table 7 adds the warning that \"any change in ground plane size or\nshape may affect the phase center offset\". The antenna's own magnetic base is not a ground plane.\n\n    BASE   >= 150 mm circular metal disc under the antenna, rigidly attached to the mount. The base is\n           permanent, so its ground plane is permanent, so its phase centre is stable - which is the\n           whole requirement, since base position error is common-mode and cancels while base MOVEMENT\n           does not.\n    ROVER  >= 120 mm circular disc at the mast head, and it must never be changed between sessions\n           without re-measuring the offset below. Bigger is better for multipath off wet ground and\n           worse for the mass sitting on top of a 0.5 m lever arm."
+		(exclude_from_sim no)
+		(at 200.66 95.329 0)
+		(size 125.682 171.7068)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 222 245 222 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0002-004a-4000-8000-00000000004a")
+	)
+	(text_box "THE ANTENNA REFERENCE POINT AND THE ARP -> GROUND OFFSET\n\nTHIS IS THE NUMBER THE ROVER FIRMWARE SUBTRACTS FROM EVERY EPOCH. It is mechanical rather than\nelectrical and it is on an electrical sheet because nothing else in this project would otherwise record\nit, and because an ARP offset wrong by a centimetre is a centimetre of error in the entire dataset -\nuniformly, invisibly, and forever.\n\nWHAT THE ARP IS. u-blox marks it with a red dot on the ANN-MB mechanical drawing (UBX-18049862 R05\nfigure 1): the centre of the antenna's flat base plate. It is a defined point on the housing, not the\npoint the signal appears to come from. The point the signal appears to come from is the PHASE CENTRE,\nand the two differ by a published, frequency-dependent amount (table 7, on a 120 mm circular plane):\n\n    GPS L1 C/A   1575.42 MHz    horizontal < 5 mm      UP  8.9 mm     variation < 5 mm\n    GPS L2C      1227.60 MHz    horizontal < 5 mm      UP  7.6 mm     variation < 10 mm\n\nTHE ROVER'S CHAIN, TOP TO BOTTOM\n\n        --O--   phase centre L1            8.9 mm above the ARP        <- where the signal comes from\n          |                                                               (7.6 mm at L2)\n        =====   ARP: centre of the base plate                          <- where the datasheet measures\n          |                                                               (and the red dot in figure 1)\n          |     ground plane, >= 120 mm disc, antenna sits ON it       0 mm by definition\n          |\n          |     mast:  H_mast, measured with a steel rule from the\n          |            top face of the cart deck to the ground plane\n          |\n        -----   cart deck, top face                                    <- the only rigid datum on a cart\n          |\n          |     deck to axle centre:  H_deck\n          o     axle centre\n          |\n          |     wheel radius:  R_wheel\n        __V__   contact patch  =  GROUND                               <- what the survey is about\n\n              ARP -> ground offset  =  R_wheel + H_deck + H_mast\n\n    MEASURE IT, DO NOT COMPUTE IT FROM DRAWINGS. One steel-rule measurement from the ground plane's\n    top face to the floor, with the cart standing on a hard flat surface and loaded as it will be\n    driven, replaces all three terms and every accumulated tolerance in them. Record it in millimetres.\n\n    THE PHASE CENTRE OFFSET IS NOT PART OF IT. Do not add 8.9 mm. RTK positions are reported at the\n    phase centre and the receiver's own antenna model, or the PPK software's, is where phase-centre\n    corrections belong. Adding it here would double-count it. It is recorded on this sheet only so that\n    a 9 mm discrepancy at the desk is recognised rather than debugged.\n\n    AND IT IS NOT CONSTANT ACROSS SESSIONS. Wheel radius changes with tyre pressure and load. Deck\n    height changes if anything is bolted to the cart. Mast height changes the moment somebody adjusts\n    it. That is precisely why #51 records the applied offset IN EVERY RECORD rather than assuming one\n    global value - a session collected after the mast moved is then a session with a different number\n    in it, not a session that is silently a few centimetres wrong.\n\n    WHAT IT IS NOT ACCOUNTING FOR, and #54 measures all three: wheel sink into pine straw (3-8 cm,\n    biased by surface rather than random), antenna tilt (8.7 cm per 10 degrees at 0.5 m), and the\n    wheelbase smoothing that convolves the terrain with the chassis. The offset is exact; the ground\n    it is measured to is not.\n\nTHE BASE HAS THE SAME CHAIN AND ALMOST NONE OF THE DIFFICULTY. Its antenna does not move, so its offset\nis measured once, at installation, from the ARP to the monument or roof reference, and committed\nalongside the OPUS solution that #50 obtains. Base position error is common-mode and cancels in the\nrelative measurement; base MOVEMENT between sessions does not cancel and is the one thing the mount\nmust not permit."
+		(exclude_from_sim no)
+		(at 200.66 272.1158 0)
+		(size 124.5136 128.5014)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0002-004b-4000-8000-00000000004b")
+	)
+	(text_box "RADIO / GNSS COEXISTENCE - HOW FAR APART, AND WHY IT IS AN ABSOLUTE MAXIMUM RATHER THAN AN OPINION\n\nA 915 MHz transmitter beside a GNSS front end is not merely untidy. The ZED-F9P's RF_IN carries an\nABSOLUTE MAXIMUM INPUT POWER of +10 dBm (F9P table 14), and the antenna in front of it has 28 dB of\ngain. The question is not whether the receiver gets noisy; it is whether the receiver survives.\n\nTHE ARITHMETIC. Free-space path loss at 915 MHz is 31.7 dB at 1 m, +6 dB per doubling. Take the XBee at\nPL=0 (+7 dBm conducted, XBee UG PL command) into its 1.9 dBi whip: EIRP = 8.9 dBm. Assume 0 dBi at the\nGNSS patch out of band, which is generous to the interferer.\n\n    separation   power at the GNSS element   with NO filter credit,   with the ANN-MB's published\n                                             +28 dB of LNA           out-of-band rejection\n                                             ---------------------   ---------------------------\n        0.3 m          +1.6 dBm                   +29.6 dBm  DAMAGE        -15.4 dBm\n        1.0 m         -22.8 dBm                    +5.2 dBm  4.8 dB        -39.8 dBm\n        3.0 m         -32.3 dBm                    -4.3 dBm  14 dB         -49.3 dBm\n\nThe rejection figure is real and published: ANN-MB table 2 gives typical out-of-band rejection at\n960 MHz of 45 dB on the L2 path and 80 dB on the L1 path. 915 MHz sits between the tabulated 698 MHz\nand 960 MHz points, so 45 dB is used as the conservative one. The net path gain at 915 MHz is therefore\n28 - 45 = -17 dB rather than +28 dB, and the SAW is a PRE-filter - it sits in front of the LNA\n(table 2, note 3), so the LNA never sees the interferer at full strength and cannot be compressed by\nit.\n\n  ==>  DECIDED:  ROVER  >= 1.0 m between the GNSS antenna and the radio antenna.\n                 BASE   >= 3.0 m.\n                 RADIO POWER LEVEL PL=0 (+7 dBm) at both ends.\n\nWHY THOSE THREE NUMBERS AND NOT OTHERS.\n\n  THE ROVER'S 1 m IS FREE, because the rover's radio never transmits. Corrections are broadcast one\n  way with no acknowledgement, so the only transmitter on the cart is one that firmware must\n  deliberately key up. 1 m is what a cart geometry gives you anyway - GNSS on the mast head, whip at\n  the far end of the deck - and it is what protects the receiver on the day somebody enables a return\n  path.\n\n  THE BASE'S 3 m IS WHERE THE REAL TRANSMITTER LIVES, and a roof mount hands it over for nothing: the\n  antenna is on the ridge and the electronics are in the attic beneath it, which is already metres of\n  separation plus a roof deck. 3 m holds 14 dB of margin even with zero credit for the antenna's\n  filter, which is the case that matters because it is the case that survives somebody substituting a\n  cheaper antenna.\n\n  PL=0 BUYS BOTH OF THEM, AND COSTS NOTHING. The link budget at 200 kbps: +7 dBm, two 1.9 dBi whips,\n  69.2 dB of path loss over 75 m, against -101 dBm of sensitivity - 42 dB of margin. Pine canopy at\n  915 MHz runs a few tenths of a dB per metre of foliage, so 20 m of trees is under 10 dB. The radio is\n  wildly over-specced for a few kbps over 75 m, and turning it down is the cheapest possible way to\n  spend that surplus on something the design actually needs. PL=4 would be 17 dB louder, would move\n  every row of the table 17 dB toward the damage threshold, and would draw 215 mA instead of 60 mA.\n\n  WHAT WOULD BREAK ALL OF THIS: a bare passive patch behind a wideband LNA, i.e. the \"no filter credit\"\n  column. At 1 m and PL=0 it sits 4.8 dB under an absolute maximum, and at PL=4 it is 12 dB OVER it.\n  THE SAW PRE-FILTER IS LOAD-BEARING. Substituting an unfiltered antenna is not a cost saving, it is a\n  different design.\n\nAND THE PART THAT IS NOT A CALCULATION. The XBee is FCC ID MCQ-XB900HP / IC 1846A-XB900HP, a certified\nmodular radio using frequency hopping across 902-928 MHz. Certification is the reason it is drawn here\nrather than a cheaper LoRa module: this thing runs unattended on somebody's roof, and a pre-certified\nmodule means the assembled node is legal without anybody making an argument about it."
+		(exclude_from_sim no)
+		(at 15.24 173.99 0)
+		(size 123.3452 122.3292)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0002-004c-4000-8000-00000000004c")
+	)
+	(text_box "WHAT THE ROVER'S ANTENNA SITS ON, AND WHY 0.5 m\n\nThe mast height is a genuine trade and it is decided here rather than by whatever bracket was on hand.\n\n  TALLER IS BETTER FOR SKY VIEW AND MULTIPATH. Lifting the antenna above the operator's body, the cart\n  and the ground improves the very thing that is at risk under canopy.\n\n  TALLER IS WORSE FOR TILT, LINEARLY. Horizontal error is H x sin(theta). At 10 degrees: 8.7 cm at\n  0.5 m, 4.3 cm at 0.25 m, 17.4 cm at 1.0 m. There is no cleverness available - the lever arm is the\n  lever arm.\n\n  TALLER IS WORSE FOR TILT A SECOND TIME, because mass on a longer arm makes the cart tip more readily\n  over the same root. The ANN-MB is 173 g including its cable, and the ground plane under it is not\n  weightless.\n\n  0.5 m IS DRAWN as the starting point, on the grounds that it clears the operator's hands and the cart\n  frame while keeping the 10-degree case under 9 cm. IT IS EXPLICITLY REVISITABLE and #54 is what\n  revisits it: if the measured tilt term dominates, lowering the mast is the first and cheapest lever,\n  ahead of a self-levelling head and far ahead of a different receiver.\n\n  WHATEVER IS CHOSEN, MEASURE THE OFFSET AGAIN. The mast height is one of the three terms in the\n  ARP -> ground offset above, and it is the one somebody will change without telling anybody."
+		(exclude_from_sim no)
+		(at 15.24 301.3992 0)
+		(size 123.3452 48.2628)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 240 228 250 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0002-004d-4000-8000-00000000004d")
+	)
+	(embedded_fonts no)
+)
