@@ -134,11 +134,12 @@ make the card safe — see below.
 Nothing in this system is energised, hot, or moving. The one thing that can be destroyed is data, and
 the way to destroy it is to collapse the supply partway through a card write.
 
-The SD Physical Layer Specification is less reassuring than folklore: §4.3.3 guarantees data survives
-sudden shutdown **"except write or erase operations issued by the host"**, and §7.2.4 warns that
-terminating a program in progress *"may destroy the data formats on the card"*. Vendor power-failure
-literature documents loss of data written long before, spare-block exhaustion, and cards that stop
-identifying themselves. There is no bound.
+The SD Physical Layer Simplified Specification (9.10; the same wording is in 3.01) is less reassuring
+than folklore: §4.3.3 guarantees data survives sudden shutdown **"except write or erase operations
+issued by the host"**, and §7.2.4 warns that terminating a program in progress *"may destroy the data
+formats on the card"*. Swissbit's power-failure application note AN2109en documents loss of data
+written long before, spare-block exhaustion, and cards that stop identifying themselves. There is no
+bound.
 
 So the mechanism is four layers, cheapest first:
 
@@ -156,9 +157,10 @@ So the mechanism is four layers, cheapest first:
    sequence numbers, a spare card in the operator's pocket, and the base's own log as the second copy
    of the one thing that cannot be re-driven.
 
-A hold-up big enough to *guarantee* the card finishes is deliberately not built: the SD spec allows
-250 ms of busy (500 ms in extended cases, and recommends hosts tolerate more), which at 214 mA across
-a 0.6 V window would need 178,000 µF.
+A hold-up big enough to *guarantee* the card finishes is deliberately not built: §4.6.2.2 defines the
+maximum busy as 250 ms for all writes on a High Capacity card, lets an SDXC/SDUC card stretch to
+500 ms in four named cases, and §4.6.2 then recommends hosts tolerate *more* than 500 ms. At 214 mA
+across a 0.6 V window that would need 178,000 µF.
 
 ### Session length — and why a four-hour battery is not a requirement
 
@@ -218,7 +220,7 @@ datasheet A000062 §6.2.1–6.2.5; current groups are SAM3X `Atmel-11057C` table
 | `SPI_MOSI` | — | PA26 | ICSP pos 4 | out | 1 | microSD DI, LCD SI |
 | `SPI_MISO` | — | PA25 | ICSP pos 1 | in | 1 | microSD DO |
 | `SD_CS_N` | D48 | PC15 | LHS pos 15 | out | 1 | microSD CS (active low) |
-| `SD_CARDDET` | D52 | PB21 | LHS pos 17 | in | 2 | microSD CARDDET |
+| `SD_DET` | D52 | PB21 | LHS pos 17 | in | 2 | microSD DET (card detect) |
 | `LCD_CS` | D49 | PC14 | RHS pos 15 | out | 1 | LCD SCS (**active high**) |
 | `LCD_EXTCOMIN` | D9 | PC21 | 26-pin pos 9 | out | 1 | LCD JP1-9 EXTCOMIN |
 | `LCD_DISP` | D8 | PC22 | 26-pin pos 10 | out | 1 | LCD JP1-8 DISP |
