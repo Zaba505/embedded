@@ -2,13 +2,16 @@
 
 Home for various embedded projects that are not significant enough to get their own repo.
 
-Projects are scoped by vendor, so boards from different families sit alongside each other cleanly.
+Most projects are scoped by vendor, so boards from different families sit alongside each other
+cleanly. A project that is a **system** rather than a board — several nodes, plus code they share —
+is grouped by system instead, with a directory per node ([`rtk`](rtk) is the worked instance).
 
 ## Projects
 
 | Project | Board | Description |
 |---|---|---|
 | [`arduino-due/blinky`](arduino-due/blinky) | Arduino Due (Atmel SAM3X8E) | Bare-metal Zig blinky, built and flashed entirely through Dagger |
+| [`rtk`](rtk) | Arduino Due ×2 + u-blox ZED-F9P | A two-node RTK GNSS survey system — a permanently mounted base station and a hand-pushed rover cart — starting with the [electrical diagrams](rtk) for both nodes, the radio link, and the antenna reference point every epoch is measured from |
 | [`smart-stethoscope`](smart-stethoscope) | Discontinued "smart" stethoscope (NXP Kinetis MK26) | Reverse-engineering a discontinued digital stethoscope for repair — starting with a non-destructive [device recon & component inventory](smart-stethoscope/docs/recon.md) |
 
 ## Libraries

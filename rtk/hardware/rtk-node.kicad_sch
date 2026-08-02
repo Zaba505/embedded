@@ -1,0 +1,3886 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "5d1c0001-0000-4000-8000-000000000011")
+	(paper "User" 569.01 594.01)
+	(title_block
+		(title "RTK node - Arduino Due, ZED-F9P, XBee-PRO 900HP, microSD (built twice)")
+		(date "2026-08-01")
+		(rev "1")
+		(company "Zaba505/embedded")
+		(comment 1 "Identical at base and rover. UART2 wired both ways at both ends; role is firmware.")
+		(comment 2 "Pin sources: Arduino Due datasheet A000062 sections 6.2.1-6.2.5; SAM3X Atmel-11057C tables 9-2, 9-5, 45-1, 45-2.")
+		(comment 3 "ZED-F9P UBX-21044850 R05 tables 12, 15, 16, 17, 23. XBee-PRO 900HP Digi 90002173 rev N appendix A.")
+		(comment 4 "All logic 3.3 V. Nothing on this sheet is 5 V tolerant.")
+	)
+	(lib_symbols
+		(symbol "rtk:ARDUINO_DUE"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "A"
+				(at 0 34.29 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Arduino Due (SAM3X8E)"
+				(at 0 -34.29 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" "https://docs.arduino.cc/resources/datasheets/A000062-datasheet.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Arduino Due, Atmel SAM3X8E, 3.3 V I/O"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "ARDUINO_DUE_0_1"
+				(rectangle
+					(start -45.72 -31.75)
+					(end 45.72 31.75)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "ARDUINO DUE  -  SAM3X8E, 3.3 V I/O"
+					(at 0 29.21 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "ARDUINO_DUE_1_1"
+				(pin passive line
+					(at -48.26 24.13 0)
+					(length 2.54)
+					(name "+5V in"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P24-5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 21.59 0)
+					(length 2.54)
+					(name "+3V3 out"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P24-4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 19.05 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P24-6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 16.51 0)
+					(length 2.54)
+					(name "A0 / PA16 / AD7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P24-9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 13.97 0)
+					(length 2.54)
+					(name "MISO / PA25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ICSP-1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 11.43 0)
+					(length 2.54)
+					(name "MOSI / PA26"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ICSP-4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 8.89 0)
+					(length 2.54)
+					(name "SCK / PA27"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ICSP-3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -48.26 6.35 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ICSP-6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 24.13 180)
+					(length 2.54)
+					(name "26pin-19 D14 / PD4 / TXD3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 21.59 180)
+					(length 2.54)
+					(name "26pin-20 D15 / PD5 / RXD3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-20"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 19.05 180)
+					(length 2.54)
+					(name "26pin-21 D16 / PA13 / TXD1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 16.51 180)
+					(length 2.54)
+					(name "26pin-22 D17 / PA12 / RXD1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-22"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 13.97 180)
+					(length 2.54)
+					(name "26pin-23 D18 / PA11 / TXD0"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-23"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 11.43 180)
+					(length 2.54)
+					(name "26pin-24 D19 / PA10 / RXD0"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-24"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 8.89 180)
+					(length 2.54)
+					(name "RHS-2 D23 / PA14 / RTS1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "RHS-2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 6.35 180)
+					(length 2.54)
+					(name "LHS-3 D24 / PA15 / CTS1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "LHS-3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 3.81 180)
+					(length 2.54)
+					(name "LHS-15 D48 / PC15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "LHS-15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 1.27 180)
+					(length 2.54)
+					(name "RHS-15 D49 / PC14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "RHS-15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -1.27 180)
+					(length 2.54)
+					(name "LHS-16 D50 / PC13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "LHS-16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -3.81 180)
+					(length 2.54)
+					(name "RHS-16 D51 / PC12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "RHS-16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -6.35 180)
+					(length 2.54)
+					(name "LHS-17 D52 / PB21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "LHS-17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -8.89 180)
+					(length 2.54)
+					(name "26pin-6 D12 / PD8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -11.43 180)
+					(length 2.54)
+					(name "26pin-7 D11 / PD7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -13.97 180)
+					(length 2.54)
+					(name "26pin-9 D9 / PC21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -16.51 180)
+					(length 2.54)
+					(name "26pin-10 D8 / PC22"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -19.05 180)
+					(length 2.54)
+					(name "26pin-11 D7 / PC23"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -21.59 180)
+					(length 2.54)
+					(name "26pin-12 D6 / PC24"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -24.13 180)
+					(length 2.54)
+					(name "26pin-13 D5 / PC25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 48.26 -26.67 180)
+					(length 2.54)
+					(name "26pin-15 D3 / PC28"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "P26-15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:C"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "C"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Ceramic capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "C_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0.635) (xy 2.54 0.635)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -0.635) (xy 2.54 -0.635)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:CP"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 3.81 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "CP"
+				(at 3.81 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Polarised bulk capacitor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "CP_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0.635) (xy 2.54 0.635)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 -1.016) (xy 2.54 -1.016)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.032 2.032) (xy -1.016 2.032)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 1.524) (xy -1.524 2.54)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "CP_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 3.175)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:GNSS_RTK_BOARD"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SparkFun GPS-RTK-SMA (u-blox ZED-F9P)"
+				(at 0 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" "https://content.u-blox.com/sites/default/files/ZED-F9P-04B_DataSheet_UBX-21044850.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "ZED-F9P carrier board, 3.3 V logic"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "GNSS_RTK_BOARD_0_1"
+				(rectangle
+					(start -38.1 -11.43)
+					(end 38.1 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "ZED-F9P CARRIER  -  3.3 V logic, UART2 = corrections"
+					(at 0 8.89 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "GNSS_RTK_BOARD_1_1"
+				(pin passive line
+					(at -40.64 3.81 0)
+					(length 2.54)
+					(name "5V in"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 1.27 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 -1.27 0)
+					(length 2.54)
+					(name "RESET_N"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J6-4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 -3.81 0)
+					(length 2.54)
+					(name "TIMEPULSE / PPS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J6-3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 3.81 180)
+					(length 2.54)
+					(name "UART1 TXO   UBX / NMEA out"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 1.27 180)
+					(length 2.54)
+					(name "UART1 RXI   config in"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -1.27 180)
+					(length 2.54)
+					(name "UART2 TX2   RTCM3 out"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -3.81 180)
+					(length 2.54)
+					(name "UART2 RX2   RTCM3 in"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "J7-5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -6.35 180)
+					(length 2.54)
+					(name "SMA  -  RF_IN + antenna bias"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ANT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:MICROSD_3V3"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "microSD breakout, 3.3 V"
+				(at 0 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "microSD card socket, SPI mode, 3.3 V only"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "MICROSD_3V3_0_1"
+				(rectangle
+					(start -31.75 -11.43)
+					(end 31.75 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "microSD  -  raw sectors, no filesystem"
+					(at 0 8.89 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "MICROSD_3V3_1_1"
+				(pin passive line
+					(at -34.29 3.81 0)
+					(length 2.54)
+					(name "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -34.29 1.27 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 3.81 180)
+					(length 2.54)
+					(name "CLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "CLK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 1.27 180)
+					(length 2.54)
+					(name "DI  (host -> card)"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "DI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 -1.27 180)
+					(length 2.54)
+					(name "DO  (card -> host)"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "DO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 -3.81 180)
+					(length 2.54)
+					(name "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 34.29 -6.35 180)
+					(length 2.54)
+					(name "CARDDET"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "CD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:R"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 2.54 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 2.54 -1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+								(hide yes)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+		(symbol "rtk:XBEE_PRO_900HP"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 0 13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Digi XBee-PRO 900HP S3B"
+				(at 0 -13.97 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Datasheet" "https://cdn.sparkfun.com/datasheets/Wireless/Zigbee/90002173_N.pdf"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(property "Description" "902-928 MHz FHSS UART radio, FCC ID MCQ-XB900HP"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+						(hide yes)
+				)
+			)
+			(symbol "XBEE_PRO_900HP_0_1"
+				(rectangle
+					(start -38.1 -11.43)
+					(end 38.1 11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(text "XBee-PRO 900HP  -  FCC ID MCQ-XB900HP"
+					(at 0 8.89 0)
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(symbol "XBEE_PRO_900HP_1_1"
+				(pin passive line
+					(at -40.64 3.81 0)
+					(length 2.54)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 1.27 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 -1.27 0)
+					(length 2.54)
+					(name "VREF -> GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -40.64 -3.81 0)
+					(length 2.54)
+					(name "nRESET  (open drain)"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 3.81 180)
+					(length 2.54)
+					(name "DOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 1.27 180)
+					(length 2.54)
+					(name "DIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -1.27 180)
+					(length 2.54)
+					(name "nCTS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -3.81 180)
+					(length 2.54)
+					(name "nRTS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 40.64 -6.35 180)
+					(length 2.54)
+					(name "RPSMA / wire antenna"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "ANT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "rtk:ARDUINO_DUE")
+		(at 158.75 173.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0001-4000-8000-000000000001")
+		(property "Reference" "A1"
+			(at 158.75 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Arduino Due  (Atmel SAM3X8E)"
+			(at 158.75 208.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 158.75 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://docs.arduino.cc/resources/datasheets/A000062-datasheet.pdf"
+			(at 158.75 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "A1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 110.49 149.86) (xy 97.79 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0002-4000-8000-000000000002")
+	)
+	(global_label "+5V"
+		(at 97.79 149.86 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0003-4000-8000-000000000003")
+	)
+	(wire
+		(pts
+			(xy 110.49 152.4) (xy 97.79 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0004-4000-8000-000000000004")
+	)
+	(global_label "+3V3"
+		(at 97.79 152.4 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0005-4000-8000-000000000005")
+	)
+	(wire
+		(pts
+			(xy 110.49 154.94) (xy 97.79 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0006-4000-8000-000000000006")
+	)
+	(global_label "GND"
+		(at 97.79 154.94 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0007-4000-8000-000000000007")
+	)
+	(wire
+		(pts
+			(xy 110.49 167.64) (xy 97.79 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0008-4000-8000-000000000008")
+	)
+	(global_label "GND"
+		(at 97.79 167.64 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0009-4000-8000-000000000009")
+	)
+	(wire
+		(pts
+			(xy 110.49 157.48) (xy 97.79 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-000a-4000-8000-00000000000a")
+	)
+	(global_label "VBAT_SENSE"
+		(at 97.79 157.48 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-000b-4000-8000-00000000000b")
+	)
+	(wire
+		(pts
+			(xy 110.49 160.02) (xy 97.79 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-000c-4000-8000-00000000000c")
+	)
+	(global_label "SPI_MISO"
+		(at 97.79 160.02 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-000d-4000-8000-00000000000d")
+	)
+	(wire
+		(pts
+			(xy 110.49 162.56) (xy 97.79 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-000e-4000-8000-00000000000e")
+	)
+	(global_label "SPI_MOSI"
+		(at 97.79 162.56 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-000f-4000-8000-00000000000f")
+	)
+	(wire
+		(pts
+			(xy 110.49 165.1) (xy 97.79 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0010-4000-8000-000000000010")
+	)
+	(global_label "SPI_SCK"
+		(at 97.79 165.1 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0011-4000-8000-000000000011")
+	)
+	(wire
+		(pts
+			(xy 207.01 149.86) (xy 227.33 149.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0012-4000-8000-000000000012")
+	)
+	(label "GNSS2_MCU_TX"
+		(at 227.33 149.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0013-4000-8000-000000000013")
+	)
+	(wire
+		(pts
+			(xy 207.01 152.4) (xy 227.33 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0014-4000-8000-000000000014")
+	)
+	(label "GNSS2_MCU_RX"
+		(at 227.33 152.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0015-4000-8000-000000000015")
+	)
+	(wire
+		(pts
+			(xy 207.01 154.94) (xy 227.33 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0016-4000-8000-000000000016")
+	)
+	(label "RADIO_MCU_TX"
+		(at 227.33 154.94 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0017-4000-8000-000000000017")
+	)
+	(wire
+		(pts
+			(xy 207.01 157.48) (xy 227.33 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0018-4000-8000-000000000018")
+	)
+	(label "RADIO_MCU_RX"
+		(at 227.33 157.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0019-4000-8000-000000000019")
+	)
+	(wire
+		(pts
+			(xy 207.01 160.02) (xy 227.33 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-001a-4000-8000-00000000001a")
+	)
+	(label "GNSS1_MCU_TX"
+		(at 227.33 160.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-001b-4000-8000-00000000001b")
+	)
+	(wire
+		(pts
+			(xy 207.01 162.56) (xy 227.33 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-001c-4000-8000-00000000001c")
+	)
+	(label "GNSS1_MCU_RX"
+		(at 227.33 162.56 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-001d-4000-8000-00000000001d")
+	)
+	(wire
+		(pts
+			(xy 207.01 165.1) (xy 227.33 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-001e-4000-8000-00000000001e")
+	)
+	(label "RADIO_nRTS"
+		(at 227.33 165.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-001f-4000-8000-00000000001f")
+	)
+	(wire
+		(pts
+			(xy 207.01 167.64) (xy 227.33 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0020-4000-8000-000000000020")
+	)
+	(label "RADIO_nCTS"
+		(at 227.33 167.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0021-4000-8000-000000000021")
+	)
+	(wire
+		(pts
+			(xy 207.01 170.18) (xy 227.33 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0022-4000-8000-000000000022")
+	)
+	(label "SD_CS_N"
+		(at 227.33 170.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0023-4000-8000-000000000023")
+	)
+	(wire
+		(pts
+			(xy 207.01 175.26) (xy 227.33 175.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0024-4000-8000-000000000024")
+	)
+	(label "GNSS_RESET_N"
+		(at 227.33 175.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0025-4000-8000-000000000025")
+	)
+	(wire
+		(pts
+			(xy 207.01 177.8) (xy 227.33 177.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0026-4000-8000-000000000026")
+	)
+	(label "GNSS_PPS"
+		(at 227.33 177.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0027-4000-8000-000000000027")
+	)
+	(wire
+		(pts
+			(xy 207.01 182.88) (xy 227.33 182.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0028-4000-8000-000000000028")
+	)
+	(label "RADIO_nRESET"
+		(at 227.33 182.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0029-4000-8000-000000000029")
+	)
+	(wire
+		(pts
+			(xy 207.01 180.34) (xy 227.33 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-002a-4000-8000-00000000002a")
+	)
+	(label "SD_CARDDET"
+		(at 227.33 180.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-002b-4000-8000-00000000002b")
+	)
+	(wire
+		(pts
+			(xy 207.01 172.72) (xy 227.33 172.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-002c-4000-8000-00000000002c")
+	)
+	(global_label "LCD_CS"
+		(at 227.33 172.72 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-002d-4000-8000-00000000002d")
+	)
+	(wire
+		(pts
+			(xy 207.01 185.42) (xy 227.33 185.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-002e-4000-8000-00000000002e")
+	)
+	(global_label "MARK_BTN_N"
+		(at 227.33 185.42 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-002f-4000-8000-00000000002f")
+	)
+	(wire
+		(pts
+			(xy 207.01 187.96) (xy 227.33 187.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0030-4000-8000-000000000030")
+	)
+	(global_label "LCD_EXTCOMIN"
+		(at 227.33 187.96 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0031-4000-8000-000000000031")
+	)
+	(wire
+		(pts
+			(xy 207.01 190.5) (xy 227.33 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0032-4000-8000-000000000032")
+	)
+	(global_label "LCD_DISP"
+		(at 227.33 190.5 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0033-4000-8000-000000000033")
+	)
+	(wire
+		(pts
+			(xy 207.01 193.04) (xy 227.33 193.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0034-4000-8000-000000000034")
+	)
+	(global_label "BUZZER_DRV"
+		(at 227.33 193.04 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0035-4000-8000-000000000035")
+	)
+	(wire
+		(pts
+			(xy 207.01 195.58) (xy 227.33 195.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0036-4000-8000-000000000036")
+	)
+	(global_label "LED_B_DRV"
+		(at 227.33 195.58 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0037-4000-8000-000000000037")
+	)
+	(wire
+		(pts
+			(xy 207.01 198.12) (xy 227.33 198.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0038-4000-8000-000000000038")
+	)
+	(global_label "LED_G_DRV"
+		(at 227.33 198.12 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0039-4000-8000-000000000039")
+	)
+	(wire
+		(pts
+			(xy 207.01 200.66) (xy 227.33 200.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-003a-4000-8000-00000000003a")
+	)
+	(global_label "LED_R_DRV"
+		(at 227.33 200.66 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-003b-4000-8000-00000000003b")
+	)
+	(symbol
+		(lib_id "rtk:GNSS_RTK_BOARD")
+		(at 344.17 88.9 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-003c-4000-8000-00000000003c")
+		(property "Reference" "U1"
+			(at 344.17 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SparkFun GPS-RTK-SMA  (u-blox ZED-F9P)"
+			(at 344.17 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 344.17 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://content.u-blox.com/sites/default/files/ZED-F9P-04B_DataSheet_UBX-21044850.pdf"
+			(at 344.17 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 303.53 85.09) (xy 288.29 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-003d-4000-8000-00000000003d")
+	)
+	(global_label "+5V"
+		(at 288.29 85.09 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-003e-4000-8000-00000000003e")
+	)
+	(wire
+		(pts
+			(xy 303.53 87.63) (xy 288.29 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-003f-4000-8000-00000000003f")
+	)
+	(global_label "GND"
+		(at 288.29 87.63 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0040-4000-8000-000000000040")
+	)
+	(wire
+		(pts
+			(xy 303.53 90.17) (xy 288.29 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0041-4000-8000-000000000041")
+	)
+	(label "GNSS_RESET_N"
+		(at 288.29 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0042-4000-8000-000000000042")
+	)
+	(wire
+		(pts
+			(xy 303.53 92.71) (xy 288.29 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0043-4000-8000-000000000043")
+	)
+	(label "GNSS_PPS"
+		(at 288.29 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0044-4000-8000-000000000044")
+	)
+	(wire
+		(pts
+			(xy 384.81 85.09) (xy 407.67 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0045-4000-8000-000000000045")
+	)
+	(label "GNSS1_MCU_RX"
+		(at 407.67 85.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0046-4000-8000-000000000046")
+	)
+	(wire
+		(pts
+			(xy 384.81 87.63) (xy 407.67 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0047-4000-8000-000000000047")
+	)
+	(label "GNSS1_MCU_TX"
+		(at 407.67 87.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0048-4000-8000-000000000048")
+	)
+	(wire
+		(pts
+			(xy 384.81 90.17) (xy 407.67 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0049-4000-8000-000000000049")
+	)
+	(label "GNSS2_MCU_RX"
+		(at 407.67 90.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-004a-4000-8000-00000000004a")
+	)
+	(wire
+		(pts
+			(xy 384.81 92.71) (xy 407.67 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-004b-4000-8000-00000000004b")
+	)
+	(label "GNSS2_MCU_TX"
+		(at 407.67 92.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-004c-4000-8000-00000000004c")
+	)
+	(wire
+		(pts
+			(xy 384.81 95.25) (xy 407.67 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-004d-4000-8000-00000000004d")
+	)
+	(global_label "GNSS_ANT"
+		(at 407.67 95.25 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-004e-4000-8000-00000000004e")
+	)
+	(symbol
+		(lib_id "rtk:CP")
+		(at 306.07 118.11 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-004f-4000-8000-00000000004f")
+		(property "Reference" "C1"
+			(at 309.88 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100u / 10 V"
+			(at 309.88 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 306.07 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 306.07 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 306.07 114.3) (xy 306.07 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0050-4000-8000-000000000050")
+	)
+	(global_label "+5V"
+		(at 306.07 110.49 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0051-4000-8000-000000000051")
+	)
+	(wire
+		(pts
+			(xy 306.07 121.92) (xy 306.07 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0052-4000-8000-000000000052")
+	)
+	(global_label "GND"
+		(at 306.07 125.73 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0053-4000-8000-000000000053")
+	)
+	(symbol
+		(lib_id "rtk:C")
+		(at 325.12 118.11 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0054-4000-8000-000000000054")
+		(property "Reference" "C2"
+			(at 328.93 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100n"
+			(at 328.93 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 325.12 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 325.12 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 325.12 114.3) (xy 325.12 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0055-4000-8000-000000000055")
+	)
+	(global_label "+5V"
+		(at 325.12 110.49 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0056-4000-8000-000000000056")
+	)
+	(wire
+		(pts
+			(xy 325.12 121.92) (xy 325.12 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0057-4000-8000-000000000057")
+	)
+	(global_label "GND"
+		(at 325.12 125.73 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0058-4000-8000-000000000058")
+	)
+	(symbol
+		(lib_id "rtk:XBEE_PRO_900HP")
+		(at 344.17 165.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0059-4000-8000-000000000059")
+		(property "Reference" "U2"
+			(at 344.17 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Digi XBee-PRO 900HP S3B"
+			(at 344.17 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 344.17 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://cdn.sparkfun.com/datasheets/Wireless/Zigbee/90002173_N.pdf"
+			(at 344.17 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 303.53 161.29) (xy 288.29 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-005a-4000-8000-00000000005a")
+	)
+	(global_label "+3V3"
+		(at 288.29 161.29 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-005b-4000-8000-00000000005b")
+	)
+	(wire
+		(pts
+			(xy 303.53 163.83) (xy 288.29 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-005c-4000-8000-00000000005c")
+	)
+	(global_label "GND"
+		(at 288.29 163.83 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-005d-4000-8000-00000000005d")
+	)
+	(wire
+		(pts
+			(xy 303.53 166.37) (xy 288.29 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-005e-4000-8000-00000000005e")
+	)
+	(global_label "GND"
+		(at 288.29 166.37 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-005f-4000-8000-00000000005f")
+	)
+	(wire
+		(pts
+			(xy 303.53 168.91) (xy 288.29 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0060-4000-8000-000000000060")
+	)
+	(label "RADIO_nRESET"
+		(at 288.29 168.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0061-4000-8000-000000000061")
+	)
+	(wire
+		(pts
+			(xy 384.81 161.29) (xy 407.67 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0062-4000-8000-000000000062")
+	)
+	(label "RADIO_MCU_RX"
+		(at 407.67 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0063-4000-8000-000000000063")
+	)
+	(wire
+		(pts
+			(xy 384.81 163.83) (xy 407.67 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0064-4000-8000-000000000064")
+	)
+	(label "RADIO_MCU_TX"
+		(at 407.67 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0065-4000-8000-000000000065")
+	)
+	(wire
+		(pts
+			(xy 384.81 166.37) (xy 407.67 166.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0066-4000-8000-000000000066")
+	)
+	(label "RADIO_nCTS"
+		(at 407.67 166.37 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0067-4000-8000-000000000067")
+	)
+	(wire
+		(pts
+			(xy 384.81 168.91) (xy 407.67 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0068-4000-8000-000000000068")
+	)
+	(label "RADIO_nRTS"
+		(at 407.67 168.91 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0069-4000-8000-000000000069")
+	)
+	(wire
+		(pts
+			(xy 384.81 171.45) (xy 407.67 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-006a-4000-8000-00000000006a")
+	)
+	(global_label "RADIO_ANT"
+		(at 407.67 171.45 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-006b-4000-8000-00000000006b")
+	)
+	(symbol
+		(lib_id "rtk:CP")
+		(at 306.07 194.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-006c-4000-8000-00000000006c")
+		(property "Reference" "C3"
+			(at 309.88 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "220u / 10 V"
+			(at 309.88 195.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 306.07 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 306.07 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 306.07 190.5) (xy 306.07 186.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-006d-4000-8000-00000000006d")
+	)
+	(global_label "+3V3"
+		(at 306.07 186.69 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-006e-4000-8000-00000000006e")
+	)
+	(wire
+		(pts
+			(xy 306.07 198.12) (xy 306.07 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-006f-4000-8000-00000000006f")
+	)
+	(global_label "GND"
+		(at 306.07 201.93 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0070-4000-8000-000000000070")
+	)
+	(symbol
+		(lib_id "rtk:C")
+		(at 325.12 194.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0071-4000-8000-000000000071")
+		(property "Reference" "C4"
+			(at 328.93 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1u"
+			(at 328.93 195.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 325.12 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 325.12 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 325.12 190.5) (xy 325.12 186.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0072-4000-8000-000000000072")
+	)
+	(global_label "+3V3"
+		(at 325.12 186.69 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0073-4000-8000-000000000073")
+	)
+	(wire
+		(pts
+			(xy 325.12 198.12) (xy 325.12 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0074-4000-8000-000000000074")
+	)
+	(global_label "GND"
+		(at 325.12 201.93 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0075-4000-8000-000000000075")
+	)
+	(symbol
+		(lib_id "rtk:C")
+		(at 287.02 194.31 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0076-4000-8000-000000000076")
+		(property "Reference" "C5"
+			(at 290.83 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "47p"
+			(at 290.83 195.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 287.02 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 287.02 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 287.02 190.5) (xy 287.02 186.69)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0077-4000-8000-000000000077")
+	)
+	(global_label "+3V3"
+		(at 287.02 186.69 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0078-4000-8000-000000000078")
+	)
+	(wire
+		(pts
+			(xy 287.02 198.12) (xy 287.02 201.93)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0079-4000-8000-000000000079")
+	)
+	(global_label "GND"
+		(at 287.02 201.93 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-007a-4000-8000-00000000007a")
+	)
+	(symbol
+		(lib_id "rtk:MICROSD_3V3")
+		(at 350.52 246.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-007b-4000-8000-00000000007b")
+		(property "Reference" "U3"
+			(at 350.52 232.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "microSD breakout, 3.3 V"
+			(at 350.52 260.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 350.52 246.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 350.52 246.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 316.23 242.57) (xy 300.99 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-007c-4000-8000-00000000007c")
+	)
+	(global_label "+3V3"
+		(at 300.99 242.57 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-007d-4000-8000-00000000007d")
+	)
+	(wire
+		(pts
+			(xy 316.23 245.11) (xy 300.99 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-007e-4000-8000-00000000007e")
+	)
+	(global_label "GND"
+		(at 300.99 245.11 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-007f-4000-8000-00000000007f")
+	)
+	(wire
+		(pts
+			(xy 384.81 242.57) (xy 407.67 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0080-4000-8000-000000000080")
+	)
+	(global_label "SPI_SCK"
+		(at 407.67 242.57 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0081-4000-8000-000000000081")
+	)
+	(wire
+		(pts
+			(xy 384.81 245.11) (xy 407.67 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0082-4000-8000-000000000082")
+	)
+	(global_label "SPI_MOSI"
+		(at 407.67 245.11 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0083-4000-8000-000000000083")
+	)
+	(wire
+		(pts
+			(xy 384.81 247.65) (xy 407.67 247.65)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0084-4000-8000-000000000084")
+	)
+	(global_label "SPI_MISO"
+		(at 407.67 247.65 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0085-4000-8000-000000000085")
+	)
+	(wire
+		(pts
+			(xy 384.81 250.19) (xy 407.67 250.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0086-4000-8000-000000000086")
+	)
+	(label "SD_CS_N"
+		(at 407.67 250.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0087-4000-8000-000000000087")
+	)
+	(wire
+		(pts
+			(xy 384.81 252.73) (xy 407.67 252.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0088-4000-8000-000000000088")
+	)
+	(label "SD_CARDDET"
+		(at 407.67 252.73 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0089-4000-8000-000000000089")
+	)
+	(symbol
+		(lib_id "rtk:R")
+		(at 396.24 269.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-008a-4000-8000-00000000008a")
+		(property "Reference" "R1"
+			(at 398.78 267.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 398.78 270.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 396.24 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 396.24 269.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 396.24 264.16) (xy 396.24 260.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-008b-4000-8000-00000000008b")
+	)
+	(global_label "+3V3"
+		(at 396.24 260.35 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-008c-4000-8000-00000000008c")
+	)
+	(wire
+		(pts
+			(xy 396.24 274.32) (xy 396.24 278.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-008d-4000-8000-00000000008d")
+	)
+	(label "SD_CS_N"
+		(at 396.24 278.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-008e-4000-8000-00000000008e")
+	)
+	(symbol
+		(lib_id "rtk:CP")
+		(at 306.07 275.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-008f-4000-8000-00000000008f")
+		(property "Reference" "C6"
+			(at 309.88 274.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470u / 10 V"
+			(at 309.88 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 306.07 275.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 306.07 275.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 306.07 271.78) (xy 306.07 267.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0090-4000-8000-000000000090")
+	)
+	(global_label "+3V3"
+		(at 306.07 267.97 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0091-4000-8000-000000000091")
+	)
+	(wire
+		(pts
+			(xy 306.07 279.4) (xy 306.07 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0092-4000-8000-000000000092")
+	)
+	(global_label "GND"
+		(at 306.07 283.21 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0093-4000-8000-000000000093")
+	)
+	(symbol
+		(lib_id "rtk:C")
+		(at 325.12 275.59 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5d1c0001-0094-4000-8000-000000000094")
+		(property "Reference" "C7"
+			(at 328.93 274.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100n"
+			(at 328.93 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 325.12 275.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 325.12 275.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "rtk"
+				(path "/5d1c0000-0000-4000-8000-000000000001/5d1c0000-0000-4000-8000-000000000011"
+					(reference "C7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 325.12 271.78) (xy 325.12 267.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0095-4000-8000-000000000095")
+	)
+	(global_label "+3V3"
+		(at 325.12 267.97 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0096-4000-8000-000000000096")
+	)
+	(wire
+		(pts
+			(xy 325.12 279.4) (xy 325.12 283.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5d1c0001-0097-4000-8000-000000000097")
+	)
+	(global_label "GND"
+		(at 325.12 283.21 0)
+		(shape input)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c0001-0098-4000-8000-000000000098")
+	)
+	(text "Both UART2 directions are wired at BOTH nodes. Base: TX2 carries RTCM3 out."
+		(exclude_from_sim no)
+		(at 288.29 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-0099-4000-8000-000000000099")
+	)
+	(text "Rover: RX2 carries RTCM3 in. Same board, same wiring, opposite firmware."
+		(exclude_from_sim no)
+		(at 288.29 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5d1c0001-009a-4000-8000-00000000009a")
+	)
+	(text_box "PIN ASSIGNMENT - THE ONLY PIN TABLE THIS PROJECT HAS\n\nHeader positions are Arduino Due datasheet A000062 sections 6.2.1 (24-pin), 6.2.2 (26-pin), 6.2.3\n(ICSP/SPI), 6.2.4 (D22-D53 LHS) and 6.2.5 (D22-D53 RHS). Port pins are the Arduino SAM variant table;\ncurrent groups are SAM3X Atmel-11057C table 45-2, note 2 (Group 1, -15 mA source / 9 mA sink) and\nnote 3 (Group 2, -3 mA / 6 mA). GNSS connector positions are the SparkFun GPS-RTK-SMA schematic.\n\n  signal            Due pin  port   header + position       dir  group  goes to\n  ---------------   -------  -----  ----------------------  ---  -----  --------------------------------\n  GNSS1_MCU_TX      D18      PA11   26-pin pos 23   TXD0    out    2    ZED-F9P J7-3  UART1 RXI\n  GNSS1_MCU_RX      D19      PA10   26-pin pos 24   RXD0    in     2    ZED-F9P J7-2  UART1 TXO\n  GNSS2_MCU_TX      D14      PD4    26-pin pos 19   TXD3    out    1    ZED-F9P J7-5  UART2 RX2\n  GNSS2_MCU_RX      D15      PD5    26-pin pos 20   RXD3    in     1    ZED-F9P J7-6  UART2 TX2\n  RADIO_MCU_TX      D16      PA13   26-pin pos 21   TXD1    out    2    XBee pin 3   DIN\n  RADIO_MCU_RX      D17      PA12   26-pin pos 22   RXD1    in     2    XBee pin 2   DOUT\n  RADIO_nRTS        D23      PA14   RHS  pos 2      RTS1    out    1    XBee pin 16  nRTS\n  RADIO_nCTS        D24      PA15   LHS  pos 3      CTS1    in     1    XBee pin 12  nCTS\n  RADIO_nRESET      D12      PD8    26-pin pos 6            o-d    1    XBee pin 5   nRESET\n  GNSS_RESET_N      D50      PC13   LHS  pos 16             o-d    1    ZED-F9P J6-4 RESET\n  GNSS_PPS          D51      PC12   RHS  pos 16             in     1    ZED-F9P J6-3 TIMEPULSE\n  SPI_SCK           -        PA27   ICSP pos 3              out    1    microSD CLK, memory LCD SCLK\n  SPI_MOSI          -        PA26   ICSP pos 4              out    1    microSD DI,  memory LCD SI\n  SPI_MISO          -        PA25   ICSP pos 1              in     1    microSD DO\n  SD_CS_N           D48      PC15   LHS  pos 15             out    1    microSD CS   (active low)\n  SD_CARDDET        D52      PB21   LHS  pos 17             in     2    microSD CARDDET\n  LCD_CS            D49      PC14   RHS  pos 15             out    1    memory LCD SCS (ACTIVE HIGH)\n  LCD_EXTCOMIN      D9       PC21   26-pin pos 9            out    1    memory LCD JP1-9 EXTCOMIN\n  LCD_DISP          D8       PC22   26-pin pos 10           out    1    memory LCD JP1-8 DISP\n  LED_R_DRV         D3       PC28   26-pin pos 15           out    1    Q1 base  (indicator sheet)\n  LED_G_DRV         D5       PC25   26-pin pos 13           out    1    Q2 base\n  LED_B_DRV         D6       PC24   26-pin pos 12           out    1    Q3 base\n  BUZZER_DRV        D7       PC23   26-pin pos 11           out    1    Q4 base\n  MARK_BTN_N        D11      PD7    26-pin pos 7            in     1    SW1, pulled up  (rover only)\n  VBAT_SENSE        A0       PA16   24-pin pos 9    AD7     ain    2    5 V divider  (power sheet)\n  +5V               -        -      24-pin pos 5           power   -    5 V source; also feeds U1\n  +3V3              -        -      24-pin pos 4           power   -    XBee, microSD, memory LCD\n  GND               -        -      24-pin pos 6 + ICSP 6  power   -    single common ground\n\n  SIXTEEN OF THE DUE'S FIFTY-FOUR DIGITAL PINS ARE USED. What is left includes the whole D25-D47 odd\n  and even run, which is the room a UWB fallback (see the root sheet) would need without a redesign.\n\nEVERY INPUT ON THIS LIST KEEPS ITS SCHMITT HYSTERESIS, and that is not luck, it is the last filter the\npin choice went through. Table 45-2's hysteresis row names the pins that DO NOT get 150-500 mV of it -\namong them PA26, PC[15-24], PB14, PB22 and PD[10-30]. Of the pins above, four are on that list: PA26\n(SPI_MOSI), PC15 (SD_CS_N), PC21 (LCD_EXTCOMIN) and PC22..PC24 (LCD_DISP, BUZZER_DRV, LED_B_DRV) -\nand every one of them is an OUTPUT, where hysteresis is meaningless. Every pin that has to READ a\nlevel - PA10, PA12, PA15, PA25, PB21, PC12, PD5, PD7 - is off the list and keeps its hysteresis."
+		(exclude_from_sim no)
+		(at 431.8 15.24 0)
+		(size 124.5136 99.6978)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 224 240 255 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-009b-4000-8000-00000000009b")
+	)
+	(text_box "WHY THESE UARTS, AND WHY THIS PAIRING RATHER THAN ANY OTHER\n\nTHREE SERIAL LINKS ARE NEEDED AND THE DUE HAS FOUR. Serial (the UART peripheral, PA8/PA9, D0/D1) is\nNOT one of the four that may be used: it is wired to the ATmega16U2 that fronts the Programming USB\nport. Driving it fights the USB-serial bridge and costs you the flashing path this repo already has\nworking. That leaves USART0, USART1 and USART3, which is exactly three.\n\nWHICH LINK LANDS ON WHICH, AND THE ONE REASON THAT DECIDES IT.\n\n  USART1 (D16/D17, PA13/PA12) -> THE RADIO, because USART1 is the only one of the three whose RTS and\n  CTS lines are actually brought out on the Due: PA14 = RTS1 and PA15 = CTS1 (SAM3X table 9-2), on RHS\n  position 2 and LHS position 3. The radio is the one peer that can say \"stop sending\" - the XBee has\n  a finite serial buffer and an air interface slower than the wire - so hardware flow control goes\n  where hardware flow control exists.\n\n  USART0 (D18/D19) -> ZED-F9P UART1, the high-rate link. See the baud arithmetic opposite.\n  USART3 (D14/D15) -> ZED-F9P UART2, the correction link, which is low rate and stays at its default.\n\n  Neither GNSS link gets flow control, and it is not an oversight: the ZED-F9P datasheet section 5.1\n  says flatly \"Hardware flow control is not supported\". The receiver will never stop for you, which is\n  why the UART1 baud below is chosen with nearly 4x margin rather than 10 %.\n\nTHE SIX WIRES ARE ONE CONTIGUOUS RUN, positions 19 to 24 of the 26-pin header, and unlike the D22 row\non due-blinky THERE IS NO +5 V ANYWHERE NEAR THEM. Position 25 is D20/SDA. The hazard at this end is\ndifferent and quieter: POSITION 18 IS D0/RX0, the programming port's own receive line. A run that slips\none position toward the board's edge puts the receiver's transmitter onto a pin the ATmega16U2 is\nalready driving. Nothing is damaged; the programming port simply stops working and the GNSS link\ncarries garbage, which is a far more confusing afternoon than a dead board.\n\n  A NOTE ON ARDUINO'S OWN TABLE. Section 6.2.2 labels position 18 \"D0/TX0\" and then describes it as\n  \"Serial 0 Receiver\". It is D0/RX0; position 17 is D1/TX0. The label is a typo in the datasheet and it\n  is the label you would read while counting.\n\nTHE REJECTED ALTERNATIVE, WHICH IS A PRODUCT YOU CAN BUY. ArduSimple's simpleRTK2B carries an XBee\nsocket wired directly to the ZED-F9P's UART2, so the radio hands RTCM3 to the receiver with no MCU in\nthe path at all. It works, it is less firmware, and it is rejected here for one reason: the MCU would\nthen have NO WAY TO KNOW WHETHER CORRECTIONS ARE ARRIVING. #53's whole job is to tell the operator\nwhich of two coverage holes they are standing next to, and \"the radio link is down\" versus \"the\nreceiver cannot fix under this canopy\" is exactly that distinction. Sitting in the path costs two\nUART wires and buys the one fact the field indicator cannot work without.\n\n  For the same reason RTK_STAT (SparkFun J6-2) is left unconnected: it is a tri-state LED driver -\n  fixed, receiving corrections, no corrections - and UBX-NAV-PVT already carries carrSoln with more\n  resolution than that, on a link the MCU is reading anyway."
+		(exclude_from_sim no)
+		(at 431.8 120.0178 0)
+		(size 123.3452 93.5256)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 249 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-009c-4000-8000-00000000009c")
+	)
+	(text_box "UART2 IS THE CORRECTION PORT, AND THAT IS THE MODULE'S OWN WORD FOR IT\n\nThe acceptance criterion is to say explicitly which UART carries RTCM3 in and which carries the\nposition/observation stream out. The ZED-F9P answers this in its pin table rather than leaving it to\nconvention - UBX-21044850 R05 table 12:\n\n    pin 26   RXD2   I   \"Correction UART input\"\n    pin 27   TXD2   O   \"Correction UART output\"\n    pin 42   TXD    O   host UART (UART1) output\n    pin 43   RXD    I   host UART (UART1) input\n\nand its default protocol assignment (table 23) makes the split real rather than nominal:\n\n    UART1 out   NMEA on by default (GGA, GLL, GSA, GSV, RMC, VTG, TXT); UBX and RTCM3 enabled\n    UART1 in    UBX, NMEA, RTCM3, SPARTN all enabled\n    UART2 out   RTCM3 enabled.  UBX DISABLED.  NMEA DISABLED.\n    UART2 in    RTCM3 enabled, UBX enabled, SPARTN enabled, NMEA disabled\n\n    ==>  BASE:  UART2 TX2 carries RTCM3 OUT to the radio.  UART1 TXO carries the raw observation\n                stream (UBX-RXM-RAWX / RXM-SFRBX) to the card for PPK.\n    ==>  ROVER: UART2 RX2 carries RTCM3 IN from the radio.  UART1 TXO carries the position solution\n                (UBX-NAV-PVT and friends) plus its own raw observations.\n\nBOTH DIRECTIONS ARE WIRED AT BOTH NODES ANYWAY. It costs two jumpers, it makes the two builds\nelectrically identical, and it means the base can be bench-tested as a rover without rewiring.\n\nBAUD, WHICH IS NOT A DETAIL ON UART1. Defaults are 38400 on both ports (table 23), and 38400 baud is\n3840 bytes/s at 8N1. Budget UART1's load at 5 Hz:\n\n    UBX-RXM-RAWX, multi-band, ~30 satellites x 2 bands   16 + 60 x 32   =  1936 B   at 1 Hz\n    UBX-RXM-SFRBX, broadcast navigation data             ~              =   500 B/s\n    UBX-NAV-PVT + NAV-DOP + NAV-COV                      ~120 B x 5 Hz  =   600 B/s\n                                                                          -------\n                                                                          ~3.0 kB/s\n\nThat is 79 % of a 38400 link with nothing left for a burst, on a port that cannot exert back-pressure.\nUART1 IS THEREFORE RECONFIGURED TO 115200 (11.5 kB/s, 3.8x margin). The range is 9600 .. 921600\n(table 17), so there is room to go further if the message set grows.\n\nUART2 STAYS AT ITS 38400 DEFAULT, because the base is configured to emit MSM4 rather than MSM7\nobservables: roughly 0.7-0.9 kB/s for four constellations at 1 Hz, about a quarter of the link. MSM7's\nextra resolution buys nothing over a 75 m baseline. This is what \"trimmed RTCM3 is a few kbps\" means in\npractice, and it is why the radio is not the bottleneck it looks like it should be.\n\nAND 5 Hz IS INSIDE THE RECEIVER'S OWN LIMIT, which is worth checking before #52 promises it: table 2\ngives a maximum RTK navigation rate of 7 Hz for GPS+GLONASS+Galileo+BeiDou, 9 Hz for PVT and 15 Hz for\nraw. 5 Hz has margin on the binding one. Dropping a constellation would buy more, at the cost of the\nsky view this project cannot spare under canopy."
+		(exclude_from_sim no)
+		(at 431.8 218.6234 0)
+		(size 123.3452 101.7552)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 222 245 222 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-009d-4000-8000-00000000009d")
+	)
+	(text_box "THE SMALL DECISIONS THIS SHEET ALSO MAKES\n\n  THE RECEIVER IS FED FROM +5V, NOT FROM THE 3.3 V RAIL, and that is deliberate. The carrier board has\n  its own AP2112K-3.3 LDO; giving it 5 V on J7-8 lets it make a quiet local 3.3 V instead of sharing a\n  rail with a radio that draws a 60 mA burst and a card that draws 100 mA. SparkFun's hookup guide asks\n  for \"less than 50mV VPP ripple ... for precision locating\", which is a specification the Due's 3.3 V\n  rail cannot be promised to meet with those two loads on it. It also moves 105 mA off the Due's\n  regulator. The board WILL accept 3.3 V directly on J7-7 - there is no bypass jumper, so that back-\n  drives the LDO output - and this design does not use that path.\n\n  LEAVE THE DSEL JUMPER OPEN. Closing it selects SPI on the ZED-F9P's shared pins and DISABLES BOTH\n  UARTS AND I2C (F9P table 12: D_SEL chooses the function of pins 42-45). Every wire on this sheet\n  goes away if that jumper is closed.\n\n  RESET LINES ARE OPEN-DRAIN, BOTH OF THEM, AND ONE OF THEM MUST BE. The XBee user guide is explicit\n  about pin 5: \"also an output with an open drain configuration with an internal 20 K ohm pull-up\n  (never drive to logic high, as the module may be driving it low). The minimum pulse width is 1 mS.\"\n  A push-pull driver on that pin is a short between two drivers. The SAM3X PIO has a multi-driver mode\n  (PIO_MDER) that makes an output open-drain, which is what D12 uses. RESET_N on the ZED-F9P has a\n  7-13 kOhm internal pull-up (table 15) and is driven the same way for consistency - there is no reason\n  for two reset lines on one board to need two different driver disciplines.\n\n  SD_CS_N IS PULLED UP AND THE LCD'S SCS IS PULLED DOWN, for the same reason in opposite directions.\n  Out of reset every Due PIO is an input, so both chip selects float until firmware claims them. The\n  card must see CS HIGH to stay deselected; the memory LCD's SCS is ACTIVE HIGH and must see LOW. R1\n  (10 k, this sheet) and R11 (10 k, indicator sheet) put each one in its deselected state before any\n  firmware runs, which is the hardware-first rule applied to a bus rather than to a lamp.\n\n  THE SPI BUS RUNS AT TWO DIFFERENT CLOCKS AND THE SLOWER ONE IS A HARD LIMIT. The memory LCD's fSCLK\n  is 1 MHz typical and 2 MHz MAXIMUM (Sharp LCP-2110015A table 6-3-1), and it is LSB-first; the card\n  wants 8 MHz or more and is MSB-first. Firmware reprograms the SPI baud and bit order per transaction.\n  This is a hardware fact with a firmware cost, and it is recorded here so #53 does not discover it.\n\n  CARD DETECT IS WIRED. The breakout brings out CARDDET with a 47 k pull-up: low with no card, pulled\n  high when one is inserted. It turns \"there is no card\" from an I/O error indistinguishable from a\n  dead card into a positive fact, which is what lets #52's fault state say which of them happened.\n\n  PPS IS WIRED EVEN THOUGH NOTHING NEEDS IT YET. TIMEPULSE is the only sub-microsecond time reference\n  anywhere in this design (30 ns RMS, table 1); the MCU's alternative is an RC oscillator good to a few\n  percent. #52 has to prove a 200 ms epoch period rather than observe it, and a hardware edge it can\n  timestamp against is worth one jumper.\n\n  THE ANTENNA BIAS IS NOT DRAWN HERE. It is generated on the carrier board from the ZED-F9P's own\n  VCC_RF pin and injected onto the coax inside the SMA jack. The antenna sheet carries the budget -\n  and the one place where the boards as bought do not meet it."
+		(exclude_from_sim no)
+		(at 431.8 325.4586 0)
+		(size 123.3452 95.583)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 240 228 250 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-009e-4000-8000-00000000009e")
+	)
+	(text_box "WHY THE ARDUINO DUE, AND THE THREE THINGS IT IS NOT\n\nCHOSEN BECAUSE THE TOOLCHAIN ALREADY EXISTS IN THIS REPO. A pinned Zig Dagger module builds for it, a\nlinker script and a target.json describe its memory map, bossac 1.7.0 flashes it over the programming\nport with no debug probe, lib/hal's memory-mapped backend already speaks its PIO, and due-blinky is a\nworked instance of every one of those. #50's \"establish the MCU project skeleton\" is a smaller job than\nit looks precisely because of that, and #52 then reuses it a second time.\n\nAND BECAUSE IT HAPPENS TO FIT, which is worth checking rather than assuming:\n\n  4 usable USARTs                three links needed, one spare  (table 9-2, 9-5)\n  96 KB SRAM                     the memory LCD alone wants a 13.5 KB framebuffer\n  3.3 V I/O                      matches the receiver and the radio with no level shifting anywhere\n  84 MHz                         SPI fast enough that a 512 B sector is 0.5 ms of wire time\n  on-board supply monitor        SUPC_SMMR, 1.9-3.4 V in 100 mV steps - see the power sheet\n  on-board 3.3 V regulator       800 mA, and this node draws 354 mA of it worst case\n\nWHAT IT IS NOT.\n  * It is not low power. 76.5 mA at 84 MHz from the 3.3 V rail (table 45-12, 128-bit flash access),\n    against 29.6 mA at 24 MHz. Clocking down is available if a session ever needs it; the power sheet\n    shows the session budget does not.\n  * It is not small. This is a cart and a roof enclosure, not a wearable.\n  * It is not the board a product would use. It is the board a project with a working toolchain and\n    two firmware stories ahead of it should use."
+		(exclude_from_sim no)
+		(at 431.8 426.1216 0)
+		(size 123.3452 52.3776)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 238 238 238 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-009f-4000-8000-00000000009f")
+	)
+	(text_box "WIRING IT BY HAND - THE THREE PLACES A COUNT GOES WRONG\n\n  1. ICSP HEADER, POSITION 2 IS +5 V AND IT IS THE NEIGHBOUR OF MISO. Section 6.2.3:\n\n         pos 1  MISO   <-- microSD DO          pos 2  +5V    <-- DANGER, adjacent to MISO\n         pos 3  SCK    --> microSD CLK         pos 4  MOSI   --> microSD DI\n         pos 5  RESET                          pos 6  GND    <-- ground rail\n\n     This is a 2x3 header, so the miscount that matters is a ROW slip, not a position slip: MISO and\n     +5 V are the two ends of the same short side. Three of the six positions are used and the fourth\n     wire (GND) comes off position 6 diagonally opposite. Confirm position 2 IS +5 V with a meter\n     before any of the other three go in. Note that the microSD breakout is 3 V ONLY - it has no\n     regulator and no level shifters, so 5 V on its supply pin destroys the card.\n\n  2. BOTH D22-D53 HEADERS PUT +5 V AT POSITION 1. Sections 6.2.4 and 6.2.5 agree: LHS position 1 and\n     RHS position 1 are both +5 V, and position 18 of each is GND. This node uses LHS positions 3, 15,\n     16 and 17 and RHS positions 2, 15 and 16 - none of them adjacent to position 1, which is the good\n     news, and all of them 14 or more positions from the nearest landmark, which is the bad news. Count\n     from the GND end at position 18, not from the +5 V end: it is closer to every wire that matters\n     and it is the harmless end to land on by mistake.\n\n  3. THE SIX-WIRE UART RUN. Positions 19-24 of the 26-pin header, in order:\n\n         pos 19  D14/TX3  --> ZED-F9P J7-5 RX2       pos 22  D17/RX2  <-- XBee DOUT\n         pos 20  D15/RX3  <-- ZED-F9P J7-6 TX2       pos 23  D18/TX1  --> ZED-F9P J7-3 RXI\n         pos 21  D16/TX2  --> XBee DIN               pos 24  D19/RX1  <-- ZED-F9P J7-2 TXO\n\n     No power pin is adjacent. The failure here is position 18 (D0/RX0) as described opposite, and the\n     other failure is subtler: TX and RX are ADJACENT PAIRS, so swapping the two wires of a pair is a\n     one-position error that looks correct. It presents as a link that never receives a byte while the\n     other three links work perfectly. Fill 19 through 24 in order, in one pass, without recounting.\n\n     AND THE SAME TRAP EXISTS AT THE OTHER END. On the GPS-RTK-SMA's J7 the two UART2 pins are\n     adjacent and REVERSED relative to the run above: J7-5 is RX2 and J7-6 is TX2, while J7-2 is TXO\n     and J7-3 is RXI. There is no way to lay these six wires out so that \"straight across\" is correct;\n     they cross by construction, because that is what TX-to-RX means.\n\nTHE STANDING HAZARD, UNCHANGED FROM due-blinky: every I/O pin on this board tolerates 3.3 V and 5 V\ndamages it (A000062 section 5.1). The receiver is worse - its input pin voltage range is 0 to VCC with\nno headroom at all (F9P table 15), and its absolute maximum is VCC + 0.5 V. There is no 5 V logic\nanywhere in this system. The only 5 V on these sheets is a supply: to the Due, to the GNSS carrier's\nown regulator, and to the indicator's LED and buzzer anodes."
+		(exclude_from_sim no)
+		(at 15.24 320.04 0)
+		(size 123.3452 89.4108)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 255 214 214 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-00a0-4000-8000-0000000000a0")
+	)
+	(text_box "DECOUPLING - AND THE ONLY THING ON THIS SHEET THAT DRAWS A BURST\n\nNothing here switches a load, so there is exactly one transient worth sizing for: the radio keying up.\nEverything else on this sheet is decoupled to the ordinary standard and says so once.\n\nWHAT THE RADIO ACTUALLY DOES TO THE RAIL. XBee UG appendix A gives receive/idle as 29 mA typical\n(35 mA max) and transmit by power level:\n\n    PL=0  +7 dBm    60 mA typ      step from idle:   31 mA     <-- the operating point (antenna sheet)\n    PL=1  +15 dBm   95 mA typ                        66 mA\n    PL=2  +18 dBm  120 mA typ                        91 mA\n    PL=3  +21 dBm  160 mA typ                       131 mA\n    PL=4  +24 dBm  215 mA typ, 290 mA max           261 mA     <-- what the HARDWARE is sized for\n\n  THE SIZING USES PL=4 EVEN THOUGH THE DESIGN RUNS AT PL=0, because PL is a firmware register. A\n  hardware decision that only holds while a configuration byte holds is not a hardware decision.\n\nWHAT DIGI ASKS FOR, verbatim from the design notes in the same user guide: \"we recommend placing both\na 1 uF and 47 pF capacitor as near to pin 1 on the PCB as possible\", the three caps ordered \"47 pF,\n1 uF followed by\" the bulk, and \"Power supply ripple should be limited to a maximum 50 mV peak to\npeak\". C4 (1 uF) and C5 (47 pF) are exactly that, and 50 mV is the whole budget the sizing below has\nto fit inside.\n\nWHY THE SUPPLY RUN IS THE PROBLEM RATHER THAN THE REGULATOR. This is a breadboard node: the radio\nreaches +3V3 through a jumper, call it 150 mm and 150 nH. A current step develops L x di/dt across it\nbefore any regulator has heard about it:\n\n    PL=0, 31 mA in 1 us    150 nH x 31 kA/s   =   4.7 mV      comfortable\n    PL=4, 261 mA in 1 us   150 nH x 261 kA/s  =  39.2 mV      78 % of the entire 50 mV budget\n\n  ==>  AT PL=4 THE WIRE ALONE NEARLY SPENDS THE RIPPLE ALLOWANCE. Local charge is not a refinement\n       here, it is the only thing standing between the radio and its own supply specification. A long\n       thin run to a distant capacitor supplies none of it.\n\nSIZING C3, THE BULK. Give the bulk cap half the ripple budget, 25 mV, and let it carry the step for\nthe ~20 us a linear regulator's control loop takes to catch up:\n\n    C  >=  I x dt / dV  =  0.261 A x 20 us / 0.025 V  =  209 uF     ==>  C3 = 220 uF\n\n  At PL=0 the same 220 uF holds the droop to 0.261/31 of that - under 3 mV - so the operating point\n  has an order of magnitude in hand. C3 sits nearest the module after C5 and C4, in Digi's order.\n\n  A SWITCHING REGULATOR WOULD NEED MORE CARE AND IS NOT USED. The same design note prefers switching\n  frequencies above 500 kHz; the Due's 3.3 V rail comes from a linear regulator, so there is no\n  switching spur to keep out of a GNSS front end in the first place. That is a second reason the\n  receiver is fed 5 V and makes its own 3.3 V rather than sharing this rail.\n\nTHE OTHER THREE, WHICH ARE ORDINARY AND ARE HERE ONLY SO THE VALUES ARE NOT A MYSTERY.\n\n  C1 100 uF + C2 100 nF   at the GNSS carrier's 5 V input. SparkFun asks for \"less than 50mV VPP\n                          ripple ... for precision locating\"; the carrier's own AP2112K does the\n                          regulating and these two keep its input quiet.\n  C6 470 uF + C7 100 nF   at the microSD. SPI mode is capped at 100 mA by the SD specification\n                          (9.10 Table 3-6 footnote), so 470 uF holds a 25 mV droop for 118 us -\n                          longer than any single command-to-busy transition on the bus.\n  C8 4700 uF              on the 3.3 V rail, on the power sheet. That one is not decoupling at all;\n                          it is hold-up, and it is sized against the brownout window rather than\n                          against ripple."
+		(exclude_from_sim no)
+		(at 15.24 414.5308 0)
+		(size 122.1768 122.3292)
+		(margins 1.27 1.27 1.27 1.27)
+		(stroke
+			(width 0.254)
+			(type default)
+		)
+		(fill
+			(type color)
+			(color 222 245 222 1)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "5d1c0001-00a1-4000-8000-0000000000a1")
+	)
+	(embedded_fonts no)
+)
