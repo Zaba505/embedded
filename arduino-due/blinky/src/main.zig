@@ -198,16 +198,19 @@ const FAULT_SCORE: u32 = 4;
 
 comptime {
     if (MISMATCH_WEIGHT <= AGREEMENT_CREDIT) {
-        @compileError("a sustained fault must gain more than a good transition forgives, or the score can never reach FAULT_SCORE");
+        @compileError("a sustained fault must gain more than a good transition " ++
+            "forgives, or the score can never reach FAULT_SCORE");
     }
     if (FAULT_SCORE <= MISMATCH_WEIGHT) {
-        @compileError("FAULT_SCORE at or below MISMATCH_WEIGHT makes a single disagreement fatal; that is not a *sustained* mismatch");
+        @compileError("FAULT_SCORE at or below MISMATCH_WEIGHT makes a single " ++
+            "disagreement fatal; that is not a *sustained* mismatch");
     }
 }
 
 comptime {
     if (SETTLE_TICKS < SETTLE_FLOOR_TICKS) {
-        @compileError("settle window is below the sense node's RC response floor; see resource-budget.md §3");
+        @compileError("settle window is below the sense node's RC response " ++
+            "floor; see resource-budget.md §3");
     }
     if (SETTLE_TICKS + (SAMPLE_COUNT - 1) * SAMPLE_GAP_TICKS >= HALF_PERIOD_TICKS) {
         @compileError("settle window plus sample gaps does not fit inside the 500 ms half period");

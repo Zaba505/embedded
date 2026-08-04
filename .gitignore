@@ -9,7 +9,10 @@ zig-out/
 fp-info-cache
 
 # Build output exported by `dagger call artifacts ... export --path=./artifacts`
-artifacts/
+/artifacts/
 
-# bossac 1.7.0, fetched per the blinky README; a vendor binary, not source
-bossac
+# bossac 1.7.0, fetched per the blinky README; a vendor binary, not source.
+# MUST stay anchored with a leading slash: a bare `bossac` also matches
+# daggerverse/bossac/, which silently drops that toolchain from Dagger's
+# module context and breaks `dagger call bossac sam-ba` in CI.
+/bossac
