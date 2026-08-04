@@ -3,13 +3,14 @@
 Completed from the [repo-wide template](../../docs/fault-response-policy.md).
 
 1. **Device & what it controls.** Arduino Due (Atmel SAM3X8E, Cortex-M3). Two outputs with any
-   effect on the world, and both are LEDs: `D1` on `PB26`, active-high, current-limited by a 560 Ω
-   series resistor to ~1.2 mA, and `D2` on `PD1`, active-high, current-limited by 1 kΩ to ~1.1 mA.
+   effect on the world, and both are LEDs: `D1` on `PD1` (digital pin 26), active-high,
+   current-limited by a 560 Ω series resistor to ~1.2 mA, and `D2` on `PB26` (digital pin 22),
+   active-high, current-limited by 1 kΩ to ~1.1 mA.
    There is also one *input* — the current-sense node on `PA15` — which controls nothing. It drives
    nothing else: no motor, heater, radio, bus, or actuator. A held-on or held-off LED can harm
    nothing. (Values and derivations: the [schematic](hardware/due-blinky.kicad_sch).)
 
-2. **Safe state.** All outputs idle: `PB26` and `PD1` low, both LEDs off. This is also the power-on
+2. **Safe state.** All outputs idle: `PD1` and `PB26` low, both LEDs off. This is also the power-on
    default — out of reset both are inputs under the PIO controller, driving nothing — so the safe
    state costs *no code* to reach. There is nothing that must be actively de-energized, which is what
    makes field 3 a bare **halt** rather than **safe-state → halt**.

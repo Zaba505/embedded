@@ -1,11 +1,15 @@
-//! Blink an externally wired LED on PB26 (Arduino Due digital pin 22) at 1 Hz.
+//! Blink an externally wired LED on PD1 (Arduino Due digital pin 26) at 1 Hz.
 //!
 //! Not the on-board D13 LED, on purpose. An on-board LED blinking is weak
 //! evidence that this firmware is doing anything: bootloader activity or a
 //! watchdog reset loop makes the board blink by itself, and by eye that is
-//! indistinguishable from a correct 1 Hz blink. PB26 has no on-board LED, no
+//! indistinguishable from a correct 1 Hz blink. PD1 has no on-board LED, no
 //! boot-time role and no peripheral alternate function, so a steady 1 Hz there
 //! can only be this code.
+//!
+//! D22/PB26 is NOT this pin. The schematic puts D2, the fault lamp, there, and
+//! nothing here drives it yet -- the firmware that reads the sense input on
+//! D24/PA15 and decides what a disagreement means is a later story.
 //!
 //! Every register address below was taken from the Atmel CMSIS headers in
 //! arduino/ArduinoCore-sam rather than from memory; a wrong address here is a
@@ -47,20 +51,21 @@ const WDT_MR_WDDIS: u32 = 1 << 15;
 
 // --- Power Management Controller ------------------------------------------
 // PIO writes are silently dropped while the controller's peripheral clock is
-// gated, so PIOB has to be clocked before any of the registers below take.
+// gated, so PIOD has to be clocked before any of the registers below take.
 const PMC_PCER0: *volatile u32 = @ptrFromInt(0x400E0610);
-const ID_PIOB: u5 = 12;
+const ID_PIOD: u5 = 14;
 
-// --- Parallel I/O controller B --------------------------------------------
-const PIOB_PER: *volatile u32 = @ptrFromInt(0x400E1000); // PIO Enable (claim from peripheral mux)
-const PIOB_OER: *volatile u32 = @ptrFromInt(0x400E1010); // Output Enable
-const PIOB_SODR: *volatile u32 = @ptrFromInt(0x400E1030); // Set Output Data
-const PIOB_CODR: *volatile u32 = @ptrFromInt(0x400E1034); // Clear Output Data
+// --- Parallel I/O controller D --------------------------------------------
+const PIOD_PER: *volatile u32 = @ptrFromInt(0x400E1400); // PIO Enable (claim from peripheral mux)
+const PIOD_OER: *volatile u32 = @ptrFromInt(0x400E1410); // Output Enable
+const PIOD_SODR: *volatile u32 = @ptrFromInt(0x400E1430); // Set Output Data
+const PIOD_CODR: *volatile u32 = @ptrFromInt(0x400E1434); // Clear Output Data
 
-/// PB26 == Arduino Due digital pin 22, confirmed against
-/// ArduinoCore-sam/variants/arduino_due_x/variant.cpp (entry `// PIN 22`).
+/// PD1 == Arduino Due digital pin 26, confirmed against
+/// ArduinoCore-sam/variants/arduino_due_x/variant.cpp (entry `// PIN 26`:
+/// `{ PIOD, PIO_PD1, ID_PIOD, ... }`).
 /// Active high: driving it high lights the LED.
-const LED: u32 = 1 << 26;
+const LED: u32 = 1 << 1;
 
 // --- SysTick (ARMv7-M core peripheral) ------------------------------------
 const SYST_CSR: *volatile u32 = @ptrFromInt(0xE000E010);
@@ -91,10 +96,10 @@ comptime {
 pub fn main() noreturn {
     WDT_MR.* = WDT_MR_WDDIS;
 
-    PMC_PCER0.* = @as(u32, 1) << ID_PIOB;
+    PMC_PCER0.* = @as(u32, 1) << ID_PIOD;
 
-    PIOB_PER.* = LED;
-    PIOB_OER.* = LED;
+    PIOD_PER.* = LED;
+    PIOD_OER.* = LED;
 
     SYST_RVR.* = HALF_PERIOD_TICKS - 1;
     SYST_CVR.* = 0; // any write clears the counter and COUNTFLAG
@@ -102,9 +107,9 @@ pub fn main() noreturn {
 
     while (true) {
         waitHalfPeriod();
-        PIOB_SODR.* = LED;
+        PIOD_SODR.* = LED;
         waitHalfPeriod();
-        PIOB_CODR.* = LED;
+        PIOD_CODR.* = LED;
     }
 }
 

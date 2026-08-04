@@ -1,7 +1,7 @@
 # arduino-due/blinky
 
 A bare-metal Zig blinky for the [Arduino Due](https://docs.arduino.cc/hardware/due/)
-(Atmel SAM3X8E, Cortex-M3). Toggles an **externally wired LED** on `PB26` / digital pin 22 at 1 Hz.
+(Atmel SAM3X8E, Cortex-M3). Toggles an **externally wired LED** on `PD1` / digital pin 26 at 1 Hz.
 
 The firmware is trivial on purpose. The point is the toolchain: building and flashing go entirely
 through Dagger modules, with no host-installed Zig and no host-installed flashing tool.
@@ -49,9 +49,13 @@ The SAM3X8E watchdog is enabled out of reset with a ~16 s timeout; if it is not 
 resets every few seconds, which on D13 looks *exactly* like a working blink. The headline test would
 pass in precisely the case it is supposed to catch.
 
-`PB26` / `D22` has no on-board LED, no boot-time role, and no peripheral alternate function in
+`PD1` / `D26` has no on-board LED, no boot-time role, and no peripheral alternate function in
 [Arduino's variant table](https://github.com/arduino/ArduinoCore-sam/blob/master/variants/arduino_due_x/variant.cpp).
 A steady 1 Hz there can only be this code.
+
+`PB26` / `D22` clears exactly the same three tests — it is where the blink LED was first drawn — and
+it now carries `D2`, the fault lamp. The schematic justifies all three pins side by side, which is
+what makes the two LED jumpers interchangeable.
 
 ## Hardware
 
@@ -69,22 +73,22 @@ green would leave `D2` dark in precisely the situation it exists to report.
 |---|---|
 | Arduino Due | Any revision |
 | USB cable | Into the **Programming** port (the one nearer the DC jack) |
-| `D1` — LED | The blink indicator. Any colour; red assumed for the resistor sizing below |
-| `R1` — 560 Ω | **Changed from 1 kΩ.** See the warning below before substituting |
+| `D1` — LED | The blink indicator, on **`D26`**. Any colour; red assumed for the resistor sizing below |
+| `R1` — 560 Ω | **Changed from 1 kΩ.** Not ceiling-bound — see the note below |
 | `Q1` — 2N3904 NPN | The sense element. BC547 or 2N2222 work too — but **a BC547's TO-92 pinout is reversed** |
 | `R2` — 10 kΩ | `Q1`'s base bleed |
 | `R3` — 10 kΩ | `Q1`'s collector pull-up to `+3V3` |
-| `D2` — LED | The fault lamp. **Any colour except `D1`'s** — green assumed below |
-| `R4` — 1 kΩ | `D2`'s limit resistor |
+| `D2` — LED | The fault lamp, on **`D22`**. **Any colour except `D1`'s** — green assumed below |
+| `R4` — 1 kΩ | `D2`'s limit resistor. **Never below 470 Ω** — see the note below |
 | Breadboard + 5 jumpers | `D22`, `D24`, `D26`, `+3V3`, `GND` |
 
 **Wiring — the `D22`–`D53` header, even-numbered (LHS) row** (Due datasheet §6.2.4):
 
 ```
   position  1  =  +5V     <-- DANGER: directly beside D22
-  position  2  =  D22     ----> R1 (560 Ω) ----> D1 anode
+  position  2  =  D22     ----> R4 (1 kΩ)  ----> D2 anode   (FAULT LAMP)
   position  3  =  D24     <---- sense, from Q1's collector
-  position  4  =  D26     ----> R4 (1 kΩ) ----> D2 anode
+  position  4  =  D26     ----> R1 (560 Ω) ----> D1 anode   (BLINK LED)
      ...
   position 18  =  GND     <---- the breadboard ground rail
 ```
@@ -104,13 +108,24 @@ green would leave `D2` dark in precisely the situation it exists to report.
 > hole over. The I/O pins tolerate 3.3 V and 5 V damages the board: count twice, and confirm GND
 > with a continuity check, before applying power.
 
-> **`R1` is 560 Ω now, and 220 Ω is still wrong.** `PB26` is in the SAM3X datasheet's **Group 2**
-> (`PB[25–31]`, table 45-2 note 3), whose source limit is `IOH = −3 mA` at `VOH = VDDIO − 0.4 V` —
-> not the −15 mA of Group 1, and not the flat 8 mA Arduino's own datasheet quotes for an I/O pin.
-> `Q1`'s base-emitter junction takes ~0.7 V out of the same 3.3 V, so leaving `R1` at 1 kΩ would
-> drop `D1` to ~0.65 mA; 560 Ω puts it back to **1.16 mA nominal, 1.88 mA worst case — 63 % of the
-> ceiling**. 470 Ω is legal and the practical floor (74 %). **330 Ω is 3.18 mA and 220 Ω is 4.77 mA,
-> both over the ceiling.**
+> **The run does not read in the obvious order, and that is not a miscount.** Position 2 is the
+> **fault lamp** and position 4 is the **blink LED** — the reverse of "load first", and the reverse
+> of the schematic's first revision. Wire from the table above, not from the assumption that the
+> first jumper in the run drives the LED you are watching. Getting this pair backwards damages
+> nothing; the board simply blinks the fault lamp, which looks like a working blink in the wrong
+> colour and is easy to miss.
+
+> **`R1` is 560 Ω, and the `−3 mA` ceiling now applies to `R4` instead.** `PB26` is in the SAM3X
+> datasheet's **Group 2** (`PB[25–31]`, table 45-2 note 3), whose source limit is `IOH = −3 mA` at
+> `VOH = VDDIO − 0.4 V` — not the −15 mA of Group 1, and not the flat 8 mA Arduino's own datasheet
+> quotes for an I/O pin. `PB26` now drives `D2`, so that is the branch with the hard lower bound:
+> **keep `R4` ≥ 470 Ω.**
+>
+> `D1` sits on `PD1`, which is **Group 1** at −15 mA (note 2, `PD[0–30]`). `Q1`'s base-emitter
+> junction takes ~0.7 V out of the same 3.3 V, so leaving `R1` at 1 kΩ would drop `D1` to ~0.65 mA;
+> 560 Ω puts it back to **1.16 mA nominal, 1.88 mA worst case — 13 % of `PD1`'s ceiling.** 470 Ω,
+> 330 Ω and even 220 Ω are all legal there now. 560 Ω is kept because it is what is built and what
+> every figure on the sheet is derived at — not because anything forbids going lower.
 
 **Optional — a debug probe.** Not needed to flash. Needed for breakpoints, memory inspection and
 GDB, none of which SAM-BA can do. Any 3.3 V probe-rs-supported SWD probe works: CMSIS-DAP,
@@ -123,7 +138,7 @@ ARM Cortex Debug standard (`Arduino pin N == Cortex pin (11 − N)`).
 Driving the pin is not evidence that the load changed state. Reading the *register* back
 (`PIO_ODSR`) proves only that the write landed; reading the *pad* back (`PIO_PDSR`) proves only that
 the pin is at the commanded level. **An open circuit is invisible to both** — pull the jumper out of
-`D22`, or fit `D1` backwards, and the pad still reads exactly what the driver put there, because the
+`D26`, or fit `D1` backwards, and the pad still reads exactly what the driver put there, because the
 pad's level is set by the driver and not by the load. Both checks are nearly free and belong in the
 firmware as corroboration; neither one is feedback.
 
@@ -170,7 +185,7 @@ dagger call artifacts --source=./arduino-due/blinky --elf=bin/blinky.elf \
 dagger call zig size --input=./artifacts/blinky.elf flash
 ```
 
-The image is ~244 bytes with empty `.data` and `.bss`. That figure, the 256 KB flash and 64 KB SRAM0
+The image is 240 bytes with empty `.data` and `.bss`. That figure, the 256 KB flash and 64 KB SRAM0
 ceilings, the 24-bit SysTick reload, and the per-pin current limit below are all collected in this
 project's [resource budget](resource-budget.md), completed from the repo-wide
 [template](../../docs/resource-budget.md) — flash is the scarcest of them, since a `Debug` build
@@ -319,7 +334,7 @@ Note its memory map is narrower than Arduino's linker script assumes — see `li
 |---|---|
 | `link.ld` | SAM3X8E memory map; puts `.isr_vector` first in flash bank 0 |
 | `src/start.zig` | Vector table, reset handler, `.data`/`.bss` init, `VTOR` |
-| `src/main.zig` | Watchdog disable, PIOB setup, SysTick, blink loop |
+| `src/main.zig` | Watchdog disable, PIOD setup, SysTick, blink loop |
 | `build.zig` | Hardcoded `thumb-freestanding-eabi` / `cortex_m3` |
 | `target.json` | The board's memory map and boot convention, for the CI image checker |
 
@@ -333,9 +348,11 @@ its own `target.json`, not by editing the checker.
 Order matters in `main()`:
 
 1. **Disable the watchdog first.** `WDT_MR` is write-once and the watchdog is enabled out of reset.
-2. **Clock PIOB** via `PMC_PCER0`. PIO register writes are silently dropped while the peripheral
-   clock is gated — a wrong order here fails silently, not loudly.
-3. Claim `PB26` and drive it out (`PIO_PER`, `PIO_OER`).
+2. **Clock PIOD** via `PMC_PCER0` (`ID_PIOD` = 14). PIO register writes are silently dropped while
+   the peripheral clock is gated — a wrong order here fails silently, not loudly. Note this is
+   `PIOD`, not `PIOB`: the LED moved to `D26`, and clocking the wrong controller would leave the
+   pin unclaimed with no diagnostic at all.
+3. Claim `PD1` and drive it out (`PIO_PER`, `PIO_OER`) at `PIOD` base `0x400E1400`.
 4. SysTick at `2_000_000` ticks per half period.
 
 **On the clock:** no PLL is brought up, so `MCK` is still the 4 MHz reset-default RC oscillator.
@@ -356,8 +373,12 @@ because a device's safe failure state depends on what it controls — is written
 [fault response policy](fault-response-policy.md), completed from the repo-wide
 [template](../../docs/fault-response-policy.md).
 
+**Blinking on `D26`, and `D22` should stay dark.** If the LED on `D22` is the one blinking, the two
+LED jumpers are on each other's pins — swap them rather than changing the firmware, since the
+schematic, the current derivation and `src/main.zig` all agree that `D26` drives the load.
+
 **`D2` stays dark for now, and the sense path is checked with a meter.** No firmware reads `D24` or
-drives `D26` yet, so the only way to exercise the feedback path today is by hand: with `D1` lit, the
+drives `D22` yet, so the only way to exercise the feedback path today is by hand: with `D1` lit, the
 sense node should read under 0.2 V; with `D1` dark, ~3.3 V. Pulling `D1` out of the breadboard while
 the blink runs should hold that node high through both halves of the cycle — which is the cheapest
 possible fault injection, and exactly the failure that a `PIO_PDSR` readback would have missed.

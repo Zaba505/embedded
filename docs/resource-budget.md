@@ -171,4 +171,4 @@ it, so a blown budget fails a build rather than surprising a person:
 
 | Project | Scarcest resource | One-line why |
 |---|---|---|
-| [`arduino-due/blinky`](../arduino-due/blinky/resource-budget.md) | **flash** | ~244 B image in a 256 KB region, yet a *debug* build overflows it by ~35 KB — so build mode, not code, is the wall. Every other resource sits three-plus orders of magnitude under its ceiling. |
+| [`arduino-due/blinky`](../arduino-due/blinky/resource-budget.md) | **flash** | 240 B image in a 256 KB region, yet a *debug* build overflows it by ~35 KB — so build mode, not code, is the wall. Every other resource sits three-plus orders of magnitude under its ceiling. |
