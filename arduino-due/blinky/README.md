@@ -430,7 +430,7 @@ current derivation and `src/main.zig` all agree that `D26` drives the load.
 | `D1` (`D26`, red) | `D2` (`D22`, green) | means |
 |---|---|---|
 | blinking 1 Hz | dark | running, and **every transition verified against the sense** |
-| **dark** | **solid** | a load-verification mismatch was detected, and the board halted |
+| **dark** | **solid** | a load-verification mismatch was detected, and the board halted — **latched; RESET to resume** |
 | frozen or dark | dark | a trapped fault (panic / CPU exception), or the board never ran |
 
 A blinking `D1` now means more than it used to. It is no longer "a pin is toggling" — it is "a pin
@@ -443,12 +443,21 @@ A verification path that has never been shown to fire is not a verification path
 running, do this:
 
 1. **Pull `D1`'s jumper** (or lift the LED out of the breadboard). Within about **2.5 seconds** the
-   red LED goes dark and **the green `D2` comes on solid, and stays on**. The
-   board has stopped. That is the firmware noticing an open circuit that a `PIO_PDSR` readback
-   cannot see, because the pad still sits at exactly the level the driver put there.
-2. **Reset, then refit `D1` backwards.** Same outcome: a reversed LED does not conduct, `Q1` never
+   red LED goes dark and **the green `D2` comes on solid, and stays on**. The board has stopped.
+   That is the firmware noticing an open circuit that a `PIO_PDSR` readback cannot see, because the
+   pad still sits at exactly the level the driver put there.
+2. **Reconnecting `D1` does *not* clear it.** Red stays dark, green stays solid. This is not a bug
+   and not a missed recovery — the fault response is a **halt** (see
+   [fault response policy](fault-response-policy.md), field 3), so nothing is still running to
+   notice the load came back. **Press RESET, or power-cycle, to resume.**
+
+   The latch is the point. A board that recovered silently would erase its own evidence: an
+   intermittent jumper would give a green flicker you would probably miss, followed by a happily
+   blinking board that had in fact been lying about its load part of the time. Halting means the one
+   thing you cannot do is fail to notice.
+3. **Reset, then refit `D1` backwards.** Same outcome: a reversed LED does not conduct, `Q1` never
    saturates, and the sense reports "dark" while the firmware is commanding "lit".
-3. **Refit it correctly and reset.** Back to a 1 Hz blink with `D2` dark.
+4. **Refit it correctly and reset.** Back to a 1 Hz blink with `D2` dark.
 
 This is genuine fault injection against real silicon, done with your fingers, and it is the cheapest
 possible instance of what [#19](https://github.com/Zaba505/embedded/issues/19) builds in software.

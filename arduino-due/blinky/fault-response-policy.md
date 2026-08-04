@@ -35,12 +35,21 @@ Completed from the [repo-wide template](../../docs/fault-response-policy.md).
    working blink.* The SAM3X8E watchdog is enabled out of reset with a ~16 s timeout; a board
    resetting every few seconds blinks on its own, and by eye that is indistinguishable from a
    correct 1 Hz blink — the headline test would pass in exactly the case it is meant to catch. So
-   `main()` disables the watchdog first, and every fault path is a bare `while (true) {}`:
-   a fault must **stop the LED dead**, never restart it. Halting is safe here precisely because
-   field 1 has nothing dangerous to leave energized: the trap writes no registers, so the LED
-   freezes wherever it was, solid on or solid off depending on when the fault hit. Either way it
-   is no longer blinking, which is the signal we want. (Full argument: the project
-   [README](README.md), "Why not the on-board LED" and "Verifying it worked".)
+   `main()` disables the watchdog first, and every fault path ends in `while (true) {}`: a fault must
+   **stop the LED dead**, never restart it. Halting is safe here precisely because field 1 has
+   nothing dangerous to leave energized.
+
+   *Trapped* paths write no registers at all, so `D1` freezes wherever it was — solid on or solid off
+   depending on when the fault hit. Either way it is no longer blinking, which is the signal we want.
+   The *detected* path writes exactly two registers first, for the reasons in fields 2 and 3, and
+   then halts identically. (Full argument: the project [README](README.md), "Why not the on-board
+   LED" and "Verifying it worked".)
+
+   **The halt latches, and that is a feature.** Nothing polls for the fault clearing, so restoring
+   the load does not resume the blink — recovery is a deliberate RESET or power cycle. A board that
+   recovered silently would erase its own evidence: an intermittent jumper would give a brief `D2`
+   flicker you would probably miss, followed by a board blinking happily that had been lying about
+   its load part of the time. Latching means the one thing you cannot do is fail to notice.
 
 5. **What counts as a fault.**
    - **Language panic** — `panic()` in [`src/main.zig`](src/main.zig) replaces Zig's default handler
@@ -114,7 +123,7 @@ Completed from the [repo-wide template](../../docs/fault-response-policy.md).
    | `D1` (`D26`, red) | `D2` (`D22`, green) | means |
    |---|---|---|
    | blinking 1 Hz | dark | running, and every transition verified against the sense |
-   | **dark** | **solid** | a load-verification mismatch was detected, and the board halted |
+   | **dark** | **solid** | a load-verification mismatch was detected, and the board halted — **latched; RESET to resume** |
    | frozen or dark | dark | a trapped fault (panic / CPU exception), or the board never ran |
 
    The asymmetry is deliberate and worth stating plainly: **`D2` lit is proof; `D2` dark is not.**
