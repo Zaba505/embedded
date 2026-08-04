@@ -7,3 +7,9 @@ zig-out/
 *-backups/
 *.kicad_sch-bak
 fp-info-cache
+
+# Build output exported by `dagger call artifacts ... export --path=./artifacts`
+artifacts/
+
+# bossac 1.7.0, fetched per the blinky README; a vendor binary, not source
+bossac

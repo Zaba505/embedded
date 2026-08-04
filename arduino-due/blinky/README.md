@@ -3,12 +3,14 @@
 A bare-metal Zig blinky for the [Arduino Due](https://docs.arduino.cc/hardware/due/)
 (Atmel SAM3X8E, Cortex-M3). Toggles an **externally wired LED** on `PD1` / digital pin 26 at 1 Hz.
 
-The firmware is trivial on purpose. The point is the toolchain: building and flashing go entirely
-through Dagger modules, with no host-installed Zig and no host-installed flashing tool.
+The firmware is small on purpose — 540 bytes — and for most of this project's life the point was the
+toolchain: building and flashing go entirely through Dagger modules, with no host-installed Zig and
+no host-installed flashing tool. That is still true. What is no longer true is that the firmware is
+*trivial*: it now holds state about the world that it checks, and can be wrong about.
 
-The schematic also defines a **current-feedback path** so the firmware can read back whether the LED
-actually conducted, rather than assuming the store worked. That circuit is drawn and derived here;
-the firmware that consumes it is a later story.
+The schematic defines a **current-feedback path**, and the firmware now uses it: every commanded
+transition is checked against the sense before the loop moves on, so an unplugged or reversed `D1`
+is something the board can notice rather than something only a human could.
 
 ![Wiring schematic](hardware/due-blinky.svg)
 
@@ -162,8 +164,9 @@ report a channel that shares nothing with `D1`, `R1`, `R2`, `R3` or `Q1`. It onl
 never gain a false one. That is why it does not contradict the policy's rejection of a second
 indicator, which was aimed at indicators that claim things are working.
 
-**None of this is in the firmware yet.** This is the diagram; the code that samples the sense input,
-decides what a disagreement means, and drives `D2` is the next story.
+**This is now in the firmware.** [`src/main.zig`](src/main.zig) samples the sense input, decides
+what a disagreement means, and drives `D2` — see "The loop no longer assumes it worked" below, and
+the [fault response policy](fault-response-policy.md) for the mismatch decision and its reasoning.
 
 ## Build
 
@@ -185,7 +188,8 @@ dagger call artifacts --source=./arduino-due/blinky --elf=bin/blinky.elf \
 dagger call zig size --input=./artifacts/blinky.elf flash
 ```
 
-The image is 240 bytes with empty `.data` and `.bss`. That figure, the 256 KB flash and 64 KB SRAM0
+The image is 540 bytes, with `.data` empty and 16 bytes of `.bss` — the state the loop holds about
+the load. That figure, the 256 KB flash and 64 KB SRAM0
 ceilings, the 24-bit SysTick reload, and the per-pin current limit below are all collected in this
 project's [resource budget](resource-budget.md), completed from the repo-wide
 [template](../../docs/resource-budget.md) — flash is the scarcest of them, since a `Debug` build
@@ -334,7 +338,7 @@ Note its memory map is narrower than Arduino's linker script assumes — see `li
 |---|---|
 | `link.ld` | SAM3X8E memory map; puts `.isr_vector` first in flash bank 0 |
 | `src/start.zig` | Vector table, reset handler, `.data`/`.bss` init, `VTOR` |
-| `src/main.zig` | Watchdog disable, PIOD setup, SysTick, blink loop |
+| `src/main.zig` | Watchdog disable, PIOA/B/D setup, SysTick, and the verified blink loop |
 | `build.zig` | Hardcoded `thumb-freestanding-eabi` / `cortex_m3` |
 | `target.json` | The board's memory map and boot convention, for the CI image checker |
 
@@ -348,12 +352,56 @@ its own `target.json`, not by editing the checker.
 Order matters in `main()`:
 
 1. **Disable the watchdog first.** `WDT_MR` is write-once and the watchdog is enabled out of reset.
-2. **Clock PIOD** via `PMC_PCER0` (`ID_PIOD` = 14). PIO register writes are silently dropped while
-   the peripheral clock is gated — a wrong order here fails silently, not loudly. Note this is
-   `PIOD`, not `PIOB`: the LED moved to `D26`, and clocking the wrong controller would leave the
-   pin unclaimed with no diagnostic at all.
+2. **Clock PIOA, PIOB and PIOD** via `PMC_PCER0` (IDs 11, 12, 14). PIO register writes are silently
+   dropped while the peripheral clock is gated — a wrong order here fails silently, not loudly.
+   Three controllers now, not one: the load, the sense input and the fault lamp each live on a
+   different one.
 3. Claim `PD1` and drive it out (`PIO_PER`, `PIO_OER`) at `PIOD` base `0x400E1400`.
-4. SysTick at `2_000_000` ticks per half period.
+4. Claim `PB26` for `D2` — **driven low before the output driver is enabled**, so a board coming up
+   cannot flash a fault it has not detected.
+5. Claim `PA15` for the sense and explicitly disable its output driver (`PIO_ODR`). Its internal
+   pull-up is left in the enabled state it powers up in; `R3` also pulls the node up, so nothing
+   here depends on it either way.
+6. SysTick at `2_000_000` ticks per half period.
+
+## The loop no longer assumes it worked
+
+Every commanded transition is checked before the firmware moves on, climbing the schematic's
+**ladder of what "verify" can mean**, cheapest rung first:
+
+| | check | catches | cost |
+|---|---|---|---|
+| Rung 1 | `PIO_ODSR` readback | the output register took the write — i.e. **the PIO is actually clocked** | one register read |
+| Rung 2 | `PIO_PDSR` readback | the pad reached the commanded level | one register read |
+| Rung 3 | the **current sense** on `PA15` | the circuit closed and `D1` actually conducted | the feedback path |
+
+Rungs 1 and 2 are nearly free and **genuinely insufficient** — an open circuit is invisible to both,
+because the pad's level is set by the driver, not by the load. They are in there anyway because
+rung 1 is the one check that catches the silent no-op this codebase keeps warning about. Only rung 3
+can tell a lit LED from an unplugged one.
+
+Between commanding and judging there is a **bounded 1 ms settle window**, waited out on SysTick and
+on nothing else. "Spin until the sense agrees" would hang on exactly the failure being detected. The
+window's floor (~3 µs, from `R3`‖pull-up against breadboard capacitance) and ceiling (the 500 ms
+half period) are derived in the [resource budget](resource-budget.md) §3 and guarded by `comptime`
+assertions. Then three samples, spaced 1 µs apart, must agree unanimously.
+
+The firmware holds **16 bytes of state it could be wrong about** — what it commanded, what it last
+sensed, when the settle window closes, and a running score over disagreeing transitions.
+
+That last one is not a consecutive-mismatch counter, and the reason is a trap worth knowing: **a
+dead load disagrees only on the *on* transitions and agrees on every *off* one**, since "not
+conducting" is the correct answer for an LED told to be dark. Consecutive mismatches therefore never
+exceed one, and the obvious threshold can never fire. So the score integrates instead — a
+disagreement adds 2, an agreement subtracts 1 saturating at zero, and 4 trips. A dead load faults in
+about **2.5 s**; a one-off glitch decays and is forgotten. Full reasoning in the
+[fault response policy](fault-response-policy.md), field 5.
+
+What happens on a fault is field 3: drive the load to its safe state, light `D2`, halt.
+
+None of this touches the blink cadence. `waitHalfPeriod` returns on a SysTick wrap that arrives
+every 500 ms regardless of what happens between wraps, so the ~1 ms of verification does not
+accumulate.
 
 **On the clock:** no PLL is brought up, so `MCK` is still the 4 MHz reset-default RC oscillator.
 (Arduino's `SystemInit()` climbs to 84 MHz; this deliberately does not.) 500 ms is then 2,000,000
@@ -373,12 +421,39 @@ because a device's safe failure state depends on what it controls — is written
 [fault response policy](fault-response-policy.md), completed from the repo-wide
 [template](../../docs/fault-response-policy.md).
 
-**Blinking on `D26`, and `D22` should stay dark.** If the LED on `D22` is the one blinking, the two
-LED jumpers are on each other's pins — swap them rather than changing the firmware, since the
-schematic, the current derivation and `src/main.zig` all agree that `D26` drives the load.
+**Blinking on `D26`, and `D22` dark.** If the LED on `D22` is the one blinking, the two LED jumpers
+are on each other's pins — swap them rather than changing the firmware, since the schematic, the
+current derivation and `src/main.zig` all agree that `D26` drives the load.
 
-**`D2` stays dark for now, and the sense path is checked with a meter.** No firmware reads `D24` or
-drives `D22` yet, so the only way to exercise the feedback path today is by hand: with `D1` lit, the
-sense node should read under 0.2 V; with `D1` dark, ~3.3 V. Pulling `D1` out of the breadboard while
-the blink runs should hold that node high through both halves of the cycle — which is the cheapest
-possible fault injection, and exactly the failure that a `PIO_PDSR` readback would have missed.
+### What the two LEDs mean
+
+| `D1` (`D26`, red) | `D2` (`D22`, green) | means |
+|---|---|---|
+| blinking 1 Hz | dark | running, and **every transition verified against the sense** |
+| **dark** | **solid** | a load-verification mismatch was detected, and the board halted |
+| frozen or dark | dark | a trapped fault (panic / CPU exception), or the board never ran |
+
+A blinking `D1` now means more than it used to. It is no longer "a pin is toggling" — it is "a pin
+toggled *and the current sense agreed, within 1 ms, three samples running, every time*". That is
+the difference this story exists to make.
+
+### Fault injection, by hand — the test this is all for
+
+A verification path that has never been shown to fire is not a verification path. With the board
+running, do this:
+
+1. **Pull `D1`'s jumper** (or lift the LED out of the breadboard). Within about **2.5 seconds** the
+   red LED goes dark and **the green `D2` comes on solid, and stays on**. The
+   board has stopped. That is the firmware noticing an open circuit that a `PIO_PDSR` readback
+   cannot see, because the pad still sits at exactly the level the driver put there.
+2. **Reset, then refit `D1` backwards.** Same outcome: a reversed LED does not conduct, `Q1` never
+   saturates, and the sense reports "dark" while the firmware is commanding "lit".
+3. **Refit it correctly and reset.** Back to a 1 Hz blink with `D2` dark.
+
+This is genuine fault injection against real silicon, done with your fingers, and it is the cheapest
+possible instance of what [#19](https://github.com/Zaba505/embedded/issues/19) builds in software.
+It is also what proves `D2`'s own channel is alive — a fault lamp that has never been lit is
+indistinguishable from a broken one, since every way it can fail lands on *dark*.
+
+**If you would rather check the sense path with a meter:** with `D1` lit, the node at `Q1`'s
+collector should read under 0.2 V; with `D1` dark, ~3.3 V.
