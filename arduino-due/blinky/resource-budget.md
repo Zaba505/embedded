@@ -6,8 +6,10 @@ Completed from the [repo-wide template](../../docs/resource-budget.md).
 from the linker script [`link.ld`](link.ld) (which was itself checked against the probe-rs target
 registry, `dagger -m .../flash call chip-info --chip ATSAM3X8E`), the SysTick and clock constants in
 [`src/main.zig`](src/main.zig), and the SAM3X datasheet for the electrical limits. The firmware is a
-single externally-wired LED on `PB26` toggled at 1 Hz; every resource but flash sits so far under its
-ceiling that the sketch's real value here is documenting *why* — see the [README](README.md).
+single externally-wired LED on `PD1` toggled at 1 Hz, and — new with this story — a closed loop that
+verifies each transition against the current-sense feedback path before trusting it. Every resource
+but flash still sits far under its ceiling; the sketch's real value here is documenting *why* — see
+the [README](README.md).
 
 ## 1. Code footprint (flash / ROM)
 
@@ -15,8 +17,17 @@ ceiling that the sketch's real value here is documenting *why* — see the [READ
 |---|---|---|
 | Ceiling | **256 KB** (`0x00080000`–`0x000C0000`, flash bank 0) | [`link.ld`](link.ld) `rom` region; probe-rs registry |
 | Budget | fit bank 0 **in `ReleaseSmall`** | [`build.zig`](build.zig) default optimize mode |
-| Actual | **~244 B** (`.text`; `.data`/`.bss` empty) | `size` verb / [README](README.md) |
-| Headroom | **~255.75 KB** (~99.9%) | ceiling − actual |
+| Actual | **540 B** (`.text` = `0x21C`; `.data` 0 B, `.bss` 16 B) | `size` verb / [README](README.md) |
+| Headroom | **~255.5 KB** (~99.8%) | ceiling − actual |
+
+**The baseline moved: 240 B → 540 B.** Closing the loop more than doubled the image, and that is
+worth naming rather than waving through — it is what verification costs on a program this small.
+The 300 B buys three PIO controllers brought up instead of one, the two cheap register-readback
+rungs, the bounded settle window with its modular tick arithmetic, three spaced samples, the
+mismatch integrator, and the fault path. Against a 256 KB ceiling it rounds to nothing; the figure
+matters as a *ratio*, not as a threat, and it is the number
+[issue #42](https://github.com/Zaba505/embedded/issues/42) will compare its hardware-abstraction
+seam against.
 
 Build mode *is* the wall, not code size. The 256 KB region is bank 0 only — Arduino's own script
 declares 512 KB, but bank 1 is not exposed as programmable NVM, and a blinky has no use for it. The
@@ -30,19 +41,29 @@ the linker: a build that overflows `rom` fails to link rather than producing a t
 | | Value | Source |
 |---|---|---|
 | Ceiling | **64 KB** SRAM0 (`0x20000000`–`0x20010000`) | [`link.ld`](link.ld) `ram` region |
-| Budget | static ≈ 0; stack the only consumer | design intent |
-| Actual | `.data` **0 B** + `.bss` **0 B** + heap **none** + peak stack **≪ 1 KB** | [README](README.md); [`link.ld`](link.ld) |
+| Budget | static **≤ 32 B**; stack the only other consumer | design intent |
+| Actual | `.data` **0 B** + `.bss` **16 B** + heap **none** + peak stack **≪ 1 KB** | [README](README.md); [`link.ld`](link.ld) |
 | Headroom | **~64 KB** (essentially the whole bank) | ceiling − actual |
 
-There is nothing static to budget: `.data` and `.bss` are both empty, and there is **no heap** —
-freestanding Zig links no allocator and `single_threaded = true` strips the threading machinery
-([`build.zig`](build.zig)). So the entire 64 KB is available to the **stack**, which is the only RAM
-consumer and the only risk. The Cortex-M3 has no MMU and no guard page, so a runaway stack would
-corrupt `.data`/`.bss` silently — but the call graph is a bounded, non-recursive chain
-(`resetHandler` → `main` → `waitHalfPeriod`, all tiny leaf-ish frames), so peak depth is a few dozen
-bytes against a 64 KB region. `_estack` is pinned to the top of `ram` in [`link.ld`](link.ld). The
-**heap: none** line matters for the future: the moment a project here reaches for an allocator (a
-`steth-*` audio buffer, say) this row goes live and needs a real static budget.
+**This row went live with the feedback path.** It read `.bss` **0 B** for the whole life of the
+project until the firmware acquired something it could be wrong about. The 16 B is one
+`LoadState` — four `u32`s: the commanded level, the last sensed level, the settle deadline, and the
+leaky-bucket mismatch score. That is the entire static footprint, and it is *deliberately* in memory
+rather than in registers: the fault response is a halt, the
+[fault response policy](fault-response-policy.md) sends you to an SWD probe to learn why, and state
+the optimiser had kept in registers would not survive to be read. It is reached through a `volatile`
+pointer for exactly that reason.
+
+Nothing else is static, and there is still **no heap** — freestanding Zig links no allocator and
+`single_threaded = true` strips the threading machinery ([`build.zig`](build.zig)). So the entire
+64 KB is available to the **stack**, which is the only RAM consumer and the only risk. The Cortex-M3
+has no MMU and no guard page, so a runaway stack would corrupt `.data`/`.bss` silently — but the
+call graph is a bounded, non-recursive chain
+(`resetHandler` → `main` → `commandAndVerify` → `awaitSettle` → `awaitTicks` → `elapsedSince`, all
+tiny leaf-ish frames and still non-recursive), so peak depth is a few dozen bytes against a 64 KB
+region. `_estack` is pinned to the top of `ram` in [`link.ld`](link.ld). The **heap: none** line
+matters for the future: the moment a project here reaches for an allocator (a `steth-*` audio
+buffer, say) this row goes live and needs a real static budget.
 
 ## 3. Timing
 
@@ -52,6 +73,8 @@ bytes against a 64 KB region. `_estack` is pinned to the top of `ram` in [`link.
 | Hard deadline(s) | **none** — 1 Hz blink is a soft target; RC-grade accuracy is "fine for a blink, not a time reference" | [`src/main.zig`](src/main.zig) |
 | Counter-width ceiling | SysTick reload is **24-bit**, max **16,777,215** (`0xFF_FFFF`) | ARMv7-M SysTick; [`src/main.zig`](src/main.zig) |
 | Actual / margin | reload = `HALF_PERIOD_TICKS − 1` = **1,999,999** — fits, ~8.4× under the ceiling | [`src/main.zig`](src/main.zig) |
+| **Settle window** | **1 ms** (`SETTLE_TICKS` = 4,000 @ 250 ns/tick) — floor ~3 µs, ceiling 500 ms | [`src/main.zig`](src/main.zig); [schematic](hardware/due-blinky.kicad_sch) |
+| Settle margin | **~400× above** the floor, **500× below** the ceiling | derived below |
 
 This is the budget's cleanest win, and it is enforced at **compile time**. 500 ms at 4 MHz is
 2,000,000 ticks, so the reload is 1,999,999 — comfortably inside the 24-bit register. That the clock
@@ -68,44 +91,94 @@ comptime {
 }
 ```
 
-**New with the feedback path, and comfortably ignorable.** Sampling the sense input has to wait for
-`Q1` to settle after `PB26` changes. The dominant term is the sense node's RC — `R3` at 10 kΩ against
-a breadboard node of a few tens of pF, so a few hundred nanoseconds — with the 2N3904's own switching
-times of the same order. Against a 500 ms half period that is six orders of magnitude of margin, so
-it earns no counter and no row of its own; the firmware story has only to avoid sampling in the same
-breath as the store.
+### The settle window — a second timing obligation, now real
+
+Sampling the sense input has to wait for `Q1` to settle after `PD1` changes. This started life as a
+footnote here ("comfortably ignorable, earns no row of its own") because no firmware sampled
+anything. It now has a value, two derived bounds and a `comptime` guard, so it gets the row above
+and the derivation below.
+
+**Floor — from the sense topology the schematic chose.** `Q1`'s collector is pulled up by `R3`
+(10 kΩ) in parallel with `PA15`'s internal pull-up (50–150 kΩ), so the node rises through
+8.3–9.4 kΩ. Against a breadboard node of a few tens of pF — take **50 pF** as the pessimistic
+figure — that is `τ ≈ 470 ns`, and `5τ ≈ 2.4 µs` to full settle. The 2N3904's own switching times
+(`t_on` ~35 ns, `t_off` ~250 ns) are the same order and smaller. **Call the floor 3 µs.** The
+*falling* edge is faster still, because `Q1` pulls the node down actively rather than through a
+resistor — so the rising edge is what sets the bound.
+
+**Ceiling — from the blink.** The window plus the two inter-sample gaps must fit inside the 500 ms
+half period, or the verification would consume the thing it verifies.
+
+**Chosen: 1 ms.** ~400× the floor and 1/500th of the ceiling. Margin that large in both directions
+means neither breadboard stray capacitance nor the RC oscillator's few-percent drift can close it,
+and it costs 0.2 % of a half period — invisible to the eye. Both bounds are guarded at compile time:
+
+```zig
+comptime {
+    if (SETTLE_TICKS < SETTLE_FLOOR_TICKS) {
+        @compileError("settle window is below the sense node's RC response floor; see resource-budget.md §3");
+    }
+    if (SETTLE_TICKS + (SAMPLE_COUNT - 1) * SAMPLE_GAP_TICKS >= HALF_PERIOD_TICKS) {
+        @compileError("settle window plus sample gaps does not fit inside the 500 ms half period");
+    }
+}
+```
+
+**The obligation is that the wait is bounded by the counter and by nothing else.** `awaitTicks` spins
+on SysTick, never on the sense reading. "Spin until the sense agrees" would hang on precisely the
+failure being detected — a dead `D1` — which is the trap
+[style guide §4.2](../../docs/zig-style-guide.md) exists to name. Bounded wait, then a verdict,
+always. The blink cadence is untouched by any of this: `waitHalfPeriod` returns on a SysTick wrap
+that arrives on a fixed 500 ms schedule regardless of what happens between wraps, so the ~1 ms of
+verification does not accumulate.
 
 ## 4. Electrical / I/O limits
 
-Three pins now, not one: the LED on `PB26`, the current-sense input on `PA15`, and the fault lamp on
-`PD1`. Every figure below is derived on the [schematic](hardware/due-blinky.kicad_sch) and cited
+Three pins now, not one: the LED on `PD1`, the current-sense input on `PA15`, and the fault lamp on
+`PB26`. Every figure below is derived on the [schematic](hardware/due-blinky.kicad_sch) and cited
 there against the SAM3X datasheet (Atmel-11057C).
+
+**The two LED pins are the reverse of this table's first version.** The board was built with `D1` on
+`D26` and `D2` on `D22`, and the schematic now matches the bench. Every row below is restated against
+the as-built assignment — which matters here more than anywhere else in the project, because `PB26`
+and `PD1` sit in *different* datasheet current groups, so the swap moved a ceiling rather than just
+a label.
 
 | | Value | Source |
 |---|---|---|
 | I/O voltage tolerance | **3.3 V** — **not 5 V-tolerant**; 5 V damages the board | SAM3X datasheet; [README](README.md) |
-| Per-pin source ceiling, `PB26` | **`IOH = −3 mA`** at `VOH = VDDIO − 0.4 V` — **Group 2** (`PB[25–31]`), *not* the −15 mA Group 1 | table 45-2, note 3 |
-| Per-pin source ceiling, `PA15` / `PD1` | **`IOH = −15 mA`** — both are **Group 1** (`PA[14–15]`, `PD[0–30]`) | table 45-2, note 2 |
+| Per-pin source ceiling, `PD1` (`D1`) / `PA15` | **`IOH = −15 mA`** — both are **Group 1** (`PA[14–15]`, `PD[0–30]`) | table 45-2, note 2 |
+| Per-pin source ceiling, `PB26` (`D2`) | **`IOH = −3 mA`** at `VOH = VDDIO − 0.4 V` — **Group 2** (`PB[25–31]`), *not* the −15 mA Group 1 | table 45-2, note 3 |
 | Logic thresholds at the sense input | `VIL` max **0.99 V**, `VIH` min **2.31 V** (`0.3`/`0.7 × VDDIO`); `Vhys` 150–500 mV | table 45-2 |
 | Budget | `D1` **≤ 2 mA** via 560 Ω; `D2` **≤ 2 mA** via 1 kΩ; sense network off the `+3V3` rail | schematic |
-| Actual — `PB26` (`D1`) | **1.16 mA** nominal, **1.88 mA** worst case → **63 %** of ceiling, 1.12 mA headroom | schematic |
-| Actual — `PD1` (`D2`) | **1.10 mA** nominal, **1.40 mA** worst case → **9 %** of ceiling | schematic |
+| Actual — `PD1` (`D1`) | **1.16 mA** nominal, **1.88 mA** worst case → **13 %** of ceiling, 13.1 mA headroom | schematic |
+| Actual — `PB26` (`D2`) | **1.10 mA** nominal, **1.40 mA** worst case → **47 %** of ceiling, 1.60 mA headroom | schematic |
 | Actual — `PA15` (sense) | an input; ≤ **18 nA** leakage, ≤ **66 µA** sourced by its internal pull-up | table 45-2, §31.5.1 |
 | Off-pin draw | `R3` pulls **0.31 mA** from the `+3V3` **rail** while `D1` is lit — not a pin budget | schematic |
 | Total device current | **3.66 mA** with both LEDs lit — still trivial | schematic |
 
-The per-pin ceiling is the subtle one: `PB26`'s datasheet **group** caps it at −3 mA, a fifth of the
-−15 mA that the headline Group-1 pins allow (and well under the flat 8 mA Arduino's own datasheet
-quotes), so its resistor must be sized against −3 mA and not the number most Due pinouts give. The
-two new pins happen to be Group 1, which is headroom rather than a plan — `R4` is sized to the −3 mA
-rule anyway, so no jumper on the sheet can put a pin out of spec wherever it ends up.
+The per-pin ceiling is the subtle one, and the swap is what makes it worth restating. `PB26`'s
+datasheet **group** caps it at −3 mA, a fifth of the −15 mA that the Group-1 pins allow (and well
+under the flat 8 mA Arduino's own datasheet quotes), so whatever hangs off `PB26` must be sized
+against −3 mA and not the number most Due pinouts give. As built that is `D2`, the fault lamp, at
+47 % of its ceiling. The load — the branch that actually carries current, and the one that used to
+be against that wall at 63 % — now sits on `PD1`'s −15 mA at 13 %.
 
-**`R1` moved from 1 kΩ to 560 Ω, and that is a budget change, not a preference.** `Q1`'s
-base-emitter junction takes ~0.7 V out of the same 3.3 V that `D1` and its limit resistor share, so
-1 kΩ would have left `D1` at ~0.65 mA. 560 Ω restores 1.16 mA nominal — about 17 % dimmer than the
-old circuit and still 63 % under the ceiling at the worst corner. The [README](README.md) records
-what this rules out: **330 Ω (3.18 mA) and 220 Ω (4.77 mA) are both over the −3 mA ceiling**; 470 Ω
-(74 %) is the practical floor.
+**That was survivable only because `R4` was sized to the −3 mA rule regardless of the pin it landed
+on.** The schematic said so explicitly when `D2` was still drawn on a Group-1 pin: "no jumper on this
+sheet can put a pin out of spec wherever it ends up." The jumper then ended up somewhere else, and it
+did not. The same guarantee now runs the other way: keep `R4` **≥ 470 Ω** — (3.30 − 1.90)/0.003 is
+where `D2` would reach `PB26`'s −3 mA.
+
+**`R1` is 560 Ω, and after the swap that is a choice rather than a limit.** `Q1`'s base-emitter
+junction takes ~0.7 V out of the same 3.3 V that `D1` and its limit resistor share, so the original
+1 kΩ would have left `D1` at ~0.65 mA; 560 Ω restores 1.16 mA nominal, about 17 % dimmer than the
+pre-feedback circuit. What has changed is *why* 560 Ω: on `PB26` it was the value that held the worst
+case under two thirds of a −3 mA ceiling, and **330 Ω (3.18 mA) and 220 Ω (4.77 mA) were both
+illegal there.** On `PD1` none of them comes near −15 mA — even 220 Ω is 32 % of it — so the per-pin
+ceiling no longer constrains `R1` at all. It is retained at 560 Ω because it is what is built, it is
+adequate, and every saturation and sense figure on the sheet is derived at it. 470 Ω remains legal
+and is now merely brighter rather than the practical floor.
 
 Voltage is a hard fact rather than a budget, and there are now **two** places to get it wrong: the
 header pin next to `D22` is +5 V, and on the 24-pin power header `+3V3` sits directly beside `+5V`.
@@ -127,7 +200,7 @@ deliberate absences.
 |---|---|---|
 | Ceiling | **2** channels readable without instrumentation — `D1` and `D2` — plus SWD, which needs a probe | [schematic](hardware/due-blinky.kicad_sch) |
 | Budget | at least **one** channel that survives a *load* fault, i.e. shares no component with `D1`'s branch | second-indicator decision, on the schematic |
-| Actual | `D1` (1 Hz blink, or its absence) and `D2` (solid, fault only) — `D2`'s path is disjoint from `D1`/`R1`/`R2`/`R3`/`Q1` | schematic |
+| Actual | `D1` (1 Hz blink, or its absence) and `D2` (solid, fault only — **now driven**, by the detected-fault path) — `D2`'s path is disjoint from `D1`/`R1`/`R2`/`R3`/`Q1` | schematic; [`src/main.zig`](src/main.zig) |
 | Headroom | **none spare** — a third channel would cost another pin, another jumper and another part | — |
 
 This row exists because the feedback path created a failure mode the old design could not have had:
@@ -144,8 +217,9 @@ also the no-fault state, so a broken watcher costs an alarm and can never manufa
   battery life to budget (a `WFI`-based low-power design *would* add an energy row). The sense
   network's 0.31 mA of rail draw is an electrical figure (§4), not an energy budget.
 - **I/O bandwidth:** none. The firmware masters no bus — no I²C/SPI/UART, no sensor sample rate. Its
-  entire I/O surface is a handful of register writes and, once the sense input is read, one more
-  level poll.
+  entire I/O surface is a handful of register writes plus, per transition, two register readbacks
+  and three level polls of the sense input — bounded by construction, and nowhere near a rate worth
+  budgeting.
 - **Interrupt latency:** none. The design is **poll-driven, not interrupt-driven** — SysTick is read
   via `COUNTFLAG` in the main loop, and the one wired interrupt vector (SysTick) points at the fault
   trap precisely so a spurious interrupt *stops* the board rather than being serviced. There is no ISR
@@ -155,4 +229,6 @@ That this list is *almost* empty is the same measurement the [research study](..
 makes from the other direction: the blinky has almost no I/O surface, which is why heavier machinery
 (a fault-injection harness, a simulator) is still not worth building here. What the feedback path
 adds is the cheapest possible instance of that machinery in hardware instead — pulling `D1` out of
-the breadboard is fault injection with no code at all, and it is now a fault the board can notice.
+the breadboard is fault injection with no code at all, and the firmware now notices, drives `D2`,
+and halts. That is the manual ancestor of the software harness in
+[issue #19](https://github.com/Zaba505/embedded/issues/19).

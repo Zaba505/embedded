@@ -14,7 +14,7 @@ firmware shares the part of that world a web app does not: it is hard to update 
 fails where you cannot attach a debugger, and "it worked on my bench" is not proof. That is a bet to
 test, not a conclusion to assume. A study that concluded "do everything TigerBeetle does" would be a
 failed study: TigerBeetle assumes a heap it chooses not to use, threads, an OS, a cluster of
-replicas, and a simulation budget measured in CPU-years. A [244-byte blinky](../../arduino-due/blinky)
+replicas, and a simulation budget measured in CPU-years. A [240-byte blinky](../../arduino-due/blinky)
 has none of that.
 
 ## Sources
@@ -37,7 +37,7 @@ Citations quote these files directly so a reader can check any claim about what 
 Every recommendation below is tied to one of these, never left abstract:
 
 - **`arduino-due/blinky`** — bare-metal Zig for the Atmel SAM3X8E (Cortex-M3). Toggles an externally
-  wired LED on `PB26` at 1 Hz. Register addresses are hardcoded `*volatile u32` pointers taken from
+  wired LED on `PD1` at 1 Hz. Register addresses are hardcoded `*volatile u32` pointers taken from
   the CMSIS headers; there is no HAL, no libc, no `_start`. Hard constraints: **256 KB flash** (bank
   0 only), **64 KB SRAM0**, a **4 MHz** RC oscillator, `single_threaded = true`, and `ReleaseSmall`
   by default — a `Debug` build overflows flash by ~35 KB once Zig links in its panic and formatting
@@ -84,11 +84,11 @@ debt" policy** — "we do it right the first time … because the second time ma
 experience last" is a values statement. On firmware it is closer to a physical law: the field-un-
 updatability the issue names means a shipped bug may never get a second chance, which is Tiger
 Style's "the second time may not transpire" made literal. The blinky already embodies safety-over-DX
-at every turn — choosing the awkward `PB26` over the convenient on-board D13 precisely because the
-convenient choice can lie, and choosing halt-on-fault over the friendlier reset. And "throw one
-away" is not hypothetical here: the `bossac` module reached 1.7.0 only by bisecting through 1.9.1
-(unbootable) and 1.6.1 (SIGFPE) on real hardware. Nothing to adopt mechanically; a doctrine the repo
-already lives, worth stating so future projects inherit it.
+at every turn — choosing an awkward externally-wired pin over the convenient on-board D13 precisely
+because the convenient choice can lie, and choosing halt-on-fault over the friendlier reset. And
+"throw one away" is not hypothetical here: the `bossac` module reached 1.7.0 only by bisecting
+through 1.9.1 (unbootable) and 1.6.1 (SIGFPE) on real hardware. Nothing to adopt mechanically; a
+doctrine the repo already lives, worth stating so future projects inherit it.
 
 ## 1.2 Static allocation — the headline "already free" case
 
@@ -108,7 +108,7 @@ But the second-order insight Tiger Style attaches to the rule *does* transfer, a
 that would miss the point. The document's real claim is that static allocation "makes for more
 efficient, simpler designs … because [they] consider all possible memory usage patterns upfront as
 part of the design." That mindset — **bound every resource at design time** — is alive and well here,
-just pointed at different resources: the blinky README computes the image at ~244 bytes, notes that
+just pointed at different resources: the blinky README computes the image at 240 bytes, notes that
 Debug overflows the ROM region by ~35 KB, and sizes the SysTick reload against the 24-bit hardware
 limit *at compile time*. That is the static-allocation discipline, applied to flash and cycles
 instead of heap.
